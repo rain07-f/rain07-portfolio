@@ -1,0 +1,44 @@
+---
+interface Props {
+  variant?: 'primary' | 'secondary' | 'accent' | 'danger';
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  class?: string;
+  id?: string;
+  target?: string;
+  rel?: string;
+}
+
+const {
+  variant = 'primary',
+  href,
+  type = 'button',
+  class: className = '',
+  id,
+  target,
+  rel
+} = Astro.props;
+
+const baseStyles = 'inline-flex items-center justify-center font-mono font-bold uppercase tracking-wider text-xs md:text-sm px-5 py-3 border-2 border-[#111111] transition-all duration-100 select-none cursor-pointer';
+
+const variants = {
+  primary: 'bg-[#111111] text-[#F2F0EA] hover:bg-[#0057FF] hover:text-[#FFFFFF] shadow-hard active:translate-x-1 active:translate-y-1 active:shadow-none',
+  secondary: 'bg-[#F2F0EA] text-[#111111] hover:bg-[#0057FF] hover:text-[#FFFFFF] shadow-hard active:translate-x-1 active:translate-y-1 active:shadow-none',
+  accent: 'bg-[#0057FF] text-[#FFFFFF] hover:bg-[#111111] hover:text-[#D9FF00] shadow-hard active:translate-x-1 active:translate-y-1 active:shadow-none',
+  danger: 'bg-[#FF3B30] text-[#FFFFFF] hover:bg-[#111111] hover:text-[#FFFFFF] shadow-hard active:translate-x-1 active:translate-y-1 active:shadow-none'
+};
+
+const combinedClass = `${baseStyles} ${variants[variant]} ${className}`;
+---
+
+{
+  href ? (
+    <a href={href} class={combinedClass} id={id} target={target} rel={rel}>
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class={combinedClass} id={id}>
+      <slot />
+    </button>
+  )
+}

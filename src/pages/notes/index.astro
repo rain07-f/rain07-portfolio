@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionLabel from '../../components/SectionLabel.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import { getPosts, getBlogCategories } from '../../lib/api/client';
+
+const posts = await getPosts();
+const categories = await getBlogCategories();
+---
+
+<BaseLayout
+  title="TECHNICAL NOTES // RAIN07"
+  description="Engineering journal, notes on web development, Linux systems, network architecture, and performance optimization."
+>
+  <div class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
+    <SectionLabel index="04 // NOTES" title="TECHNICAL JOURNAL" />
+
+    <!-- Intro Header -->
+    <div class="border-2 border-[#111111] bg-[#FFFFFF] p-8 md:p-12 shadow-hard mb-12">
+      <div class="max-w-3xl space-y-4">
+        <span class="font-mono text-xs font-bold px-2 py-1 bg-[#0057FF] text-[#FFFFFF]">
+          LIVE DATA STREAM // WORDPRESS POSTS
+        </span>
+        <h1 class="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-[#111111]">
+          ENGINEERING NOTES
+        </h1>
+        <p class="font-mono text-sm md:text-base text-[#111111]/80 leading-relaxed">
+          Observations, technical references, server configurations, and web development documentation synced directly from the headless WordPress instance.
+        </p>
+      </div>
+
+      <!-- Categories Filter bar -->
+      {categories.length > 0 && (
+        <div class="mt-8 pt-6 border-t-2 border-[#111111]/20 flex flex-wrap items-center gap-2 font-mono text-xs">
+          <span class="font-bold text-[#111111] mr-2">TAXONOMY:</span>
+          <span class="px-2 py-1 bg-[#111111] text-[#F2F0EA] font-semibold">ALL ({posts.length})</span>
+          {categories.map((cat) => (
+            <span class="px-2 py-1 border border-[#111111] bg-[#F2F0EA] text-[#111111] font-semibold">
+              {cat.name} ({cat.slug})
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+
+    <!-- Posts Grid -->
+    {posts.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {posts.map((post) => (
+          <BlogCard post={post} />
+        ))}
+      </div>
+    ) : (
+      <div class="border-2 border-[#111111] bg-[#FFFFFF] p-12 text-center shadow-hard font-mono text-sm text-[#111111]/70">
+        [ NO POSTS FOUND IN BACKEND REPOSITORY ]
+      </div>
+    )}
+  </div>
+</BaseLayout>

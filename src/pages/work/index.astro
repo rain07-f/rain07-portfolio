@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionLabel from '../../components/SectionLabel.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getPortfolioItems, getPortfolioCategories } from '../../lib/api/client';
+
+const projects = await getPortfolioItems();
+const categories = await getPortfolioCategories();
+---
+
+<BaseLayout
+  title="SELECTED WORK // RAIN07"
+  description="Selected engineering and development work by RAIN07. Production websites, systems, and decoupled web applications."
+>
+  <div class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
+    <SectionLabel index="03 // PORTFOLIO" title="SELECTED WORK" />
+
+    <!-- Intro Header -->
+    <div class="border-2 border-[#111111] bg-[#FFFFFF] p-8 md:p-12 shadow-hard mb-12">
+      <div class="max-w-3xl space-y-4">
+        <span class="font-mono text-xs font-bold px-2 py-1 bg-[#0057FF] text-[#FFFFFF]">
+          LIVE DATA STREAM // WORDPRESS CPT
+        </span>
+        <h1 class="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-[#111111]">
+          SYSTEMS & WEBSITES
+        </h1>
+        <p class="font-mono text-sm md:text-base text-[#111111]/80 leading-relaxed">
+          Production systems, web applications, and custom WordPress architectures. Every entry is loaded dynamically from the live headless WordPress backend.
+        </p>
+      </div>
+
+      <!-- Categories Filter bar -->
+      {categories.length > 0 && (
+        <div class="mt-8 pt-6 border-t-2 border-[#111111]/20 flex flex-wrap items-center gap-2 font-mono text-xs">
+          <span class="font-bold text-[#111111] mr-2">TAXONOMY:</span>
+          <span class="px-2 py-1 bg-[#111111] text-[#F2F0EA] font-semibold">ALL ({projects.length})</span>
+          {categories.map((cat) => (
+            <span class="px-2 py-1 border border-[#111111] bg-[#F2F0EA] text-[#111111] font-semibold">
+              {cat.name}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+
+    <!-- Projects Grid -->
+    {projects.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {projects.map((project, idx) => (
+          <ProjectCard project={project} featured={idx === 0} />
+        ))}
+      </div>
+    ) : (
+      <div class="border-2 border-[#111111] bg-[#FFFFFF] p-12 text-center shadow-hard font-mono text-sm text-[#111111]/70">
+        [ NO PORTFOLIO ITEMS FOUND IN BACKEND CPT ]
+      </div>
+    )}
+  </div>
+</BaseLayout>

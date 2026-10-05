@@ -1,0 +1,43 @@
+---
+import SectionLabel from '../components/SectionLabel.astro';
+import { TECH_INVENTORY } from '../lib/content/profile';
+---
+
+<section id="stack" class="border-b-2 border-[#111111] bg-[#F2F0EA] py-16 md:py-24">
+  <div class="max-w-7xl mx-auto px-4 md:px-8">
+    <SectionLabel index="05 // INVENTORY" title="TECHNOLOGY INVENTORY" />
+
+    <div class="mb-8">
+      <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#111111]">
+        INDEXED TOOLCHAIN
+      </h2>
+      <p class="font-mono text-xs sm:text-sm text-[#111111]/70 mt-2">
+        A numbered, factual register of technologies deployed across production environments.
+      </p>
+    </div>
+
+    <!-- 16+ Inventory Grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
+      {TECH_INVENTORY.map((item) => (
+        <div class="border-2 border-[#111111] bg-[#FFFFFF] p-4 shadow-hard-interactive flex flex-col justify-between group">
+          <div class="flex items-center justify-between border-b border-[#111111]/20 pb-2 mb-3">
+            <span class="font-mono text-xs font-black text-[#111111] group-hover:text-[#0057FF] transition-colors">
+              {item.id}
+            </span>
+            <span class="font-mono text-[9px] px-1 bg-[#111111] text-[#F2F0EA] font-semibold uppercase">
+              {item.badge}
+            </span>
+          </div>
+
+          <div class="font-mono font-bold text-xs sm:text-sm tracking-tight text-[#111111] uppercase group-hover:text-[#0057FF] transition-colors">
+            {item.name}
+          </div>
+
+          <div class="font-mono text-[9px] text-[#111111]/60 uppercase tracking-tighter mt-2">
+            {item.category}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

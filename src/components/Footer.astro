@@ -1,0 +1,65 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-[#111111] text-[#F2F0EA] border-t-2 border-[#111111] mt-20">
+  <div class="max-w-7xl mx-auto px-4 md:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 border-b border-[#F2F0EA]/20 pb-12">
+      <!-- Col 1: Brand & Spec -->
+      <div class="md:col-span-5 space-y-4">
+        <div class="flex items-center gap-3">
+          <span class="font-mono font-black text-2xl tracking-tighter text-[#F2F0EA]">RAIN07</span>
+          <span class="font-mono text-xs px-2 py-0.5 bg-[#0057FF] text-[#FFFFFF] font-bold">R07</span>
+        </div>
+        <p class="font-mono text-xs md:text-sm text-[#F2F0EA]/80 max-w-sm leading-relaxed">
+          I build websites, applications & the infrastructure behind them. High-contrast engineering, decoupled architectures, Linux systems.
+        </p>
+        <div class="font-mono text-[11px] text-[#F2F0EA]/50 uppercase tracking-wider">
+          SIGNATURE // REYNO07 · INDONESIA
+        </div>
+      </div>
+
+      <!-- Col 2: Navigation Links -->
+      <div class="md:col-span-3 space-y-2">
+        <div class="font-mono text-xs font-bold text-[#0057FF] tracking-widest uppercase mb-3">
+          // INDEX
+        </div>
+        <ul class="space-y-1 font-mono text-xs">
+          <li><a href="/" class="hover:text-[#0057FF] transition-colors">00 // HOME</a></li>
+          <li><a href="/work" class="hover:text-[#0057FF] transition-colors">01 // SELECTED WORK</a></li>
+          <li><a href="/#expertise" class="hover:text-[#0057FF] transition-colors">02 // EXPERTISE</a></li>
+          <li><a href="/#infrastructure" class="hover:text-[#0057FF] transition-colors">03 // INFRASTRUCTURE</a></li>
+          <li><a href="/notes" class="hover:text-[#0057FF] transition-colors">04 // TECHNICAL NOTES</a></li>
+          <li><a href="/#about" class="hover:text-[#0057FF] transition-colors">05 // ABOUT</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Technical Specifications -->
+      <div class="md:col-span-4 space-y-2">
+        <div class="font-mono text-xs font-bold text-[#0057FF] tracking-widest uppercase mb-3">
+          // SYSTEM SPECIFICATION
+        </div>
+        <div class="font-mono text-xs space-y-1.5 text-[#F2F0EA]/80 bg-[#1A1A1A] p-3 border border-[#F2F0EA]/20">
+          <div><span class="text-[#0057FF]">FRONTEND:</span> Astro + TypeScript + Tailwind CSS</div>
+          <div><span class="text-[#0057FF]">RUNTIME:</span> Cloudflare Workers Edge</div>
+          <div><span class="text-[#0057FF]">CMS / API:</span> Headless WordPress REST API</div>
+          <div><span class="text-[#0057FF]">STATUS:</span> ● ONLINE // 200 OK</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 font-mono text-[11px] text-[#F2F0EA]/60">
+      <div>
+        © {currentYear} RAIN07. REYNO07. ALL RIGHTS RESERVED.
+      </div>
+      <div class="flex items-center gap-4">
+        <span>DIGITAL BRUTALISM</span>
+        <span>•</span>
+        <span>NO TRACKERS</span>
+        <span>•</span>
+        <span>STATIC GENERATION</span>
+      </div>
+    </div>
+  </div>
+</footer>

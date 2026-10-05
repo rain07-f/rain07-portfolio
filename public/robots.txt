@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rain07.my.id/sitemap-index.xml

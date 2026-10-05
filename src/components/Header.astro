@@ -1,0 +1,120 @@
+---
+const currentPath = Astro.url.pathname;
+
+const navItems = [
+  { label: "WORK", href: "/work" },
+  { label: "EXPERTISE", href: "/#expertise" },
+  { label: "INFRASTRUCTURE", href: "/#infrastructure" },
+  { label: "BLOGS", href: "/notes" },
+  { label: "ABOUT", href: "/#about" },
+  { label: "CONTACT", href: "/#contact" },
+];
+---
+
+<header class="sticky top-0 z-50 bg-[#F2F0EA] border-b-2 border-[#111111]">
+  <div class="max-w-7xl mx-auto flex items-stretch justify-between">
+    <!-- Brand Mark -->
+    <a
+      href="/"
+      class="flex items-center gap-2 px-5 py-4 border-r-2 border-[#111111] bg-[#111111] text-[#F2F0EA] hover:bg-[#0057FF] hover:text-[#FFFFFF] transition-colors select-none group"
+      id="nav-brand"
+    >
+      <span class="font-mono font-black text-xl tracking-tighter">RAIN07</span>
+      <span
+        class="text-xs font-mono px-1 bg-[#F2F0EA] text-[#111111] group-hover:bg-[#FFFFFF] font-bold"
+        >R07</span
+      >
+    </a>
+
+    <!-- Desktop Nav Links -->
+    <nav class="hidden md:flex items-stretch flex-1 justify-end">
+      {
+        navItems.map((item) => {
+          const isActive =
+            currentPath === item.href ||
+            (item.href !== "/" &&
+              currentPath.startsWith(item.href) &&
+              !item.href.includes("#"));
+          return (
+            <a
+              href={item.href}
+              class={`flex items-center px-5 py-4 font-mono text-xs lg:text-sm font-bold tracking-wider border-l-2 border-[#111111] transition-colors select-none ${
+                isActive
+                  ? "bg-[#0057FF] text-[#FFFFFF]"
+                  : "text-[#111111] hover:bg-[#0057FF] hover:text-[#FFFFFF]"
+              }`}
+            >
+              {item.label}
+            </a>
+          );
+        })
+      }
+    </nav>
+
+    <!-- Mobile Menu Toggle Button -->
+    <button
+      id="mobile-nav-toggle"
+      class="flex md:hidden items-center justify-center px-5 py-4 font-mono font-bold text-sm bg-[#111111] text-[#F2F0EA] hover:bg-[#0057FF] transition-colors"
+      aria-label="Toggle Navigation Menu"
+    >
+      [ MENU ]
+    </button>
+  </div>
+
+  <!-- Mobile Fullscreen Brutalist Drawer -->
+  <div
+    id="mobile-nav-menu"
+    class="hidden md:hidden fixed inset-0 top-[61px] bg-[#F2F0EA] z-40 border-t-2 border-[#111111] flex-col p-6 overflow-y-auto"
+  >
+    <div
+      class="flex flex-col border-2 border-[#111111] shadow-hard divide-y-2 divide-[#111111] bg-[#FFFFFF]"
+    >
+      {
+        navItems.map((item) => (
+          <a
+            href={item.href}
+            class="mobile-nav-link font-mono text-lg font-bold p-4 text-[#111111] hover:bg-[#0057FF] hover:text-[#FFFFFF] transition-colors"
+          >
+            {item.label} →
+          </a>
+        ))
+      }
+    </div>
+    <div
+      class="mt-8 p-4 border-2 border-[#111111] bg-[#F2F0EA] font-mono text-xs space-y-1"
+    >
+      <div class="font-bold text-[#111111]">IDENTIFIER: RAIN07 // REYNO07</div>
+      <div class="text-[#111111] opacity-75">LOCATION: INDONESIA</div>
+      <div class="text-[#0057FF] font-semibold">
+        RUNTIME: CLOUDFLARE WORKERS
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const toggleBtn = document.getElementById("mobile-nav-toggle");
+  const menu = document.getElementById("mobile-nav-menu");
+  const links = document.querySelectorAll(".mobile-nav-link");
+
+  toggleBtn?.addEventListener("click", () => {
+    const isHidden = menu?.classList.contains("hidden");
+    if (isHidden) {
+      menu?.classList.remove("hidden");
+      menu?.classList.add("flex");
+      toggleBtn.innerText = "[ CLOSE ]";
+    } else {
+      menu?.classList.add("hidden");
+      menu?.classList.remove("flex");
+      toggleBtn.innerText = "[ MENU ]";
+    }
+  });
+
+  links.forEach((l) => {
+    l.addEventListener("click", () => {
+      menu?.classList.add("hidden");
+      menu?.classList.remove("flex");
+      if (toggleBtn) toggleBtn.innerText = "[ MENU ]";
+    });
+  });
+</script>

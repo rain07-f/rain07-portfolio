@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-primary: #F2F0EA;
+    --text-primary: #111111;
+    --accent-blue: #0057FF;
+    --accent-red: #FF3B30;
+    --accent-lime: #D9FF00;
+    --border-color: #111111;
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+  }
+
+  code, pre, .font-mono, .technical-label {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  ::selection {
+    background-color: var(--accent-blue);
+    color: #FFFFFF;
+  }
+}
+
+/* Brutalist utility borders and shadows */
+.border-b-hard {
+  border-bottom: 2px solid #111111;
+}
+
+.border-hard {
+  border: 2px solid #111111;
+}
+
+.border-hard-thick {
+  border: 3px solid #111111;
+}
+
+.border-hard-t {
+  border-top: 2px solid #111111;
+}
+
+.border-hard-r {
+  border-right: 2px solid #111111;
+}
+
+.border-hard-l {
+  border-left: 2px solid #111111;
+}
+
+/* Brutalist Hard Offset Shadow */
+.shadow-hard {
+  box-shadow: 4px 4px 0px #111111;
+}
+
+.shadow-hard-lg {
+  box-shadow: 8px 8px 0px #111111;
+}
+
+.shadow-hard-blue {
+  box-shadow: 4px 4px 0px #0057FF;
+}
+
+.shadow-hard-interactive {
+  box-shadow: 4px 4px 0px #111111;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.shadow-hard-interactive:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #0057FF;
+}
+
+.shadow-hard-interactive:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #111111;
+}
+
+/* Subtle Technical Grid Background */
+.grid-blueprint {
+  background-image: 
+    linear-gradient(to right, rgba(17, 17, 17, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(17, 17, 17, 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.grid-blueprint-dense {
+  background-image: 
+    linear-gradient(to right, rgba(17, 17, 17, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(17, 17, 17, 0.12) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

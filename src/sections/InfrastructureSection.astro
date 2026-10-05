@@ -1,0 +1,55 @@
+---
+import SectionLabel from '../components/SectionLabel.astro';
+import TechnicalDiagram from '../components/TechnicalDiagram.astro';
+---
+
+<section id="infrastructure" class="border-b-2 border-[#111111] bg-[#F2F0EA] py-16 md:py-24">
+  <div class="max-w-7xl mx-auto px-4 md:px-8">
+    <SectionLabel index="04 // ARCHITECTURE" title="INFRASTRUCTURE BLUEPRINT" />
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+      <!-- Left Statement -->
+      <div class="lg:col-span-5 space-y-6">
+        <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#111111] leading-[1]">
+          "SOFTWARE IS ONLY HALF THE SYSTEM."
+        </h2>
+        
+        <p class="font-mono text-sm md:text-base text-[#111111]/85 leading-relaxed">
+          Application code cannot survive without robust infrastructure. RAIN07 engineers the entire topology: secure DNS routing, edge CDN proxies, Linux server tuning, container isolation, and database durability.
+        </p>
+
+        <!-- Technical Badges Matrix -->
+        <div class="border-2 border-[#111111] bg-[#FFFFFF] p-5 shadow-hard space-y-3 font-mono text-xs">
+          <div class="font-bold text-[#0057FF] uppercase tracking-wider border-b border-[#111111]/20 pb-2">
+            // HARDENED STACK SPECS
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-[#111111]">
+            <div class="flex items-center gap-1.5">
+              <span class="text-[#0057FF] font-bold">●</span> DNS / SSL / CDN
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[#0057FF] font-bold">●</span> Linux VPS (Debian/Ubuntu)
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[#0057FF] font-bold">●</span> Nginx & LiteSpeed
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[#0057FF] font-bold">●</span> Docker & Traefik
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[#0057FF] font-bold">●</span> Proxmox Hypervisor
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[#0057FF] font-bold">●</span> MikroTik & Tailscale
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Diagram -->
+      <div class="lg:col-span-7">
+        <TechnicalDiagram />
+      </div>
+    </div>
+  </div>
+</section>

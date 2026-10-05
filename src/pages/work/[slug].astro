@@ -1,0 +1,212 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionLabel from '../../components/SectionLabel.astro';
+import BrutalistButton from '../../components/BrutalistButton.astro';
+import { getPortfolioItems } from '../../lib/api/client';
+import type { NormalizedPortfolioItem } from '../../lib/api/types';
+
+export async function getStaticPaths() {
+  const items = await getPortfolioItems();
+  return items.map((item) => ({
+    params: { slug: item.slug },
+    props: { project: item }
+  }));
+}
+
+interface Props {
+  project: NormalizedPortfolioItem;
+}
+
+const { project } = Astro.props;
+
+// Fetch all items to compute next project link
+const allItems = await getPortfolioItems();
+const currentIndex = allItems.findIndex((p) => p.slug === project.slug);
+const nextProject = currentIndex >= 0 && currentIndex < allItems.length - 1 ? allItems[currentIndex + 1] : allItems[0];
+---
+
+<BaseLayout
+  title={`${project.title} // RAIN07 Work`}
+  description={project.excerpt || `Case study for ${project.title} by RAIN07.`}
+  ogImage={project.featuredImage?.url}
+  ogType="article"
+>
+  <div class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
+    <SectionLabel index="03 // SELECTED WORK" title="PROJECT DETAIL" />
+
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 font-mono text-xs mb-8 text-[#111111]/70">
+      <a href="/" class="hover:text-[#0057FF]">HOME</a>
+      <span>/</span>
+      <a href="/work" class="hover:text-[#0057FF]">WORK</a>
+      <span>/</span>
+      <span class="text-[#111111] font-bold">{project.slug}</span>
+    </div>
+
+    <!-- Project Header Block -->
+    <div class="border-2 border-[#111111] bg-[#FFFFFF] p-6 md:p-12 shadow-hard mb-12">
+      <div class="flex flex-wrap items-center justify-between gap-4 border-b-2 border-[#111111] pb-6 mb-6">
+        <div>
+          <span class="font-mono text-xs font-bold bg-[#111111] text-[#F2F0EA] px-2 py-1">
+            R07 / PROJECT #{project.id}
+          </span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="font-mono text-xs font-bold border border-[#111111] px-2 py-1 bg-[#D9FF00] text-[#111111]">
+            STATUS: [{project.statusBadge}]
+          </span>
+          {project.categories.map((c) => (
+            <span class="font-mono text-xs bg-[#0057FF] text-[#FFFFFF] px-2 py-1 font-bold">
+              {c.name}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <h1 class="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-[#111111] mb-6">
+        {project.title}
+      </h1>
+
+      {project.excerpt && (
+        <p class="font-mono text-sm md:text-base text-[#111111]/80 max-w-3xl leading-relaxed">
+          {project.excerpt}
+        </p>
+      )}
+
+      <!-- Technical Metadata Matrix -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 pt-8 border-t-2 border-[#111111]/20 font-mono text-xs">
+        <div>
+          <div class="text-[#111111]/60 uppercase">SOURCE</div>
+          <div class="font-bold text-[#111111]">WORDPRESS CPT</div>
+        </div>
+        <div>
+          <div class="text-[#111111]/60 uppercase">DEPLOYED RUNTIME</div>
+          <div class="font-bold text-[#0057FF]">CLOUDFLARE EDGE</div>
+        </div>
+        <div>
+          <div class="text-[#111111]/60 uppercase">RECORDED DATE</div>
+          <div class="font-bold text-[#111111]">{new Date(project.date).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}</div>
+        </div>
+        <div>
+          <div class="text-[#111111]/60 uppercase">AUTHORITY</div>
+          <div class="font-bold text-[#111111]">RAIN07</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Featured Image or Banner -->
+    {project.featuredImage && (
+      <div class="border-2 border-[#111111] bg-[#111111] mb-12 shadow-hard overflow-hidden">
+        <img
+          src={project.featuredImage.url}
+          alt={project.featuredImage.alt}
+          class="w-full h-auto max-h-[600px] object-cover"
+        />
+        <div class="bg-[#111111] text-[#F2F0EA] p-3 font-mono text-xs border-t-2 border-[#111111]">
+          FIGURE 01: SYSTEM INTERFACE CAPTURE // {project.title}
+        </div>
+      </div>
+    )}
+
+    <!-- Editorial Case Content -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <!-- Main Content / Gutenberg Render -->
+      <div class="lg:col-span-8 space-y-8">
+        <div class="border-2 border-[#111111] bg-[#FFFFFF] p-6 md:p-10 shadow-hard">
+          <div class="font-mono text-xs font-bold uppercase tracking-wider text-[#0057FF] border-b-2 border-[#111111] pb-3 mb-6">
+            // DOCUMENTATION & ARCHITECTURAL CASE STUDY
+          </div>
+
+          <!-- WordPress Rendered Content -->
+          <div class="prose max-w-none font-mono text-sm leading-relaxed text-[#111111] space-y-4">
+            <div set:html={project.contentHtml} class="wordpress-content" />
+          </div>
+        </div>
+
+        <!-- Render Image Gallery if Gutenberg Gallery Extracted -->
+        {project.galleryImages.length > 0 && (
+          <div class="border-2 border-[#111111] bg-[#FFFFFF] p-6 md:p-10 shadow-hard space-y-6">
+            <div class="font-mono text-xs font-bold uppercase tracking-wider text-[#111111] border-b-2 border-[#111111] pb-3">
+              // PROJECT ATTACHMENTS & SCHEMATIC GALLERY ({project.galleryImages.length})
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {project.galleryImages.map((img, i) => (
+                <div class="border-2 border-[#111111] bg-[#F2F0EA] p-2 space-y-2">
+                  <img src={img.src} alt={img.alt || `Gallery Image ${i + 1}`} class="w-full h-48 object-cover border border-[#111111]" loading="lazy" />
+                  <div class="font-mono text-[10px] text-[#111111]/70 truncate">
+                    FIG {i + 1}: {img.alt || `Asset capture ${i + 1}`}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <!-- Sidebar Specs -->
+      <div class="lg:col-span-4 space-y-8">
+        <div class="border-2 border-[#111111] bg-[#FFFFFF] p-6 shadow-hard space-y-6">
+          <div class="font-mono text-xs font-bold uppercase tracking-wider text-[#111111] border-b-2 border-[#111111] pb-3">
+            // ENGINEERING SCOPE
+          </div>
+
+          <ul class="space-y-3 font-mono text-xs text-[#111111]">
+            <li class="flex items-start gap-2">
+              <span class="text-[#0057FF] font-bold">✔</span>
+              <span>Headless Architecture & Decoupled Delivery</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[#0057FF] font-bold">✔</span>
+              <span>Custom Post Type Structuring & REST API Normalization</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[#0057FF] font-bold">✔</span>
+              <span>Fast Edge Delivery via Cloudflare Workers</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[#0057FF] font-bold">✔</span>
+              <span>Performance and Core Web Vitals Optimization</span>
+            </li>
+          </ul>
+
+          <div class="pt-4 border-t-2 border-[#111111]/20">
+            <BrutalistButton href="/work" variant="primary" class="w-full text-center">
+              ← ALL PROJECTS
+            </BrutalistButton>
+          </div>
+        </div>
+
+        <!-- Next Project Card -->
+        {nextProject && (
+          <div class="border-2 border-[#111111] bg-[#F2F0EA] p-6 shadow-hard space-y-3">
+            <div class="font-mono text-[10px] font-bold text-[#0057FF] uppercase tracking-widest">
+              NEXT ENTRY
+            </div>
+            <h4 class="font-bold text-lg text-[#111111]">
+              {nextProject.title}
+            </h4>
+            <BrutalistButton href={`/work/${nextProject.slug}`} variant="secondary" class="!px-3 !py-2 !text-xs">
+              NEXT PROJECT →
+            </BrutalistButton>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style is:global>
+  .wordpress-content img {
+    border: 2px solid #111111;
+    margin: 1.5rem 0;
+    max-width: 100%;
+    height: auto;
+  }
+  .wordpress-content figure {
+    margin: 1.5rem 0;
+  }
+  .wordpress-content p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+  }
+</style>

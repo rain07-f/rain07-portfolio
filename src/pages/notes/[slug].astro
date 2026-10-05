@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionLabel from '../../components/SectionLabel.astro';
+import BrutalistButton from '../../components/BrutalistButton.astro';
+import { getPosts } from '../../lib/api/client';
+import type { NormalizedPost } from '../../lib/api/types';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post }
+  }));
+}
+
+interface Props {
+  post: NormalizedPost;
+}
+
+const { post } = Astro.props;
+
+const allPosts = await getPosts();
+const currentIndex = allPosts.findIndex((p) => p.slug === post.slug);
+const nextPost = currentIndex >= 0 && currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : allPosts[0];
+---
+
+<BaseLayout
+  title={`${post.title} // RAIN07 Notes`}
+  description={post.excerpt || `Technical note on ${post.title} by RAIN07.`}
+  ogImage={post.featuredImage?.url}
+  ogType="article"
+>
+  <div class="max-w-4xl mx-auto px-4 md:px-8 py-12 md:py-16">
+    <SectionLabel index="04 // NOTES" title="TECHNICAL JOURNAL" />
+
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 font-mono text-xs mb-8 text-[#111111]/70">
+      <a href="/" class="hover:text-[#0057FF]">HOME</a>
+      <span>/</span>
+      <a href="/notes" class="hover:text-[#0057FF]">NOTES</a>
+      <span>/</span>
+      <span class="text-[#111111] font-bold">{post.slug}</span>
+    </div>
+
+    <!-- Article Header -->
+    <article class="border-2 border-[#111111] bg-[#FFFFFF] p-6 md:p-12 shadow-hard mb-12">
+      <div class="flex flex-wrap items-center justify-between gap-4 border-b-2 border-[#111111] pb-6 mb-6">
+        <span class="font-mono text-xs font-bold bg-[#111111] text-[#F2F0EA] px-2 py-1">
+          NOTE #{post.id}
+        </span>
+        <div class="flex items-center gap-2 font-mono text-xs text-[#111111]/70">
+          <span>PUBLISHED: {new Date(post.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+          <span>·</span>
+          <span>BY {post.authorName}</span>
+        </div>
+      </div>
+
+      <h1 class="text-3xl md:text-5xl font-black uppercase tracking-tight text-[#111111] mb-6">
+        {post.title}
+      </h1>
+
+      {post.categories.length > 0 && (
+        <div class="flex flex-wrap gap-2 mb-8">
+          {post.categories.map((c) => (
+            <span class="font-mono text-xs bg-[#0057FF] text-[#FFFFFF] px-2 py-0.5 font-bold uppercase">
+              {c.name}
+            </span>
+          ))}
+        </div>
+      )}
+
+      <!-- Featured Image -->
+      {post.featuredImage && (
+        <div class="border-2 border-[#111111] mb-8 overflow-hidden">
+          <img src={post.featuredImage.url} alt={post.featuredImage.alt} class="w-full h-auto object-cover" />
+        </div>
+      )}
+
+      <!-- Post Body -->
+      <div class="prose max-w-none font-mono text-sm leading-relaxed text-[#111111] space-y-4 pt-6 border-t-2 border-[#111111]/20">
+        <div set:html={post.contentHtml} class="wordpress-content" />
+      </div>
+
+      <!-- Footer navigation -->
+      <div class="mt-12 pt-6 border-t-2 border-[#111111] flex flex-wrap items-center justify-between gap-4">
+        <BrutalistButton href="/notes" variant="secondary">
+          ← BACK TO NOTES
+        </BrutalistButton>
+        {nextPost && nextPost.slug !== post.slug && (
+          <BrutalistButton href={`/notes/${nextPost.slug}`} variant="primary">
+            NEXT NOTE: {nextPost.title} →
+          </BrutalistButton>
+        )}
+      </div>
+    </article>
+  </div>
+</BaseLayout>
+
+<style is:global>
+  .wordpress-content p {
+    margin-bottom: 1.25rem;
+    line-height: 1.8;
+  }
+  .wordpress-content a {
+    color: #0057FF;
+    text-decoration: underline;
+    font-weight: bold;
+  }
+  .wordpress-content code {
+    background-color: #F2F0EA;
+    padding: 0.15rem 0.35rem;
+    border: 1px solid #111111;
+  }
+</style>

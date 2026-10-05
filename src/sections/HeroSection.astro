@@ -1,0 +1,93 @@
+---
+import BrutalistButton from '../components/BrutalistButton.astro';
+
+interface Props {
+  heroImageSrc?: string;
+  heroImageAlt?: string;
+}
+
+const {
+  heroImageSrc = '/images/hero-developer.jpg',
+  heroImageAlt = 'RAIN07 Engineering Workstation — Full-Stack Web Development and Linux Infrastructure Environment'
+} = Astro.props;
+---
+
+<section class="border-b-2 border-[#111111] bg-[#F2F0EA] relative overflow-hidden">
+  <!-- Subtle Blueprint grid lines background -->
+  <div class="absolute inset-0 grid-blueprint opacity-60 pointer-events-none"></div>
+
+  <div class="max-w-7xl mx-auto px-4 md:px-8 py-16 md:py-24 relative z-10">
+    <!-- Top Metadata Bar (Task 5: Clean, black border, cream bg, hard offset shadow, no SYSTEM ONLINE) -->
+    <div class="flex flex-wrap items-center justify-between gap-4 border-2 border-[#111111] bg-[#FFFFFF] p-3 shadow-hard mb-8 font-mono text-xs">
+      <div class="flex items-center gap-3">
+        <span class="bg-[#111111] text-[#F2F0EA] px-2 py-0.5 font-bold">RAIN07 / 01</span>
+        <span class="font-bold text-[#111111]">LOCATION / INDONESIA</span>
+      </div>
+      <div class="flex items-center gap-2 text-[#111111]/80">
+        <span class="font-bold text-[#0057FF]">STACK /</span>
+        <span>ASTRO · LARAVEL · WORDPRESS · LINUX</span>
+      </div>
+    </div>
+
+    <!-- Main Hero Grid (Two-column balanced layout) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
+      <!-- Left: Massive Typography Statement (Task 3 & 4) -->
+      <div class="lg:col-span-7 flex flex-col justify-between space-y-8">
+        <div class="space-y-4">
+          <div class="font-mono text-xs md:text-sm font-bold tracking-widest text-[#0057FF] uppercase">
+            WEB DEVELOPER & INFRASTRUCTURE ENGINEER
+          </div>
+          <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-[5.25rem] font-black tracking-tighter leading-[0.92] uppercase text-[#111111]">
+            I BUILD WEBSITES, APPLICATIONS & THE INFRASTRUCTURE BEHIND THEM.
+          </h1>
+        </div>
+
+        <p class="font-mono text-sm md:text-base lg:text-lg text-[#111111]/90 max-w-2xl leading-relaxed border-l-4 border-[#0057FF] pl-4">
+          Web development, backend systems, Linux infrastructure, deployment, optimization and technical systems.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-wrap gap-4 pt-2">
+          <BrutalistButton href="/work" variant="primary" class="!text-sm md:!text-base !px-6 !py-4">
+            VIEW WORK →
+          </BrutalistButton>
+          <BrutalistButton href="#contact" variant="secondary" class="!text-sm md:!text-base !px-6 !py-4">
+            CONTACT →
+          </BrutalistButton>
+        </div>
+      </div>
+
+      <!-- Right: Large Developer Workstation Image Panel (Task 2 & 4: Digital Brutalist Framed Container) -->
+      <div class="lg:col-span-5 flex flex-col justify-between">
+        <div class="border-2 border-[#111111] bg-[#111111] shadow-hard flex flex-col h-full overflow-hidden group">
+          <!-- Top caption frame bar -->
+          <div class="flex items-center justify-between border-b-2 border-[#111111] bg-[#F2F0EA] px-4 py-2 font-mono text-xs select-none">
+            <span class="font-bold text-[#111111]">DEV_ENV // WORKSTATION</span>
+            <span class="text-[#0057FF] font-bold">R07 // LOCAL</span>
+          </div>
+
+          <!-- Brutalist framed image container -->
+          <div class="relative flex-1 min-h-[300px] sm:min-h-[380px] lg:min-h-[460px] bg-[#111111] overflow-hidden">
+            <img
+              src={heroImageSrc}
+              alt={heroImageAlt}
+              loading="eager"
+              decoding="async"
+              class="w-full h-full object-cover grayscale contrast-110 hover:grayscale-0 transition-all duration-300"
+            />
+            <!-- Monospace Technical Overlay Label -->
+            <div class="absolute bottom-3 left-3 bg-[#111111]/90 text-[#F2F0EA] border border-[#111111] px-2.5 py-1 font-mono text-[10px] tracking-wider uppercase backdrop-blur-none">
+              SYS // WORKSTATION · MULTI-HEAD DISPLAY
+            </div>
+          </div>
+
+          <!-- Bottom Telemetry strip -->
+          <div class="border-t-2 border-[#111111] bg-[#FFFFFF] px-4 py-2 flex items-center justify-between font-mono text-[11px] text-[#111111]/80">
+            <span>RUNTIME: LINUX / WORKSTATION</span>
+            <span class="font-bold text-[#0057FF]">VSCODE · TERMINAL · DOCKER</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,72 @@
+---
+import SectionLabel from '../components/SectionLabel.astro';
+import BrutalistButton from '../components/BrutalistButton.astro';
+
+const email = 'reyno.fahreza@gmail.com';
+const linkedIn = 'https://www.linkedin.com/in/reyno-nur-fahreza';
+const whatsapp = 'https://wa.me/6280000000000';
+---
+
+<section id="contact" class="bg-[#F2F0EA] py-16 md:py-24">
+  <div class="max-w-7xl mx-auto px-4 md:px-8">
+    <SectionLabel index="09 // COMMS" title="CONTACT & ENGAGEMENT" />
+
+    <div class="border-2 border-[#111111] bg-[#FFFFFF] p-8 md:p-16 shadow-hard-lg">
+      <div class="max-w-3xl space-y-6 mb-12">
+        <span class="font-mono text-xs font-bold px-2 py-1 bg-[#0057FF] text-[#FFFFFF] uppercase">
+          COMMUNICATION DISPATCH
+        </span>
+        <h2 class="text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-[#111111] leading-[0.95]">
+          HAVE A SYSTEM TO BUILD?<br />
+          LET'S TALK.
+        </h2>
+        <p class="font-mono text-sm md:text-base text-[#111111]/85 leading-relaxed">
+          Open for technical consulting, custom web development, Headless WordPress/Laravel architectures, and server/network infrastructure engineering.
+        </p>
+      </div>
+
+      <!-- Large Brutalist Contact Buttons Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <BrutalistButton 
+          href={`mailto:${email}`} 
+          variant="primary" 
+          class="!py-6 !text-sm md:!text-base flex-col gap-1 items-start !px-6"
+        >
+          <span class="text-[10px] text-[#0057FF] opacity-90">// ELECTRONIC MAIL</span>
+          <span class="font-bold">EMAIL →</span>
+          <span class="text-[11px] lowercase opacity-80 truncate w-full">{email}</span>
+        </BrutalistButton>
+
+        <BrutalistButton 
+          href={linkedIn} 
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="secondary" 
+          class="!py-6 !text-sm md:!text-base flex-col gap-1 items-start !px-6"
+        >
+          <span class="text-[10px] text-[#0057FF] opacity-90">// PROFESSIONAL NETWORK</span>
+          <span class="font-bold">LINKEDIN →</span>
+          <span class="text-[11px] opacity-80">Reyno Nur Fahreza</span>
+        </BrutalistButton>
+
+        <BrutalistButton 
+          href={whatsapp} 
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="accent" 
+          class="!py-6 !text-sm md:!text-base flex-col gap-1 items-start !px-6"
+        >
+          <span class="text-[10px] text-[#FFFFFF] opacity-90">// INSTANT MESSAGING</span>
+          <span class="font-bold">WHATSAPP →</span>
+          <span class="text-[11px] opacity-90">Direct Chat</span>
+        </BrutalistButton>
+      </div>
+
+      <!-- Security Notice -->
+      <div class="mt-12 pt-6 border-t-2 border-[#111111]/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-mono text-xs text-[#111111]/60">
+        <div>PUBLIC IDENTITY: RAIN07 // SIGNATURE: REYNO07</div>
+        <div>PGP & DIRECT VERIFICATION AVAILABLE ON DEMAND</div>
+      </div>
+    </div>
+  </div>
+</section>

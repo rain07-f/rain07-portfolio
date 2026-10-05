@@ -1,0 +1,40 @@
+---
+interface Props {
+  text: string;
+  class?: string;
+}
+
+const { text, class: className = '' } = Astro.props;
+---
+
+<div class={`overflow-hidden whitespace-nowrap border-y-2 border-[#111111] bg-[#111111] text-[#F2F0EA] py-2.5 select-none ${className}`}>
+  <div class="inline-flex animate-marquee font-mono font-bold text-xs md:text-sm tracking-widest uppercase gap-8">
+    <span>{text}</span>
+    <span class="text-[#0057FF]">✦</span>
+    <span>{text}</span>
+    <span class="text-[#0057FF]">✦</span>
+    <span>{text}</span>
+    <span class="text-[#0057FF]">✦</span>
+    <span>{text}</span>
+    <span class="text-[#0057FF]">✦</span>
+  </div>
+</div>
+
+<style>
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .animate-marquee {
+    display: inline-flex;
+    white-space: nowrap;
+    animation: marquee 20s linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee {
+      animation: none;
+    }
+  }
+</style>

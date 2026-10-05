@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Marquee from '../components/Marquee.astro';
+import HeroSection from '../sections/HeroSection.astro';
+import AboutSection from '../sections/AboutSection.astro';
+import ExpertiseSection from '../sections/ExpertiseSection.astro';
+import SelectedWorkSection from '../sections/SelectedWorkSection.astro';
+import InfrastructureSection from '../sections/InfrastructureSection.astro';
+import TechStackSection from '../sections/TechStackSection.astro';
+import ExperienceSection from '../sections/ExperienceSection.astro';
+import ServicesSection from '../sections/ServicesSection.astro';
+import NotesSection from '../sections/NotesSection.astro';
+import ContactSection from '../sections/ContactSection.astro';
+---
+
+<BaseLayout
+  title="RAIN07 // Web Developer & Infrastructure Engineer"
+  description="I build websites, applications & the infrastructure behind them. Digital brutalist portfolio for RAIN07."
+>
+  <!-- Hero Section -->
+  <HeroSection />
+
+  <!-- Dynamic Marquee Bar -->
+  <Marquee text="RAIN07 · WEB DEVELOPER · INFRASTRUCTURE ENGINEER · CLOUDFLARE WORKERS · LINUX · LARAVEL · ASTRO" />
+
+  <!-- 01 About Section -->
+  <AboutSection />
+
+  <!-- 02 Expertise Section -->
+  <ExpertiseSection />
+
+  <!-- 03 Selected Work Section (Dynamic WordPress CPT) -->
+  <SelectedWorkSection />
+
+  <!-- 04 Infrastructure Blueprint -->
+  <InfrastructureSection />
+
+  <!-- 05 Technology Stack Inventory -->
+  <TechStackSection />
+
+  <!-- 06 Experience & Roles -->
+  <ExperienceSection />
+
+  <!-- 07 Services Editorial List -->
+  <ServicesSection />
+
+  <!-- 08 Technical Notes (Dynamic WordPress Posts) -->
+  <NotesSection />
+
+  <!-- 09 Contact Section -->
+  <ContactSection />
+</BaseLayout>

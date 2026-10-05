@@ -1,0 +1,11 @@
+name = "rain07-portfolio"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+
+[vars]
+PUBLIC_API_URL = "https://be-web-por-rey.rey07.my.id"
+PUBLIC_SITE_URL = "https://rain07.my.id"

@@ -1,0 +1,42 @@
+---
+import SectionLabel from '../components/SectionLabel.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import BrutalistButton from '../components/BrutalistButton.astro';
+import { getPortfolioItems } from '../lib/api/client';
+
+const projects = await getPortfolioItems();
+---
+
+<section id="work" class="border-b-2 border-[#111111] bg-[#F2F0EA] py-16 md:py-24">
+  <div class="max-w-7xl mx-auto px-4 md:px-8">
+    <SectionLabel index="03 // SELECTED WORK" title="PORTFOLIO ENTRIES" />
+
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+      <div>
+        <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#111111]">
+          PRODUCED ARCHITECTURES
+        </h2>
+        <p class="font-mono text-xs sm:text-sm text-[#111111]/75 mt-2">
+          Sourced dynamically from WordPress Custom Post Type (<span class="font-bold">portfolio</span>).
+        </p>
+      </div>
+
+      <BrutalistButton href="/work" variant="secondary">
+        VIEW ALL WORK ({projects.length}) →
+      </BrutalistButton>
+    </div>
+
+    <!-- Project Cards Grid -->
+    {projects.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {projects.slice(0, 3).map((project, idx) => (
+          <ProjectCard project={project} featured={idx === 0} />
+        ))}
+      </div>
+    ) : (
+      <div class="border-2 border-[#111111] bg-[#FFFFFF] p-12 text-center shadow-hard font-mono text-sm text-[#111111]/70">
+        [ NO PORTFOLIO ITEMS IN WORDPRESS CPT ]
+      </div>
+    )}
+  </div>
+</section>

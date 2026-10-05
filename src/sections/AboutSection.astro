@@ -1,0 +1,62 @@
+---
+import SectionLabel from '../components/SectionLabel.astro';
+---
+
+<section id="about" class="border-b-2 border-[#111111] bg-[#F2F0EA] py-16 md:py-24">
+  <div class="max-w-7xl mx-auto px-4 md:px-8">
+    <SectionLabel index="01 // PHILOSOPHY" title="ABOUT RAIN07" />
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+      <!-- Left Asymmetric Editorial Column -->
+      <div class="lg:col-span-7 border-2 border-[#111111] bg-[#FFFFFF] p-8 md:p-12 shadow-hard flex flex-col justify-between space-y-8">
+        <div>
+          <span class="font-mono text-xs font-bold text-[#0057FF] uppercase tracking-widest block mb-4">
+            // CORE PERSPECTIVE
+          </span>
+          <h3 class="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight leading-[1.05] text-[#111111]">
+            "I DON'T JUST BUILD THE APPLICATION.<br />
+            I UNDERSTAND WHAT RUNS IT."
+          </h3>
+        </div>
+
+        <p class="font-mono text-sm md:text-base text-[#111111]/85 leading-relaxed">
+          RAIN07 focuses on the intersection between web development and infrastructure — building websites and applications while understanding the servers, networking, deployment and systems behind them.
+        </p>
+
+        <div class="border-t-2 border-[#111111]/20 pt-6 font-mono text-xs text-[#111111]/70 leading-relaxed">
+          From designing decoupled frontends in Astro to customizing high-scale WordPress & Laravel backends, all the way down to configuring Linux VPS kernels, MikroTik firewall rules, and Cloudflare Workers edge caching.
+        </div>
+      </div>
+
+      <!-- Right Column: System Tenets / Editorial Blocks -->
+      <div class="lg:col-span-5 flex flex-col justify-between gap-6">
+        <div class="border-2 border-[#111111] bg-[#111111] text-[#F2F0EA] p-6 shadow-hard space-y-3">
+          <div class="font-mono text-xs font-bold text-[#D9FF00] uppercase tracking-wider">
+            PRINCIPLE 01 // PRODUCTION RESILIENCE
+          </div>
+          <p class="font-mono text-xs sm:text-sm leading-relaxed text-[#F2F0EA]/90">
+            A software application is only as viable as the server stack it sits upon. We eliminate single points of failure with proper reverse proxying, DNS failover, and automated monitoring.
+          </p>
+        </div>
+
+        <div class="border-2 border-[#111111] bg-[#FFFFFF] text-[#111111] p-6 shadow-hard space-y-3">
+          <div class="font-mono text-xs font-bold text-[#0057FF] uppercase tracking-wider">
+            PRINCIPLE 02 // MEASURED PERFORMANCE
+          </div>
+          <p class="font-mono text-xs sm:text-sm leading-relaxed text-[#111111]/90">
+            Performance isn't an afterthought. We optimize Time to First Byte (TTFB) with LiteSpeed and edge caching, and minimize client-side bundle size with Astro static generation.
+          </p>
+        </div>
+
+        <div class="border-2 border-[#111111] bg-[#0057FF] text-[#FFFFFF] p-6 shadow-hard space-y-3">
+          <div class="font-mono text-xs font-bold text-[#FFFFFF] uppercase tracking-wider">
+            PRINCIPLE 03 // FACTUAL ENGINEERING
+          </div>
+          <p class="font-mono text-xs sm:text-sm leading-relaxed text-[#FFFFFF]/90">
+            Every specification is grounded in real-world feasibility — whether planning server sizing, calculating electrical loads (UPS/RAB), or drafting network BOQs.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

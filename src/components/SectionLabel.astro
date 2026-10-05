@@ -1,0 +1,20 @@
+---
+interface Props {
+  index: string;
+  title: string;
+  class?: string;
+}
+
+const { index, title, class: className = '' } = Astro.props;
+---
+
+<div class={`flex items-center gap-3 py-3 border-b-2 border-[#111111] mb-8 ${className}`}>
+  <span class="font-mono text-xs md:text-sm font-bold bg-[#111111] text-[#F2F0EA] px-2 py-0.5">
+    {index}
+  </span>
+  <h2 class="font-mono text-sm md:text-base font-bold tracking-widest uppercase text-[#111111]">
+    {title}
+  </h2>
+  <div class="flex-1 h-0.5 bg-[#111111] opacity-20"></div>
+  <span class="font-mono text-[10px] text-[#111111] opacity-50 tracking-tighter">RAIN07 // SYS</span>
+</div>
