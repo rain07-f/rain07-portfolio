@@ -1,9 +1,11 @@
 # RAIN07 — Personal Engineering Portfolio
+
 ### Astro + Headless WordPress + Cloudflare Workers
 
 A high-performance personal engineering portfolio website branded as **RAIN07** (secondary identity: **REYNO07**), built with a **Digital Brutalism + Technical Editorial** aesthetic.
 
 The application positions RAIN07 at the intersection of:
+
 ```
 WEB DEVELOPER + FULL-STACK DEVELOPER + INFRASTRUCTURE ENGINEER
 "I BUILD WEBSITES, APPLICATIONS & THE INFRASTRUCTURE BEHIND THEM."
@@ -68,10 +70,12 @@ The architecture decouples content management (WordPress) from production delive
 ## 3. Local Development
 
 ### Prerequisites
+
 - Node.js >= 20
 - npm >= 10
 
 ### Setup
+
 ```bash
 # Clone the repository
 git clone <repo-url>
@@ -86,6 +90,7 @@ cp .env.example .env
 # Start development server
 npm run dev
 ```
+
 The local server will run on `http://localhost:4321/`.
 
 ---
@@ -94,13 +99,13 @@ The local server will run on `http://localhost:4321/`.
 
 Create `.env` using `.env.example`:
 
-| Variable | Description | Default |
-|---|---|---|
-| `PUBLIC_API_URL` | Base URL of WordPress backend | `https://be-web-por-rey.rey07.my.id` |
-| `PUBLIC_SITE_URL` | Canonical public site URL | `https://rain07.my.id` |
-| `PUBLIC_CONTACT_EMAIL` | Public contact email | `reyno.fahreza@gmail.com` |
-| `PUBLIC_LINKEDIN_NAME` | Public LinkedIn handle | `Reyno Nur Fahreza` |
-| `PUBLIC_WHATSAPP_NUMBER` | Contact WhatsApp number | Configurable |
+| Variable                 | Description                   | Default      |
+| ------------------------ | ----------------------------- | ------------ |
+| `PUBLIC_API_URL`         | Base URL of WordPress backend | `be wp url`  |
+| `PUBLIC_SITE_URL`        | Canonical public site URL     | `url`        |
+| `PUBLIC_CONTACT_EMAIL`   | Public contact email          | `mail`       |
+| `PUBLIC_LINKEDIN_NAME`   | Public LinkedIn handle        | `name`       |
+| `PUBLIC_WHATSAPP_NUMBER` | Contact WhatsApp number       | Configurable |
 
 ---
 
@@ -109,6 +114,7 @@ Create `.env` using `.env.example`:
 The live WordPress REST API was inspected and documented in [`docs/api.md`](file:///e:/Project%20App/rain07/docs/api.md).
 
 ### Custom Post Type: `portfolio`
+
 - **REST Endpoint:** `/wp-json/wp/v2/portfolio`
 - **Slug Endpoint:** `/wp-json/wp/v2/portfolio?slug={slug}&_embed`
 - **Taxonomy:** `cat-portfolio` (`/wp-json/wp/v2/cat-portfolio`)
@@ -118,6 +124,7 @@ The live WordPress REST API was inspected and documented in [`docs/api.md`](file
   - `/work/[slug]` (Individual case study route)
 
 ### Standard Posts: `posts`
+
 - **REST Endpoint:** `/wp-json/wp/v2/posts`
 - **Slug Endpoint:** `/wp-json/wp/v2/posts?slug={slug}&_embed`
 - **Taxonomy:** `category` (`/wp-json/wp/v2/categories`)
@@ -130,6 +137,7 @@ The live WordPress REST API was inspected and documented in [`docs/api.md`](file
 ## 6. Content Normalization Layer
 
 To protect Astro components from WordPress API leaks or restructuring:
+
 1. `src/lib/api/client.ts`: Handles requests with error-handling and fallback defaults.
 2. `src/lib/content/normalizer.ts`: Maps raw WordPress objects to clean, strictly-typed models (`NormalizedPortfolioItem`, `NormalizedPost`).
 3. Astro components consume only normalized models.
@@ -139,23 +147,29 @@ To protect Astro components from WordPress API leaks or restructuring:
 ## 7. Build & Cloudflare Workers Deployment
 
 ### Production Build
+
 ```bash
 npm run build
 ```
+
 This pre-renders all static HTML pages and outputs the Cloudflare Workers assets to `./dist`.
 
 ### Type Verification
+
 ```bash
 npm run astro check
 ```
 
 ### Preview Locally
+
 ```bash
 npm run preview
 ```
 
 ### Deploy to Cloudflare Workers
+
 Ensure you are logged into Wrangler:
+
 ```bash
 npx wrangler login
 npm run deploy
@@ -166,6 +180,7 @@ npm run deploy
 ## 8. Webhook Rebuilds (Headless Flow)
 
 When new portfolio items or blog notes are published in WordPress:
+
 1. WordPress webhook (e.g. WP Webhooks or custom action) sends a POST request to Cloudflare Deploy Hook / CI.
 2. Cloudflare builds the Astro application using `npm run build`.
 3. The updated static assets are instantly deployed to the edge.
