@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SectionLabel from '../../components/SectionLabel.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
+import SystemState from '../../components/SystemState.astro';
 import { getPortfolioItems, getPortfolioCategories } from '../../lib/api/client';
 
 const projects = await getPortfolioItems();
@@ -85,9 +86,25 @@ const workJsonLd = {
         ))}
       </div>
     ) : (
-      <div class="border-2 border-[#111111] bg-[#FFFFFF] p-12 text-center shadow-hard font-mono text-sm text-[#111111]/70">
-        [ NO PORTFOLIO ITEMS FOUND IN BACKEND CPT ]
-      </div>
+      <SystemState
+        statusCode="EMPTY"
+        statusType="WORK ARCHIVE"
+        systemName="RAIN07 // ARCHIVE"
+        subtitle="NO PROJECTS FOUND"
+        title="WORK ARCHIVE CURRENTLY EMPTY."
+        description="The work archive currently contains no published project case studies. New architectures and client builds will appear here once published."
+        technicalMessage="REST query /wp-json/wp/v2/portfolio returned 0 records."
+        primaryAction={{
+          label: "← BACK TO HOME",
+          href: "/",
+          variant: "primary"
+        }}
+        secondaryAction={{
+          label: "TECHNICAL NOTES →",
+          href: "/notes",
+          variant: "secondary"
+        }}
+      />
     )}
   </div>
 </BaseLayout>

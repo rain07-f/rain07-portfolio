@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SectionLabel from '../../components/SectionLabel.astro';
 import BlogCard from '../../components/BlogCard.astro';
+import SystemState from '../../components/SystemState.astro';
 import { getPosts, getBlogCategories } from '../../lib/api/client';
 
 const posts = await getPosts();
@@ -86,9 +87,25 @@ const notesJsonLd = {
         ))}
       </div>
     ) : (
-      <div class="border-2 border-[#111111] bg-[#FFFFFF] p-12 text-center shadow-hard font-mono text-sm text-[#111111]/70">
-        [ NO POSTS FOUND IN BACKEND REPOSITORY ]
-      </div>
+      <SystemState
+        statusCode="EMPTY"
+        statusType="TECHNICAL JOURNAL"
+        systemName="RAIN07 // ARCHIVE"
+        subtitle="NO TECHNICAL NOTES YET"
+        title="TECHNICAL JOURNAL CURRENTLY EMPTY."
+        description="The technical journal is currently empty. Engineering notes, server configuration blueprints, and development references will appear here as they are published."
+        technicalMessage="Archive empty or filtered. Valid technical posts count: 0."
+        primaryAction={{
+          label: "← BACK TO HOME",
+          href: "/",
+          variant: "primary"
+        }}
+        secondaryAction={{
+          label: "SELECTED WORK →",
+          href: "/work",
+          variant: "secondary"
+        }}
+      />
     )}
   </div>
 </BaseLayout>

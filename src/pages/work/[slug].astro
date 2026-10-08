@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SectionLabel from '../../components/SectionLabel.astro';
 import BrutalistButton from '../../components/BrutalistButton.astro';
+import SystemState from '../../components/SystemState.astro';
 import { getPortfolioItems } from '../../lib/api/client';
 import type { NormalizedPortfolioItem } from '../../lib/api/types';
 
@@ -92,28 +93,51 @@ const detailJsonLd = {
 ---
 
 <BaseLayout
-  title={pageTitle}
-  description={pageDescription}
-  canonical={pageCanonical}
+  title={project ? pageTitle : '404 — Work Not Found // RAIN07'}
+  description={project ? pageDescription : 'The requested project could not be found in the work archive.'}
+  canonical={project ? pageCanonical : undefined}
   ogImage={primaryImage}
-  imageAlt={project.featuredImage?.alt || project.title}
+  imageAlt={project?.featuredImage?.alt || project?.title}
   ogType="website"
-  publishedTime={project.date}
-  modifiedTime={project.modified || project.date}
+  noindex={!project}
+  publishedTime={project?.date}
+  modifiedTime={project ? (project.modified || project.date) : undefined}
   author="Reyno Fahreza"
-  jsonLd={detailJsonLd}
+  jsonLd={project ? detailJsonLd : undefined}
 >
   <div class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
     <SectionLabel index="03 // SELECTED WORK" title="PROJECT DETAIL" />
 
-    <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 font-mono text-xs mb-8 text-[#111111]/70">
-      <a href="/" class="hover:text-[#0057FF]">HOME</a>
-      <span>/</span>
-      <a href="/work" class="hover:text-[#0057FF]">WORK</a>
-      <span>/</span>
-      <span class="text-[#111111] font-bold">{project.slug}</span>
-    </div>
+    {!project ? (
+      <SystemState
+        statusCode="404"
+        statusType="WORK NOT FOUND"
+        systemName="RAIN07 // ARCHIVE"
+        subtitle="PROJECT RECORD MISSING"
+        title="WORK NOT FOUND."
+        description="The requested project case study could not be found in the work archive or has been unpublished from the repository."
+        technicalMessage="Custom Post Type lookup yielded no matching entity."
+        primaryAction={{
+          label: "← ALL PROJECTS",
+          href: "/work",
+          variant: "primary"
+        }}
+        secondaryAction={{
+          label: "BACK TO HOME →",
+          href: "/",
+          variant: "secondary"
+        }}
+      />
+    ) : (
+      <>
+        <!-- Breadcrumb -->
+        <div class="flex items-center gap-2 font-mono text-xs mb-8 text-[#111111]/70">
+          <a href="/" class="hover:text-[#0057FF]">HOME</a>
+          <span>/</span>
+          <a href="/work" class="hover:text-[#0057FF]">WORK</a>
+          <span>/</span>
+          <span class="text-[#111111] font-bold">{project.slug}</span>
+        </div>
 
     <!-- Project Header Block -->
     <div class="border-2 border-[#111111] bg-[#FFFFFF] p-6 md:p-12 shadow-hard mb-12">
@@ -269,6 +293,8 @@ const detailJsonLd = {
         )}
       </div>
     </div>
+    </>
+    )}
   </div>
 </BaseLayout>
 

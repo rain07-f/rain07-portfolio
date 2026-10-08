@@ -1,43 +1,41 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import BrutalistButton from '../components/BrutalistButton.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+import SystemState from '../components/SystemState.astro';
 ---
 
 <BaseLayout
   title="404 — Page Not Found // RAIN07"
-  description="The requested route or resource could not be found on RAIN07."
+  description="The requested resource does not exist in the RAIN07 site manifest."
   noindex={true}
 >
-  <div class="max-w-4xl mx-auto px-4 md:px-8 py-20 md:py-32 flex flex-col items-center justify-center text-center">
-    <div class="border-2 border-[#111111] bg-[#FFFFFF] p-8 md:p-16 shadow-hard w-full max-w-2xl space-y-6">
-      <div class="flex items-center justify-between border-b-2 border-[#111111] pb-4">
-        <span class="font-mono text-xs font-bold px-2 py-0.5 bg-[#FF3B30] text-[#FFFFFF]">
-          HTTP STATUS 404
-        </span>
-        <span class="font-mono text-xs text-[#111111]/70">
-          RAIN07 // ROUTING
-        </span>
-      </div>
+  <div class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-20">
+    <SectionLabel index="00 // ROUTING" title="SYSTEM DISPATCH" />
 
-      <h1 class="text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-[#111111] leading-[0.95]">
-        PAGE NOT FOUND.
-      </h1>
-
-      <p class="font-mono text-sm md:text-base text-[#111111]/80 leading-relaxed max-w-lg mx-auto">
-        The requested URL was not found in the static route manifest or WordPress repository.
-      </p>
-
-      <div class="pt-6 border-t-2 border-[#111111]/20 flex flex-wrap items-center justify-center gap-4">
-        <BrutalistButton href="/" variant="primary">
-          ← RETURN HOME
-        </BrutalistButton>
-        <BrutalistButton href="/work" variant="secondary">
-          SELECTED WORK →
-        </BrutalistButton>
-        <BrutalistButton href="/notes" variant="secondary">
-          TECHNICAL NOTES →
-        </BrutalistButton>
-      </div>
-    </div>
+    <SystemState
+      statusCode="404"
+      statusType="NOT FOUND"
+      systemName="RAIN07 // EDGE ROUTER"
+      subtitle="RESOURCE MISSING"
+      title="PAGE NOT FOUND."
+      description="The page, project, or technical note you are looking for does not exist in the route manifest or has been relocated."
+      technicalMessage="Requested URI yielded no corresponding static asset or compiled path in the Cloudflare Workers static route inventory."
+      primaryAction={{
+        label: "← BACK TO HOME",
+        href: "/",
+        variant: "primary"
+      }}
+      secondaryAction={{
+        label: "SELECTED WORK →",
+        href: "/work",
+        variant: "secondary"
+      }}
+      tertiaryAction={{
+        label: "TECHNICAL NOTES →",
+        href: "/notes",
+        variant: "secondary"
+      }}
+    />
   </div>
 </BaseLayout>
+

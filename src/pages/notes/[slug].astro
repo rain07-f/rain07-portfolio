@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SectionLabel from '../../components/SectionLabel.astro';
 import BrutalistButton from '../../components/BrutalistButton.astro';
+import SystemState from '../../components/SystemState.astro';
 import { getPosts } from '../../lib/api/client';
 import type { NormalizedPost } from '../../lib/api/types';
 
@@ -89,29 +90,52 @@ const articleJsonLd = {
 ---
 
 <BaseLayout
-  title={pageTitle}
-  description={pageDescription}
-  canonical={pageCanonical}
+  title={post ? pageTitle : '404 — Note Not Found // RAIN07'}
+  description={post ? pageDescription : 'The requested technical note could not be found.'}
+  canonical={post ? pageCanonical : undefined}
   ogImage={primaryImage}
-  imageAlt={post.featuredImage?.alt || post.title}
+  imageAlt={post?.featuredImage?.alt || post?.title}
   ogType="article"
-  publishedTime={post.date}
-  modifiedTime={post.modified || post.date}
-  author={post.authorName || 'Reyno Fahreza'}
-  section={post.categories[0]?.name}
-  jsonLd={articleJsonLd}
+  noindex={!post}
+  publishedTime={post?.date}
+  modifiedTime={post ? (post.modified || post.date) : undefined}
+  author={post ? (post.authorName || 'Reyno Fahreza') : 'Reyno Fahreza'}
+  section={post?.categories?.[0]?.name}
+  jsonLd={post ? articleJsonLd : undefined}
 >
   <div class="max-w-4xl mx-auto px-4 md:px-8 py-12 md:py-16">
     <SectionLabel index="04 // NOTES" title="TECHNICAL JOURNAL" />
 
-    <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 font-mono text-xs mb-8 text-[#111111]/70">
-      <a href="/" class="hover:text-[#0057FF]">HOME</a>
-      <span>/</span>
-      <a href="/notes" class="hover:text-[#0057FF]">NOTES</a>
-      <span>/</span>
-      <span class="text-[#111111] font-bold">{post.slug}</span>
-    </div>
+    {!post ? (
+      <SystemState
+        statusCode="404"
+        statusType="NOTE NOT FOUND"
+        systemName="RAIN07 // ARCHIVE"
+        subtitle="JOURNAL ENTRY MISSING"
+        title="NOTE NOT FOUND."
+        description="The requested technical note could not be found in the journal repository or has been removed."
+        technicalMessage="REST query yielded no matching post slug entity."
+        primaryAction={{
+          label: "← ALL NOTES",
+          href: "/notes",
+          variant: "primary"
+        }}
+        secondaryAction={{
+          label: "BACK TO HOME →",
+          href: "/",
+          variant: "secondary"
+        }}
+      />
+    ) : (
+      <>
+        <!-- Breadcrumb -->
+        <div class="flex items-center gap-2 font-mono text-xs mb-8 text-[#111111]/70">
+          <a href="/" class="hover:text-[#0057FF]">HOME</a>
+          <span>/</span>
+          <a href="/notes" class="hover:text-[#0057FF]">NOTES</a>
+          <span>/</span>
+          <span class="text-[#111111] font-bold">{post.slug}</span>
+        </div>
 
     <!-- Article Header -->
     <article class="border-2 border-[#111111] bg-[#FFFFFF] p-6 md:p-12 shadow-hard mb-12">
@@ -164,6 +188,8 @@ const articleJsonLd = {
         )}
       </div>
     </article>
+    </>
+    )}
   </div>
 </BaseLayout>
 

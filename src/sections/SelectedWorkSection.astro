@@ -34,8 +34,17 @@ const projects = await getPortfolioItems();
         ))}
       </div>
     ) : (
-      <div class="border-2 border-[#111111] bg-[#FFFFFF] p-12 text-center shadow-hard font-mono text-sm text-[#111111]/70">
-        [ NO PORTFOLIO ITEMS IN WORDPRESS CPT ]
+      <div class="border-2 border-[#111111] bg-[#FFFFFF] p-8 md:p-12 shadow-hard font-mono text-sm space-y-3">
+        <div class="flex items-center gap-2">
+          <span class="bg-[#111111] text-[#F2F0EA] px-2 py-0.5 text-xs font-bold">STATUS: EMPTY</span>
+          <span class="text-[#0057FF] font-bold text-xs uppercase">// WORK ARCHIVE</span>
+        </div>
+        <div class="text-base font-bold text-[#111111] uppercase tracking-tight">
+          WORK ARCHIVE CURRENTLY EMPTY.
+        </div>
+        <p class="text-xs md:text-sm text-[#111111]/80 max-w-xl leading-relaxed">
+          The project repository currently has no published entries. New production builds and systems will appear here as they are published.
+        </p>
       </div>
     )}
   </div>
