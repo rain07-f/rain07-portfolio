@@ -23,13 +23,85 @@ const { project } = Astro.props;
 const allItems = await getPortfolioItems();
 const currentIndex = allItems.findIndex((p) => p.slug === project.slug);
 const nextProject = currentIndex >= 0 && currentIndex < allItems.length - 1 ? allItems[currentIndex + 1] : allItems[0];
+
+const siteUrl = 'https://rain07.my.id';
+const pageCanonical = `/work/${project.slug}/`;
+const pageFullUrl = `${siteUrl}${pageCanonical}`;
+
+// Extract clean description without HTML
+const pageDescription = project.yoastDescription || project.excerpt || `Technical case study and architectural overview of ${project.title} by RAIN07.`;
+const pageTitle = `${project.title} — RAIN07`;
+const primaryImage = project.featuredImage?.url || project.yoastImage;
+
+// Structured data for Portfolio Detail
+const detailJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'BreadcrumbList',
+      'itemListElement': [
+        {
+          '@type': 'ListItem',
+          'position': 1,
+          'name': 'Home',
+          'item': `${siteUrl}/`
+        },
+        {
+          '@type': 'ListItem',
+          'position': 2,
+          'name': 'Work',
+          'item': `${siteUrl}/work/`
+        },
+        {
+          '@type': 'ListItem',
+          'position': 3,
+          'name': project.title,
+          'item': pageFullUrl
+        }
+      ]
+    },
+    {
+      '@type': 'CreativeWork',
+      '@id': `${pageFullUrl}#project`,
+      'url': pageFullUrl,
+      'name': project.title,
+      'headline': project.title,
+      'description': pageDescription,
+      'datePublished': project.date,
+      'dateModified': project.modified || project.date,
+      ...(primaryImage ? { 'image': primaryImage } : {}),
+      'author': {
+        '@type': 'Person',
+        'name': 'Reyno Fahreza',
+        'alternateName': 'RAIN07',
+        'url': siteUrl
+      },
+      'creator': {
+        '@type': 'Person',
+        'name': 'Reyno Fahreza',
+        'alternateName': 'RAIN07',
+        'url': siteUrl
+      },
+      'mainEntityOfPage': {
+        '@type': 'WebPage',
+        '@id': pageFullUrl
+      }
+    }
+  ]
+};
 ---
 
 <BaseLayout
-  title={`${project.title} // RAIN07 Work`}
-  description={project.excerpt || `Case study for ${project.title} by RAIN07.`}
-  ogImage={project.featuredImage?.url}
-  ogType="article"
+  title={pageTitle}
+  description={pageDescription}
+  canonical={pageCanonical}
+  ogImage={primaryImage}
+  imageAlt={project.featuredImage?.alt || project.title}
+  ogType="website"
+  publishedTime={project.date}
+  modifiedTime={project.modified || project.date}
+  author="Reyno Fahreza"
+  jsonLd={detailJsonLd}
 >
   <div class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
     <SectionLabel index="03 // SELECTED WORK" title="PROJECT DETAIL" />
@@ -100,6 +172,11 @@ const nextProject = currentIndex >= 0 && currentIndex < allItems.length - 1 ? al
         <img
           src={project.featuredImage.url}
           alt={project.featuredImage.alt}
+          width={project.featuredImage.width || 1200}
+          height={project.featuredImage.height || 630}
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
           class="w-full h-auto max-h-[600px] object-cover"
         />
         <div class="bg-[#111111] text-[#F2F0EA] p-3 font-mono text-xs border-t-2 border-[#111111]">

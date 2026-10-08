@@ -6,11 +6,46 @@ import { getPosts, getBlogCategories } from '../../lib/api/client';
 
 const posts = await getPosts();
 const categories = await getBlogCategories();
+const siteUrl = 'https://rain07.my.id';
+
+const notesJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'BreadcrumbList',
+      'itemListElement': [
+        {
+          '@type': 'ListItem',
+          'position': 1,
+          'name': 'Home',
+          'item': `${siteUrl}/`
+        },
+        {
+          '@type': 'ListItem',
+          'position': 2,
+          'name': 'Notes',
+          'item': `${siteUrl}/notes/`
+        }
+      ]
+    },
+    {
+      '@type': 'CollectionPage',
+      '@id': `${siteUrl}/notes/#webpage`,
+      'url': `${siteUrl}/notes/`,
+      'name': 'Technical Notes — RAIN07',
+      'description': 'Engineering journal, notes on web development, Linux systems, network architecture, and performance optimization.'
+    }
+  ]
+};
 ---
 
 <BaseLayout
-  title="TECHNICAL NOTES // RAIN07"
+  title="Technical Notes — RAIN07"
   description="Engineering journal, notes on web development, Linux systems, network architecture, and performance optimization."
+  canonical="/notes/"
+  ogType="website"
+  noindex={posts.length === 0}
+  jsonLd={notesJsonLd}
 >
   <div class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
     <SectionLabel index="04 // NOTES" title="TECHNICAL JOURNAL" />

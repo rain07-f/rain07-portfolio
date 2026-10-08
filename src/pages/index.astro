@@ -11,11 +11,53 @@ import ExperienceSection from '../sections/ExperienceSection.astro';
 import ServicesSection from '../sections/ServicesSection.astro';
 import NotesSection from '../sections/NotesSection.astro';
 import ContactSection from '../sections/ContactSection.astro';
+const siteUrl = 'https://rain07.my.id';
+
+const homepageJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      url: siteUrl,
+      name: 'RAIN07',
+      description: 'Web Developer & Infrastructure Engineer Portfolio',
+      inLanguage: 'en-US'
+    },
+    {
+      '@type': 'Person',
+      '@id': `${siteUrl}/#person`,
+      name: 'Reyno Fahreza',
+      alternateName: ['RAIN07', 'REYNO07'],
+      jobTitle: 'Web Developer & Infrastructure Engineer',
+      url: siteUrl,
+      sameAs: [
+        'https://www.linkedin.com/in/reyno-nur-fahreza-85908999/'
+      ],
+      knowsAbout: [
+        'Web Development',
+        'WordPress',
+        'Elementor Pro',
+        'Laravel',
+        'PHP',
+        'Astro',
+        'TypeScript',
+        'Linux Administration',
+        'Cloudflare Workers',
+        'Networking',
+        'IT Infrastructure'
+      ]
+    }
+  ]
+};
 ---
 
 <BaseLayout
-  title="RAIN07 // Web Developer & Infrastructure Engineer"
-  description="I build websites, applications & the infrastructure behind them. Digital brutalist portfolio for RAIN07."
+  title="RAIN07 — Web Developer & Infrastructure Engineer"
+  description="Reyno Fahreza (RAIN07) is a Web Developer & Infrastructure Engineer working across WordPress, Laravel, Linux infrastructure, cloud deployment, and technical systems."
+  canonical="/"
+  ogType="website"
+  jsonLd={homepageJsonLd}
 >
   <!-- Hero Section -->
   <HeroSection />

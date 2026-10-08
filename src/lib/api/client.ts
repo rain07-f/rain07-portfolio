@@ -64,19 +64,25 @@ export async function getPortfolioItemBySlug(slug: string): Promise<NormalizedPo
 
 /**
  * Fetch all published blog / notes posts
+ * Excludes default WordPress placeholder posts like 'halo-dunia' / 'hello-world'
  */
 export async function getPosts(): Promise<NormalizedPost[]> {
   const rawPosts = await fetchApi<WPRawPost[]>('/wp-json/wp/v2/posts?_embed&per_page=100&status=publish');
   if (!rawPosts || !Array.isArray(rawPosts)) {
     return [];
   }
-  return rawPosts.map(normalizeBlogPost);
+  return rawPosts
+    .filter(p => p.slug !== 'halo-dunia' && p.slug !== 'hello-world')
+    .map(normalizeBlogPost);
 }
 
 /**
  * Fetch a single blog post by slug
  */
 export async function getPostBySlug(slug: string): Promise<NormalizedPost | null> {
+  if (slug === 'halo-dunia' || slug === 'hello-world') {
+    return null;
+  }
   const rawPosts = await fetchApi<WPRawPost[]>(`/wp-json/wp/v2/posts?slug=${encodeURIComponent(slug)}&_embed`);
   if (!rawPosts || !Array.isArray(rawPosts) || rawPosts.length === 0) {
     return null;

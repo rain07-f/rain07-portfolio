@@ -36,6 +36,8 @@ const { project, featured = false } = Astro.props;
       <img
         src={project.featuredImage.url}
         alt={project.featuredImage.alt}
+        width={project.featuredImage.width || 800}
+        height={project.featuredImage.height || 450}
         loading="lazy"
         decoding="async"
         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"

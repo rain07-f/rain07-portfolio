@@ -1,0 +1,116 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  image?: string;
+  imageAlt?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+  publishedTime?: string;
+  modifiedTime?: string;
+  author?: string;
+  section?: string;
+  jsonLd?: Record<string, any> | Array<Record<string, any>>;
+}
+
+const {
+  title,
+  description,
+  canonical,
+  image = 'https://be-web-por-rey.rey07.my.id/wp-content/uploads/2026/09/pembuatan-website-featured-1788341128.png',
+  imageAlt = 'RAIN07 — Web Developer & Infrastructure Engineer',
+  type = 'website',
+  noindex = false,
+  publishedTime,
+  modifiedTime,
+  author = 'Reyno Fahreza',
+  section,
+  jsonLd
+} = Astro.props;
+
+const siteUrl = (
+  (typeof process !== 'undefined' && process.env?.PUBLIC_SITE_URL) ||
+  import.meta.env?.PUBLIC_SITE_URL ||
+  'https://rain07.my.id'
+).replace(/\/$/, '');
+
+// Format canonical URL ensuring clean domain + trailing slash consistency matching Astro static builds
+const formatCanonical = (urlPath: string): string => {
+  if (canonical) {
+    return canonical.startsWith('http') ? canonical : `${siteUrl}${canonical.startsWith('/') ? '' : '/'}${canonical}`;
+  }
+  const cleanPath = urlPath.replace(/\/index\.html$/, '').replace(/\.html$/, '');
+  const withTrailing = cleanPath.endsWith('/') ? cleanPath : `${cleanPath}/`;
+  return `${siteUrl}${withTrailing.startsWith('/') ? '' : '/'}${withTrailing}`;
+};
+
+const canonicalUrl = formatCanonical(Astro.url.pathname);
+
+// Resolve social preview image (must be absolute URL)
+const resolvedImage = image?.startsWith('http') ? image : `${siteUrl}${image.startsWith('/') ? '' : '/'}${image}`;
+
+// Google Search Console verification token (if supplied via env)
+const googleSiteVerification = (
+  (typeof process !== 'undefined' && (process.env?.PUBLIC_GOOGLE_SITE_VERIFICATION || process.env?.GOOGLE_SITE_VERIFICATION)) ||
+  import.meta.env?.PUBLIC_GOOGLE_SITE_VERIFICATION ||
+  ''
+);
+---
+
+<!-- Core Meta -->
+<title>{title}</title>
+<meta name="description" content={description} />
+{noindex ? (
+  <meta name="robots" content="noindex, nofollow" />
+) : (
+  <meta name="robots" content="index, follow" />
+)}
+<link rel="canonical" href={canonicalUrl} />
+
+<!-- Optional Google Search Console Verification Meta -->
+{googleSiteVerification && (
+  <meta name="google-site-verification" content={googleSiteVerification} />
+)}
+
+<!-- Open Graph / Facebook -->
+<meta property="og:site_name" content="RAIN07" />
+<meta property="og:type" content={type} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:locale" content="en_US" />
+{resolvedImage && (
+  <meta property="og:image" content={resolvedImage} />
+)}
+{resolvedImage && imageAlt && (
+  <meta property="og:image:alt" content={imageAlt} />
+)}
+{type === 'article' && publishedTime && (
+  <meta property="article:published_time" content={publishedTime} />
+)}
+{type === 'article' && modifiedTime && (
+  <meta property="article:modified_time" content={modifiedTime} />
+)}
+{type === 'article' && author && (
+  <meta property="article:author" content={author} />
+)}
+{type === 'article' && section && (
+  <meta property="article:section" content={section} />
+)}
+
+<!-- Twitter / X Cards -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+{resolvedImage && (
+  <meta name="twitter:image" content={resolvedImage} />
+)}
+{resolvedImage && imageAlt && (
+  <meta name="twitter:image:alt" content={imageAlt} />
+)}
+
+<!-- Structured Data (JSON-LD) -->
+{jsonLd && (
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+)}

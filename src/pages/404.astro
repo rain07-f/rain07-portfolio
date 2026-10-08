@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BrutalistButton from '../components/BrutalistButton.astro';
+---
+
+<BaseLayout
+  title="404 — Page Not Found // RAIN07"
+  description="The requested route or resource could not be found on RAIN07."
+  noindex={true}
+>
+  <div class="max-w-4xl mx-auto px-4 md:px-8 py-20 md:py-32 flex flex-col items-center justify-center text-center">
+    <div class="border-2 border-[#111111] bg-[#FFFFFF] p-8 md:p-16 shadow-hard w-full max-w-2xl space-y-6">
+      <div class="flex items-center justify-between border-b-2 border-[#111111] pb-4">
+        <span class="font-mono text-xs font-bold px-2 py-0.5 bg-[#FF3B30] text-[#FFFFFF]">
+          HTTP STATUS 404
+        </span>
+        <span class="font-mono text-xs text-[#111111]/70">
+          RAIN07 // ROUTING
+        </span>
+      </div>
+
+      <h1 class="text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-[#111111] leading-[0.95]">
+        PAGE NOT FOUND.
+      </h1>
+
+      <p class="font-mono text-sm md:text-base text-[#111111]/80 leading-relaxed max-w-lg mx-auto">
+        The requested URL was not found in the static route manifest or WordPress repository.
+      </p>
+
+      <div class="pt-6 border-t-2 border-[#111111]/20 flex flex-wrap items-center justify-center gap-4">
+        <BrutalistButton href="/" variant="primary">
+          ← RETURN HOME
+        </BrutalistButton>
+        <BrutalistButton href="/work" variant="secondary">
+          SELECTED WORK →
+        </BrutalistButton>
+        <BrutalistButton href="/notes" variant="secondary">
+          TECHNICAL NOTES →
+        </BrutalistButton>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

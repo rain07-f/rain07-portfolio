@@ -6,11 +6,45 @@ import { getPortfolioItems, getPortfolioCategories } from '../../lib/api/client'
 
 const projects = await getPortfolioItems();
 const categories = await getPortfolioCategories();
+const siteUrl = 'https://rain07.my.id';
+
+const workJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'BreadcrumbList',
+      'itemListElement': [
+        {
+          '@type': 'ListItem',
+          'position': 1,
+          'name': 'Home',
+          'item': `${siteUrl}/`
+        },
+        {
+          '@type': 'ListItem',
+          'position': 2,
+          'name': 'Work',
+          'item': `${siteUrl}/work/`
+        }
+      ]
+    },
+    {
+      '@type': 'CollectionPage',
+      '@id': `${siteUrl}/work/#webpage`,
+      'url': `${siteUrl}/work/`,
+      'name': 'Selected Work — RAIN07',
+      'description': 'Selected engineering and development work by RAIN07. Production websites, systems, and decoupled web applications.'
+    }
+  ]
+};
 ---
 
 <BaseLayout
-  title="SELECTED WORK // RAIN07"
+  title="Selected Work — RAIN07"
   description="Selected engineering and development work by RAIN07. Production websites, systems, and decoupled web applications."
+  canonical="/work/"
+  ogType="website"
+  jsonLd={workJsonLd}
 >
   <div class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
     <SectionLabel index="03 // PORTFOLIO" title="SELECTED WORK" />

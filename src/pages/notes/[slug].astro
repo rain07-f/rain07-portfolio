@@ -22,13 +22,84 @@ const { post } = Astro.props;
 const allPosts = await getPosts();
 const currentIndex = allPosts.findIndex((p) => p.slug === post.slug);
 const nextPost = currentIndex >= 0 && currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : allPosts[0];
+
+const siteUrl = 'https://rain07.my.id';
+const pageCanonical = `/notes/${post.slug}/`;
+const pageFullUrl = `${siteUrl}${pageCanonical}`;
+
+// Extract clean description without HTML
+const pageDescription = post.yoastDescription || post.excerpt || `Technical note on ${post.title} by RAIN07.`;
+const pageTitle = `${post.title} — RAIN07`;
+const primaryImage = post.featuredImage?.url || post.yoastImage;
+
+// Structured data for Blog Article Detail
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'BreadcrumbList',
+      'itemListElement': [
+        {
+          '@type': 'ListItem',
+          'position': 1,
+          'name': 'Home',
+          'item': `${siteUrl}/`
+        },
+        {
+          '@type': 'ListItem',
+          'position': 2,
+          'name': 'Notes',
+          'item': `${siteUrl}/notes/`
+        },
+        {
+          '@type': 'ListItem',
+          'position': 3,
+          'name': post.title,
+          'item': pageFullUrl
+        }
+      ]
+    },
+    {
+      '@type': 'Article',
+      '@id': `${pageFullUrl}#article`,
+      'url': pageFullUrl,
+      'headline': post.title,
+      'description': pageDescription,
+      'datePublished': post.date,
+      'dateModified': post.modified || post.date,
+      ...(primaryImage ? { 'image': primaryImage } : {}),
+      'author': {
+        '@type': 'Person',
+        'name': post.authorName || 'Reyno Fahreza',
+        'url': siteUrl
+      },
+      'publisher': {
+        '@type': 'Person',
+        'name': 'Reyno Fahreza',
+        'alternateName': 'RAIN07',
+        'url': siteUrl
+      },
+      'mainEntityOfPage': {
+        '@type': 'WebPage',
+        '@id': pageFullUrl
+      }
+    }
+  ]
+};
 ---
 
 <BaseLayout
-  title={`${post.title} // RAIN07 Notes`}
-  description={post.excerpt || `Technical note on ${post.title} by RAIN07.`}
-  ogImage={post.featuredImage?.url}
+  title={pageTitle}
+  description={pageDescription}
+  canonical={pageCanonical}
+  ogImage={primaryImage}
+  imageAlt={post.featuredImage?.alt || post.title}
   ogType="article"
+  publishedTime={post.date}
+  modifiedTime={post.modified || post.date}
+  author={post.authorName || 'Reyno Fahreza'}
+  section={post.categories[0]?.name}
+  jsonLd={articleJsonLd}
 >
   <div class="max-w-4xl mx-auto px-4 md:px-8 py-12 md:py-16">
     <SectionLabel index="04 // NOTES" title="TECHNICAL JOURNAL" />
