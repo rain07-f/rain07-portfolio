@@ -1,11 +1,13 @@
 /**
  * Factual professional background data for RAIN07
- * Strictly complies with provided user profile specifications without fabricating dates or metrics.
+ * Source of truth: LinkedIn profile — Reyno Nur Fahreza
  */
 
 export interface ExperienceRole {
   title: string;
-  category: 'ENGINEERING' | 'DEVELOPMENT' | 'INFRASTRUCTURE';
+  org: string;
+  period: string;
+  category: 'ENGINEERING' | 'DEVELOPMENT' | 'INFRASTRUCTURE' | 'BUSINESS';
   summary: string;
   scope: string[];
   technologies: string[];
@@ -13,76 +15,112 @@ export interface ExperienceRole {
 
 export const EXPERIENCE_ROLES: ExperienceRole[] = [
   {
-    title: 'FULL-STACK WEB DEVELOPER',
+    title: 'WORDPRESS WEBMASTER & SYSTEM ADMINISTRATION SUPPORT',
+    org: 'PT. DCT TOTAL SOLUTIONS',
+    period: '2020 – PRESENT',
     category: 'DEVELOPMENT',
-    summary: 'Designing, building, and maintaining production-grade web applications and decoupled architectures.',
+    summary: 'WordPress operations, custom development, performance, security, and Linux server administration support.',
     scope: [
-      'Full-stack application development with modern architectures',
-      'REST API design, authentication, authorization, and data contracts',
-      'Integration between Headless CMS backends and modern frontend frameworks',
-      'Database schema planning, Eloquent ORM modeling, and query tuning'
+      'WordPress development, customization and maintenance',
+      'Performance optimization and security hardening',
+      'Linux server administration support',
+      'Plugin management and content management systems'
     ],
-    technologies: ['Astro', 'TypeScript', 'Tailwind CSS', 'Laravel', 'PHP', 'Livewire', 'MySQL', 'REST APIs']
+    technologies: ['WordPress', 'Elementor Pro', 'WooCommerce', 'LiteSpeed Cache', 'Linux', 'PHP']
   },
   {
-    title: 'WORDPRESS DEVELOPER',
-    category: 'DEVELOPMENT',
-    summary: '5–7 years practical experience building custom WordPress and WooCommerce solutions with custom fields and dynamic content.',
-    scope: [
-      'Custom theme and component development using Elementor Pro, Gutenberg, and modern builders',
-      'WooCommerce store setup, checkout flow customization, and payment integration',
-      'Headless WordPress API configuration and Custom Post Type architecture',
-      'Performance tuning with LiteSpeed Cache, Redis object cache, and Core Web Vitals remediation'
-    ],
-    technologies: ['WordPress', 'Elementor Pro', 'WooCommerce', 'Gutenberg', 'Crocoblock', 'Bricks Builder', 'Blocksy', 'LiteSpeed Cache']
-  },
-  {
-    title: 'LARAVEL / BACKEND DEVELOPER',
-    category: 'DEVELOPMENT',
-    summary: 'Engineering business-critical CRUD systems, SaaS architectures, and multi-tenant applications with Laravel.',
-    scope: [
-      'Authentication and role management using Laravel Sanctum, Breeze, and Spatie Permission',
-      'Data import/export pipelines with Laravel Excel and queue/background processing concepts',
-      'Multi-tenant systems and SaaS domain routing',
-      'Robust error handling, audit logging, and transactional database integrity'
-    ],
-    technologies: ['Laravel', 'PHP', 'Blade', 'Livewire', 'Sanctum', 'Breeze', 'Spatie', 'Eloquent', 'PostgreSQL', 'MariaDB']
-  },
-  {
-    title: 'LINUX SYSTEM ADMINISTRATOR',
-    category: 'INFRASTRUCTURE',
-    summary: 'Managing cloud VPS instances, virtual environments, reverse proxies, and operating system hardening.',
-    scope: [
-      'Linux server provisioning, firewall rules, and SSH key management',
-      'Web server tuning across Nginx, LiteSpeed, and Apache',
-      'Containerized deployments with Docker and Traefik reverse proxies',
-      'Hypervisor management with Proxmox VE and hosting panels (CloudPanel, CyberPanel, aaPanel)'
-    ],
-    technologies: ['Linux', 'Ubuntu / Debian', 'Nginx', 'LiteSpeed', 'Docker', 'Traefik', 'Proxmox', 'Redis', 'CloudPanel']
-  },
-  {
-    title: 'IT INFRASTRUCTURE & NETWORK ENGINEER',
-    category: 'INFRASTRUCTURE',
-    summary: 'Designing, deploying, and managing physical and edge network infrastructure for reliability and uptime.',
-    scope: [
-      'Network engineering: TCP/IP, DNS, DHCP, NAT, IPv4, IPv6, and MikroTik router configurations',
-      'Secure site-to-site connectivity and remote mesh VPNs using Tailscale',
-      'Deployment of managed switches, VLAN segmentation, access points, and structured cabling',
-      'Surveillance and storage: CCTV IP cameras, NVR systems, NAS storage, and UPS battery load sizing'
-    ],
-    technologies: ['MikroTik', 'Tailscale', 'TCP/IP', 'VLAN', 'Managed Switches', 'CCTV / NVR', 'NAS', 'UPS Sizing']
-  },
-  {
-    title: 'IT PROJECT ESTIMATOR & PROJECT ENGINEER',
+    title: 'PROJECT ESTIMATOR',
+    org: 'PT. DCT TOTAL SOLUTIONS',
+    period: 'AUG 2021 – PRESENT',
     category: 'ENGINEERING',
-    summary: 'Translating business requirements into detailed technical specifications, equipment sizing, and budget estimates.',
+    summary: 'Technical estimation, equipment sizing, BOQ/RAB preparation, specifications, and project support.',
     scope: [
-      'Preparation of Bill of Quantities (BOQ) and Rencana Anggaran Biaya (RAB)',
-      'Server sizing, network bandwidth planning, and electrical power/UPS load calculations',
-      'Technical drawings, equipment specification sheets, and vendor coordination',
-      'Site installation readiness validation and procurement technical clarification'
+      'Bill of Quantities (BOQ) and RAB preparation',
+      'Equipment sizing and technical specifications',
+      'Power and UPS load calculations',
+      'Vendor coordination and procurement support'
     ],
-    technologies: ['BOQ / RAB', 'Technical Drawings', 'Hardware Sizing', 'Power Load Estimation', 'Procurement Specs']
+    technologies: ['BOQ / RAB', 'Hardware Sizing', 'Technical Specs', 'Power Load Estimation']
+  },
+  {
+    title: 'BUSINESS DEVELOPMENT STAFF',
+    org: 'PT. DCT TOTAL SOLUTIONS',
+    period: 'AUG 2023 – SEP 2024',
+    category: 'BUSINESS',
+    summary: 'Business development activities, client engagement, and technical sales support.',
+    scope: [
+      'Client relationship and business development',
+      'Technical proposal preparation',
+      'Project opportunity identification and follow-up'
+    ],
+    technologies: ['Technical Proposals', 'Project Documentation']
+  },
+  {
+    title: 'ACCOUNT MANAGER & PROJECT ESTIMATOR',
+    org: 'PT. DCT TOTAL SOLUTIONS',
+    period: 'JAN 2022 – DEC 2022',
+    category: 'ENGINEERING',
+    summary: 'Combined account management and project estimation responsibilities.',
+    scope: [
+      'Client account management and project coordination',
+      'Technical estimation and BOQ preparation',
+      'Project scope and timeline planning'
+    ],
+    technologies: ['BOQ / RAB', 'Project Planning', 'Client Management']
+  },
+  {
+    title: 'PROJECT PLANNER',
+    org: 'PT. DCT TOTAL SOLUTIONS',
+    period: 'SEP 2020 – JUL 2021',
+    category: 'ENGINEERING',
+    summary: 'Project planning, scheduling, and technical coordination for IT infrastructure projects.',
+    scope: [
+      'Project scheduling and milestone tracking',
+      'Technical documentation and coordination',
+      'Site readiness and installation planning'
+    ],
+    technologies: ['Project Planning', 'Technical Documentation', 'IT Infrastructure']
+  },
+  {
+    title: 'INFORMATION TECHNOLOGY PROJECT ENGINEER',
+    org: 'PT. DCT TOTAL SOLUTIONS',
+    period: 'MAY 2015 – SEP 2020',
+    category: 'INFRASTRUCTURE',
+    summary: 'IT project engineering covering network, server, CCTV, and infrastructure deployment.',
+    scope: [
+      'Network and server infrastructure deployment',
+      'CCTV and NVR system installation',
+      'NAS storage and UPS setup',
+      'Technical site surveys and installation'
+    ],
+    technologies: ['MikroTik', 'CCTV / NVR', 'NAS', 'UPS', 'Networking', 'Linux']
+  },
+  {
+    title: 'INFORMATION TECHNOLOGY TECHNICAL SUPPORT',
+    org: 'PT. DCT TOTAL SOLUTIONS',
+    period: 'MAY 2015 – SEP 2020',
+    category: 'INFRASTRUCTURE',
+    summary: 'IT technical support for hardware, software, networking, and end-user systems.',
+    scope: [
+      'Hardware and software troubleshooting',
+      'Network configuration and maintenance',
+      'End-user support and system maintenance'
+    ],
+    technologies: ['IT Support', 'Networking', 'Hardware', 'Windows / Linux']
+  },
+  {
+    title: 'WORDPRESS WEBMASTER',
+    org: 'FREELANCE',
+    period: 'MAY 2019 – PRESENT',
+    category: 'DEVELOPMENT',
+    summary: 'WordPress development, customization, performance optimization, security, and maintenance.',
+    scope: [
+      'WordPress theme customization and development',
+      'WooCommerce setup and configuration',
+      'Performance optimization and security',
+      'Site maintenance and updates'
+    ],
+    technologies: ['WordPress', 'Elementor Pro', 'WooCommerce', 'PHP', 'MySQL']
   }
 ];
 
@@ -94,26 +132,26 @@ export interface TechItem {
 }
 
 export const TECH_INVENTORY: TechItem[] = [
-  { id: '01', name: 'ASTRO', category: 'FRONTEND', badge: 'v7 / SSG' },
-  { id: '02', name: 'TYPESCRIPT', category: 'FRONTEND', badge: 'Strict' },
+  { id: '01', name: 'ASTRO', category: 'FRONTEND', badge: 'SSG' },
+  { id: '02', name: 'TYPESCRIPT', category: 'FRONTEND', badge: 'Typed JS' },
   { id: '03', name: 'TAILWIND CSS', category: 'FRONTEND', badge: 'v4' },
   { id: '04', name: 'WORDPRESS', category: 'BACKEND', badge: '5-7 YRS' },
-  { id: '05', name: 'ELEMENTOR PRO', category: 'FRONTEND', badge: 'Advanced' },
-  { id: '06', name: 'WOOCOMMERCE', category: 'BACKEND', badge: 'Customized' },
-  { id: '07', name: 'LARAVEL', category: 'BACKEND', badge: 'SaaS / CRUD' },
+  { id: '05', name: 'ELEMENTOR PRO', category: 'FRONTEND', badge: 'Page Builder' },
+  { id: '06', name: 'WOOCOMMERCE', category: 'BACKEND', badge: 'E-Commerce' },
+  { id: '07', name: 'LARAVEL', category: 'BACKEND', badge: 'PHP Framework' },
   { id: '08', name: 'PHP', category: 'BACKEND', badge: '8.x' },
   { id: '09', name: 'MYSQL / MARIADB', category: 'DATABASE', badge: 'Relational' },
   { id: '10', name: 'POSTGRESQL', category: 'DATABASE', badge: 'Relational' },
   { id: '11', name: 'LINUX', category: 'INFRASTRUCTURE', badge: 'SysAdmin' },
-  { id: '12', name: 'VPS HOSTING', category: 'INFRASTRUCTURE', badge: 'Production' },
-  { id: '13', name: 'NGINX / LITESPEED', category: 'INFRASTRUCTURE', badge: 'Web Server' },
-  { id: '14', name: 'DOCKER & TRAEFIK', category: 'INFRASTRUCTURE', badge: 'Containers' },
-  { id: '15', name: 'CLOUDFLARE', category: 'CLOUD & NETWORKING', badge: 'Workers / DNS' },
-  { id: '16', name: 'PROXMOX VE', category: 'INFRASTRUCTURE', badge: 'Hypervisor' },
-  { id: '17', name: 'MIKROTIK', category: 'CLOUD & NETWORKING', badge: 'Routing / FW' },
-  { id: '18', name: 'TAILSCALE', category: 'CLOUD & NETWORKING', badge: 'Mesh VPN' },
-  { id: '19', name: 'BOQ & RAB ESTIMATION', category: 'ESTIMATION & ENGINEERING', badge: 'Costing' },
-  { id: '20', name: 'CCTV, NAS & UPS', category: 'ESTIMATION & ENGINEERING', badge: 'Hardware' }
+  { id: '12', name: 'NGINX / LITESPEED', category: 'INFRASTRUCTURE', badge: 'Web Server' },
+  { id: '13', name: 'DOCKER & TRAEFIK', category: 'INFRASTRUCTURE', badge: 'Containers' },
+  { id: '14', name: 'PROXMOX', category: 'INFRASTRUCTURE', badge: 'Hypervisor' },
+  { id: '15', name: 'CLOUDFLARE', category: 'CLOUD & NETWORKING', badge: 'DNS / CDN' },
+  { id: '16', name: 'MIKROTIK', category: 'CLOUD & NETWORKING', badge: 'Routing / FW' },
+  { id: '17', name: 'TAILSCALE', category: 'CLOUD & NETWORKING', badge: 'Mesh VPN' },
+  { id: '18', name: 'BOQ & RAB', category: 'ESTIMATION & ENGINEERING', badge: 'Estimation' },
+  { id: '19', name: 'CCTV / NVR', category: 'ESTIMATION & ENGINEERING', badge: 'Hardware' },
+  { id: '20', name: 'NAS & UPS', category: 'ESTIMATION & ENGINEERING', badge: 'Hardware' }
 ];
 
 export interface ServiceItem {
@@ -126,32 +164,32 @@ export interface ServiceItem {
 export const SERVICES_LIST: ServiceItem[] = [
   {
     id: '01',
-    title: 'CUSTOM WEB & FULL-STACK DEVELOPMENT',
-    description: 'High-performance websites, decoupled web applications, and content systems engineered for speed and conversion.',
-    deliverables: ['Astro static/hybrid applications', 'WordPress & Headless CMS architectures', 'Custom Laravel systems & REST APIs']
+    title: 'WEB DEVELOPMENT',
+    description: 'Website and web application development using Astro, WordPress and Laravel.',
+    deliverables: ['Astro static sites', 'WordPress & WooCommerce', 'Laravel applications & REST APIs']
   },
   {
     id: '02',
-    title: 'WORDPRESS & WOOCOMMERCE ENGINEERING',
-    description: 'Bespoke WordPress implementations backed by 5–7 years practical expertise without template bloat.',
-    deliverables: ['Custom CPT & field structuring', 'WooCommerce store architecture', 'Speed & LiteSpeed cache tuning']
+    title: 'WORDPRESS',
+    description: 'Custom WordPress websites, Elementor, WooCommerce, performance and maintenance.',
+    deliverables: ['Custom theme & plugin work', 'WooCommerce setup', 'Performance & security']
   },
   {
     id: '03',
-    title: 'LINUX SERVER & VPS INFRASTRUCTURE',
-    description: 'Production setup, security hardening, reverse proxying, and proactive maintenance for web servers.',
-    deliverables: ['Nginx / LiteSpeed / Docker configuration', 'CloudPanel / aaPanel / Proxmox setup', 'SSL, DNS & Cloudflare edge integration']
+    title: 'SERVER / VPS',
+    description: 'Linux VPS setup, web server configuration, SSL, DNS and maintenance.',
+    deliverables: ['Nginx / LiteSpeed / Docker setup', 'Proxmox & hosting panels', 'SSL, DNS & Cloudflare']
   },
   {
     id: '04',
-    title: 'NETWORKING & EDGE SECURITY',
-    description: 'Robust network topology implementation connecting office, data center, and cloud resources.',
-    deliverables: ['MikroTik firewall & NAT rules', 'Tailscale mesh routing', 'VLAN segmentation & managed switches']
+    title: 'NETWORK / IT INFRASTRUCTURE',
+    description: 'Network, server, CCTV, storage and supporting IT infrastructure.',
+    deliverables: ['MikroTik configuration', 'CCTV / NVR / NAS setup', 'Structured cabling & VLAN']
   },
   {
     id: '05',
-    title: 'IT PROJECT SIZING & ESTIMATION (BOQ/RAB)',
-    description: 'Comprehensive technical and financial project calculations ensuring budget accuracy before physical deployment.',
-    deliverables: ['Bill of Quantities (BOQ)', 'Rencana Anggaran Biaya (RAB)', 'UPS, power & server load calculations']
+    title: 'PROJECT ESTIMATION',
+    description: 'BOQ/RAB, technical specifications, equipment sizing and project estimation.',
+    deliverables: ['Bill of Quantities (BOQ)', 'Rencana Anggaran Biaya (RAB)', 'Equipment & power sizing']
   }
 ];

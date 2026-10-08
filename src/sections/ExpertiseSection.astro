@@ -5,45 +5,45 @@ const expertiseCards = [
   {
     num: '01',
     title: 'WEB DEVELOPMENT',
-    desc: 'WordPress, Elementor Pro, WooCommerce, Astro and modern responsive websites engineered for speed and conversion.',
-    tags: ['Astro', 'TypeScript', 'WordPress', 'WooCommerce', 'Tailwind']
+    desc: 'Website and web application development using modern frontend and backend tools.',
+    tags: ['Astro', 'TypeScript', 'Tailwind CSS', 'HTML', 'JavaScript']
   },
   {
     num: '02',
-    title: 'LARAVEL / BACKEND',
-    desc: 'Laravel, PHP, Blade, Livewire, robust REST APIs, authentication and business applications.',
-    tags: ['Laravel', 'PHP', 'Livewire', 'Sanctum', 'Spatie', 'MySQL']
+    title: 'WORDPRESS',
+    desc: 'WordPress development, Elementor, WooCommerce, performance optimization and maintenance.',
+    tags: ['WordPress', 'Elementor Pro', 'WooCommerce', 'Gutenberg', 'LiteSpeed Cache']
   },
   {
     num: '03',
-    title: 'INFRASTRUCTURE',
-    desc: 'Linux, VPS, Nginx, LiteSpeed, Docker, Traefik and Proxmox hypervisor administration.',
-    tags: ['Linux', 'VPS', 'Nginx', 'LiteSpeed', 'Docker', 'Proxmox']
+    title: 'LARAVEL / BACKEND',
+    desc: 'Laravel and PHP applications, CRUD systems, REST APIs, authentication and database-driven applications.',
+    tags: ['Laravel', 'PHP', 'Blade', 'Livewire', 'MySQL', 'REST API']
   },
   {
     num: '04',
-    title: 'CLOUD / DEPLOYMENT',
-    desc: 'Cloudflare Workers, DNS routing, SSL certificates, reverse proxy and production edge deployment.',
-    tags: ['Cloudflare Workers', 'DNS', 'SSL', 'Reverse Proxy', 'CDN']
+    title: 'LINUX / SERVER',
+    desc: 'Linux VPS administration, web servers, Docker, reverse proxy and hosting environments.',
+    tags: ['Linux', 'Nginx', 'LiteSpeed', 'Docker', 'Traefik', 'Proxmox']
   },
   {
     num: '05',
-    title: 'NETWORKING',
-    desc: 'TCP/IP, DNS, DHCP, NAT, IPv4, IPv6, firewall policies, VLANs and MikroTik configurations.',
-    tags: ['MikroTik', 'Tailscale', 'Firewall', 'TCP/IP', 'VLAN']
+    title: 'IT INFRASTRUCTURE',
+    desc: 'Network, server, CCTV, NAS, UPS and related IT infrastructure work.',
+    tags: ['MikroTik', 'Tailscale', 'CCTV / NVR', 'NAS', 'UPS']
   },
   {
     num: '06',
-    title: 'PERFORMANCE',
-    desc: 'Technical SEO, caching strategies, Core Web Vitals remediation and infrastructure optimization.',
-    tags: ['LiteSpeed Cache', 'Core Web Vitals', 'Yoast SEO', 'Server Tuning']
+    title: 'PROJECT ESTIMATION',
+    desc: 'BOQ/RAB preparation, equipment sizing, technical specifications and project estimation.',
+    tags: ['BOQ / RAB', 'Hardware Sizing', 'Technical Specs', 'Power Load']
   }
 ];
 ---
 
 <section id="expertise" class="border-b-2 border-[#111111] bg-[#F2F0EA] py-16 md:py-24">
   <div class="max-w-7xl mx-auto px-4 md:px-8">
-    <SectionLabel index="02 // CAPABILITIES" title="ENGINEERING EXPERTISE" />
+    <SectionLabel index="02 // CAPABILITIES" title="AREAS OF WORK" />
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {expertiseCards.map((card) => (
@@ -52,9 +52,6 @@ const expertiseCards = [
             <div class="flex items-center justify-between border-b-2 border-[#111111] pb-3">
               <span class="font-mono text-xl font-black px-2 py-0.5 bg-[#111111] text-[#F2F0EA] group-hover:bg-[#0057FF] group-hover:text-[#FFFFFF] transition-colors">
                 {card.num}
-              </span>
-              <span class="font-mono text-[10px] text-[#111111]/60 uppercase tracking-widest">
-                VERIFIED DOMAIN
               </span>
             </div>
 
