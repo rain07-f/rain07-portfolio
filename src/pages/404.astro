@@ -10,16 +10,16 @@ import SystemState from '../components/SystemState.astro';
   noindex={true}
 >
   <div class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-20">
-    <SectionLabel index="00 // ROUTING" title="SYSTEM DISPATCH" />
+    <SectionLabel index="00 // ERROR" title="PAGE NOT FOUND" />
 
     <SystemState
       statusCode="404"
       statusType="NOT FOUND"
-      systemName="RAIN07 // EDGE ROUTER"
-      subtitle="RESOURCE MISSING"
+      systemName="RAIN07"
+      subtitle="PAGE NOT FOUND"
       title="PAGE NOT FOUND."
-      description="The page, project, or technical note you are looking for does not exist in the route manifest or has been relocated."
-      technicalMessage="Requested URI yielded no corresponding static asset or compiled path in the Cloudflare Workers static route inventory."
+      description="The page you are looking for does not exist or has been moved."
+      technicalMessage="The requested URL was not found on this server."
       primaryAction={{
         label: "← BACK TO HOME",
         href: "/",

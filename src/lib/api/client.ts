@@ -63,6 +63,22 @@ export async function getPortfolioItemBySlug(slug: string): Promise<NormalizedPo
 }
 
 /**
+ * Determines if a post is a WordPress default placeholder (e.g., 'halo-dunia', 'hello-world')
+ */
+function isPlaceholderPost(slug: string, title?: string): boolean {
+  const s = (slug || '').toLowerCase().trim();
+  const t = (title || '').toLowerCase().trim();
+  return (
+    s === 'halo-dunia' ||
+    s === 'hello-world' ||
+    s.startsWith('halo-dunia') ||
+    s.startsWith('hello-world') ||
+    t.includes('halo dunia') ||
+    t.includes('hello world')
+  );
+}
+
+/**
  * Fetch all published blog / notes posts
  * Excludes default WordPress placeholder posts like 'halo-dunia' / 'hello-world'
  */
@@ -72,7 +88,7 @@ export async function getPosts(): Promise<NormalizedPost[]> {
     return [];
   }
   return rawPosts
-    .filter(p => p.slug !== 'halo-dunia' && p.slug !== 'hello-world')
+    .filter(p => !isPlaceholderPost(p.slug, p.title?.rendered))
     .map(normalizeBlogPost);
 }
 
@@ -80,14 +96,18 @@ export async function getPosts(): Promise<NormalizedPost[]> {
  * Fetch a single blog post by slug
  */
 export async function getPostBySlug(slug: string): Promise<NormalizedPost | null> {
-  if (slug === 'halo-dunia' || slug === 'hello-world') {
+  if (isPlaceholderPost(slug)) {
     return null;
   }
   const rawPosts = await fetchApi<WPRawPost[]>(`/wp-json/wp/v2/posts?slug=${encodeURIComponent(slug)}&_embed`);
   if (!rawPosts || !Array.isArray(rawPosts) || rawPosts.length === 0) {
     return null;
   }
-  return normalizeBlogPost(rawPosts[0]);
+  const post = rawPosts[0];
+  if (isPlaceholderPost(post.slug, post.title?.rendered)) {
+    return null;
+  }
+  return normalizeBlogPost(post);
 }
 
 /**

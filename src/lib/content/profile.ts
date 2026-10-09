@@ -19,12 +19,12 @@ export const EXPERIENCE_ROLES: ExperienceRole[] = [
     org: 'PT. DCT TOTAL SOLUTIONS',
     period: '2020 – PRESENT',
     category: 'DEVELOPMENT',
-    summary: 'WordPress operations, custom development, performance, security, and Linux server administration support.',
+    summary: 'Maintain and customise WordPress websites, handle plugin updates, troubleshoot issues, and support Linux server operations.',
     scope: [
-      'WordPress development, customization and maintenance',
-      'Performance optimization and security hardening',
-      'Linux server administration support',
-      'Plugin management and content management systems'
+      'Customise and maintain WordPress themes and plugins',
+      'Troubleshoot website issues and tune performance',
+      'Provide Linux server administration support',
+      'Handle security updates, plugin maintenance, and backups'
     ],
     technologies: ['WordPress', 'Elementor Pro', 'WooCommerce', 'LiteSpeed Cache', 'Linux', 'PHP']
   },
@@ -33,12 +33,12 @@ export const EXPERIENCE_ROLES: ExperienceRole[] = [
     org: 'PT. DCT TOTAL SOLUTIONS',
     period: 'AUG 2021 – PRESENT',
     category: 'ENGINEERING',
-    summary: 'Technical estimation, equipment sizing, BOQ/RAB preparation, specifications, and project support.',
+    summary: 'Prepare BOQ/RAB, select and size equipment, calculate power and UPS requirements, and coordinate technical details with vendors.',
     scope: [
-      'Bill of Quantities (BOQ) and RAB preparation',
-      'Equipment sizing and technical specifications',
-      'Power and UPS load calculations',
-      'Vendor coordination and procurement support'
+      'Prepare Bill of Quantities (BOQ) and RAB documentation',
+      'Size hardware and review technical specifications',
+      'Calculate power loads and UPS capacity requirements',
+      'Coordinate technical requirements with vendors and procurement'
     ],
     technologies: ['BOQ / RAB', 'Hardware Sizing', 'Technical Specs', 'Power Load Estimation']
   },
@@ -47,11 +47,11 @@ export const EXPERIENCE_ROLES: ExperienceRole[] = [
     org: 'PT. DCT TOTAL SOLUTIONS',
     period: 'AUG 2023 – SEP 2024',
     category: 'BUSINESS',
-    summary: 'Business development activities, client engagement, and technical sales support.',
+    summary: 'Support client discussions, prepare technical proposals, and follow up on project opportunities.',
     scope: [
-      'Client relationship and business development',
-      'Technical proposal preparation',
-      'Project opportunity identification and follow-up'
+      'Participate in client meetings and requirement discussions',
+      'Prepare technical proposals and project bids',
+      'Follow up on new project opportunities and specifications'
     ],
     technologies: ['Technical Proposals', 'Project Documentation']
   },
@@ -60,11 +60,11 @@ export const EXPERIENCE_ROLES: ExperienceRole[] = [
     org: 'PT. DCT TOTAL SOLUTIONS',
     period: 'JAN 2022 – DEC 2022',
     category: 'ENGINEERING',
-    summary: 'Combined account management and project estimation responsibilities.',
+    summary: 'Handle client coordination alongside project costing, BOQ preparation, and scope planning.',
     scope: [
-      'Client account management and project coordination',
-      'Technical estimation and BOQ preparation',
-      'Project scope and timeline planning'
+      'Manage client communication and project requirements',
+      'Prepare project costing and detailed BOQ estimates',
+      'Align project scope with budget and technical timelines'
     ],
     technologies: ['BOQ / RAB', 'Project Planning', 'Client Management']
   },
@@ -73,11 +73,11 @@ export const EXPERIENCE_ROLES: ExperienceRole[] = [
     org: 'PT. DCT TOTAL SOLUTIONS',
     period: 'SEP 2020 – JUL 2021',
     category: 'ENGINEERING',
-    summary: 'Project planning, scheduling, and technical coordination for IT infrastructure projects.',
+    summary: 'Plan project schedules, coordinate technical requirements, and prepare sites for installation work.',
     scope: [
-      'Project scheduling and milestone tracking',
-      'Technical documentation and coordination',
-      'Site readiness and installation planning'
+      'Create project timelines and track implementation milestones',
+      'Coordinate technical documentation between teams',
+      'Assess site conditions and prepare for installation work'
     ],
     technologies: ['Project Planning', 'Technical Documentation', 'IT Infrastructure']
   },
@@ -86,12 +86,12 @@ export const EXPERIENCE_ROLES: ExperienceRole[] = [
     org: 'PT. DCT TOTAL SOLUTIONS',
     period: 'MAY 2015 – SEP 2020',
     category: 'INFRASTRUCTURE',
-    summary: 'IT project engineering covering network, server, CCTV, and infrastructure deployment.',
+    summary: 'Worked on IT infrastructure projects involving networks, servers, CCTV/NVR, NAS storage, and UPS systems.',
     scope: [
-      'Network and server infrastructure deployment',
-      'CCTV and NVR system installation',
-      'NAS storage and UPS setup',
-      'Technical site surveys and installation'
+      'Deploy network infrastructure, switches, and routers',
+      'Install and configure CCTV cameras and NVR recording systems',
+      'Set up NAS storage units and backup UPS power',
+      'Conduct technical site surveys and oversee installation work'
     ],
     technologies: ['MikroTik', 'CCTV / NVR', 'NAS', 'UPS', 'Networking', 'Linux']
   },
@@ -100,11 +100,11 @@ export const EXPERIENCE_ROLES: ExperienceRole[] = [
     org: 'PT. DCT TOTAL SOLUTIONS',
     period: 'MAY 2015 – SEP 2020',
     category: 'INFRASTRUCTURE',
-    summary: 'IT technical support for hardware, software, networking, and end-user systems.',
+    summary: 'Troubleshoot hardware, software, network, and end-user issues.',
     scope: [
-      'Hardware and software troubleshooting',
-      'Network configuration and maintenance',
-      'End-user support and system maintenance'
+      'Troubleshoot desktop hardware, OS, and software issues',
+      'Configure local network connections and peripherals',
+      'Provide direct technical support for end-users'
     ],
     technologies: ['IT Support', 'Networking', 'Hardware', 'Windows / Linux']
   },
@@ -113,12 +113,12 @@ export const EXPERIENCE_ROLES: ExperienceRole[] = [
     org: 'FREELANCE',
     period: 'MAY 2019 – PRESENT',
     category: 'DEVELOPMENT',
-    summary: 'WordPress development, customization, performance optimization, security, and maintenance.',
+    summary: 'Build and customise WordPress websites, configure WooCommerce, and handle maintenance and performance improvements.',
     scope: [
-      'WordPress theme customization and development',
-      'WooCommerce setup and configuration',
-      'Performance optimization and security',
-      'Site maintenance and updates'
+      'Build and customise WordPress themes and pages',
+      'Configure WooCommerce stores and settings',
+      'Optimize site speed, security, and mobile responsiveness',
+      'Handle routine maintenance, core updates, and backups'
     ],
     technologies: ['WordPress', 'Elementor Pro', 'WooCommerce', 'PHP', 'MySQL']
   }
@@ -165,31 +165,31 @@ export const SERVICES_LIST: ServiceItem[] = [
   {
     id: '01',
     title: 'WEB DEVELOPMENT',
-    description: 'Website and web application development using Astro, WordPress and Laravel.',
-    deliverables: ['Astro static sites', 'WordPress & WooCommerce', 'Laravel applications & REST APIs']
+    description: 'Business websites and web applications built around your requirements.',
+    deliverables: ['Custom responsive websites', 'Full-stack web applications', 'REST API and database integration']
   },
   {
     id: '02',
     title: 'WORDPRESS',
-    description: 'Custom WordPress websites, Elementor, WooCommerce, performance and maintenance.',
-    deliverables: ['Custom theme & plugin work', 'WooCommerce setup', 'Performance & security']
+    description: 'WordPress and WooCommerce setup, customisation, fixes, and maintenance.',
+    deliverables: ['Custom theme and plugin adjustments', 'Online store setup and payment workflows', 'Performance tuning and security hardening']
   },
   {
     id: '03',
     title: 'SERVER / VPS',
-    description: 'Linux VPS setup, web server configuration, SSL, DNS and maintenance.',
-    deliverables: ['Nginx / LiteSpeed / Docker setup', 'Proxmox & hosting panels', 'SSL, DNS & Cloudflare']
+    description: 'VPS setup, web server configuration, SSL, DNS, and ongoing maintenance.',
+    deliverables: ['Nginx, LiteSpeed, and Docker setups', 'Proxmox hypervisors and control panels', 'Cloudflare CDN and domain management']
   },
   {
     id: '04',
     title: 'NETWORK / IT INFRASTRUCTURE',
-    description: 'Network, server, CCTV, storage and supporting IT infrastructure.',
-    deliverables: ['MikroTik configuration', 'CCTV / NVR / NAS setup', 'Structured cabling & VLAN']
+    description: 'Network setup, server deployment, CCTV/NVR, NAS, and related infrastructure work.',
+    deliverables: ['MikroTik routing and firewall policies', 'CCTV, NVR, and network storage installation', 'Structured cabling and network segmentation']
   },
   {
     id: '05',
     title: 'PROJECT ESTIMATION',
-    description: 'BOQ/RAB, technical specifications, equipment sizing and project estimation.',
-    deliverables: ['Bill of Quantities (BOQ)', 'Rencana Anggaran Biaya (RAB)', 'Equipment & power sizing']
+    description: 'Equipment sizing, technical specifications, BOQ/RAB, and power calculations.',
+    deliverables: ['Bill of Quantities (BOQ) preparation', 'Rencana Anggaran Biaya (RAB) costing', 'Hardware load and battery backup planning']
   }
 ];

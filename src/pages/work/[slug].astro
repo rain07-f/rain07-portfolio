@@ -173,18 +173,18 @@ const detailJsonLd = {
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 pt-8 border-t-2 border-[#111111]/20 font-mono text-xs">
         <div>
           <div class="text-[#111111]/60 uppercase">SOURCE</div>
-          <div class="font-bold text-[#111111]">WORDPRESS CPT</div>
+          <div class="font-bold text-[#111111]">WORDPRESS</div>
         </div>
         <div>
-          <div class="text-[#111111]/60 uppercase">DEPLOYED RUNTIME</div>
-          <div class="font-bold text-[#0057FF]">CLOUDFLARE EDGE</div>
+          <div class="text-[#111111]/60 uppercase">CATEGORY</div>
+          <div class="font-bold text-[#0057FF]">{project.categories[0]?.name || 'Web Development'}</div>
         </div>
         <div>
           <div class="text-[#111111]/60 uppercase">RECORDED DATE</div>
           <div class="font-bold text-[#111111]">{new Date(project.date).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}</div>
         </div>
         <div>
-          <div class="text-[#111111]/60 uppercase">AUTHORITY</div>
+          <div class="text-[#111111]/60 uppercase">DEVELOPER</div>
           <div class="font-bold text-[#111111]">RAIN07</div>
         </div>
       </div>
@@ -215,7 +215,7 @@ const detailJsonLd = {
       <div class="lg:col-span-8 space-y-8">
         <div class="border-2 border-[#111111] bg-[#FFFFFF] p-6 md:p-10 shadow-hard">
           <div class="font-mono text-xs font-bold uppercase tracking-wider text-[#0057FF] border-b-2 border-[#111111] pb-3 mb-6">
-            // DOCUMENTATION & ARCHITECTURAL CASE STUDY
+            // PROJECT DETAILS & OVERVIEW
           </div>
 
           <!-- WordPress Rendered Content -->
@@ -248,25 +248,25 @@ const detailJsonLd = {
       <div class="lg:col-span-4 space-y-8">
         <div class="border-2 border-[#111111] bg-[#FFFFFF] p-6 shadow-hard space-y-6">
           <div class="font-mono text-xs font-bold uppercase tracking-wider text-[#111111] border-b-2 border-[#111111] pb-3">
-            // ENGINEERING SCOPE
+            // PROJECT SCOPE
           </div>
 
           <ul class="space-y-3 font-mono text-xs text-[#111111]">
             <li class="flex items-start gap-2">
               <span class="text-[#0057FF] font-bold">✔</span>
-              <span>Headless Architecture & Decoupled Delivery</span>
+              <span>Website Structure & Layout Implementation</span>
             </li>
             <li class="flex items-start gap-2">
               <span class="text-[#0057FF] font-bold">✔</span>
-              <span>Custom Post Type Structuring & REST API Normalization</span>
+              <span>Responsive Design Across Devices</span>
             </li>
             <li class="flex items-start gap-2">
               <span class="text-[#0057FF] font-bold">✔</span>
-              <span>Fast Edge Delivery via Cloudflare Workers</span>
+              <span>Content & Media Asset Formatting</span>
             </li>
             <li class="flex items-start gap-2">
               <span class="text-[#0057FF] font-bold">✔</span>
-              <span>Performance and Core Web Vitals Optimization</span>
+              <span>Hosting Configuration & Deployment</span>
             </li>
           </ul>
 
