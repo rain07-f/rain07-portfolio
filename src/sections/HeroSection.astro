@@ -88,16 +88,30 @@ const {
           <div
             class="relative flex-1 min-h-[300px] sm:min-h-[380px] lg:min-h-[460px] bg-[#111111] overflow-hidden"
           >
-            <img
-              src={heroImageSrc}
-              alt={heroImageAlt}
-              width="800"
-              height="600"
-              loading="eager"
-              decoding="async"
-              fetchpriority="high"
-              class="w-full h-full object-cover grayscale contrast-110 hover:grayscale-0 transition-all duration-300"
-            />
+            <picture class="w-full h-full block">
+              <source
+                type="image/avif"
+                srcset="/images/hero-developer-480w.avif 480w, /images/hero-developer-800w.avif 800w, /images/hero-developer-1200w.avif 1200w"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 533px"
+              />
+              <source
+                type="image/webp"
+                srcset="/images/hero-developer-480w.webp 480w, /images/hero-developer-800w.webp 800w, /images/hero-developer-1200w.webp 1200w"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 533px"
+              />
+              <img
+                src="/images/hero-developer-800w.jpg"
+                srcset="/images/hero-developer-480w.jpg 480w, /images/hero-developer-800w.jpg 800w, /images/hero-developer-1200w.jpg 1200w"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 533px"
+                alt={heroImageAlt}
+                width="800"
+                height="597"
+                loading="eager"
+                decoding="async"
+                fetchpriority="high"
+                class="w-full h-full object-cover grayscale contrast-110 hover:grayscale-0 transition-all duration-300"
+              />
+            </picture>
             <!-- Monospace Technical Overlay Label -->
             <div
               class="absolute bottom-3 left-3 bg-[#111111]/90 text-[#F2F0EA] border border-[#111111] px-2.5 py-1 font-mono text-[10px] tracking-wider uppercase backdrop-blur-none"

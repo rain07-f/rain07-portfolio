@@ -42,15 +42,19 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Google tag (gtag.js) -->
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-85BHR4FKNN"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+    <!-- Preload critical typography for instant rendering without FOUT/CLS -->
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
 
-      gtag('config', 'G-85BHR4FKNN');
-    </script>
+    <!-- Preload LCP hero image for mobile and desktop -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/avif"
+      imagesrcset="/images/hero-developer-480w.avif 480w, /images/hero-developer-800w.avif 800w, /images/hero-developer-1200w.avif 1200w"
+      imagesizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 533px"
+      fetchpriority="high"
+    />
 
     <!-- Favicon & Touch Icons from WordPress Site Icon -->
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -58,10 +62,27 @@ const {
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- Google Fonts: Space Grotesk, Inter, JetBrains Mono -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&family=Space+Grotesk:wght@500;700;900&display=swap" rel="stylesheet">
+    <!-- Google Analytics (Deferred to avoid main-thread and bandwidth contention) -->
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-85BHR4FKNN');
+
+      function initAnalytics() {
+        if (window.__gtagLoaded) return;
+        window.__gtagLoaded = true;
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-85BHR4FKNN';
+        document.head.appendChild(s);
+      }
+
+      ['scroll', 'touchstart', 'mousemove', 'click', 'keydown'].forEach(function(e) {
+        window.addEventListener(e, initAnalytics, { passive: true, once: true });
+      });
+      setTimeout(initAnalytics, 6000);
+    </script>
 
     <!-- Centralized SEO Component -->
     <SEO

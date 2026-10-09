@@ -30,6 +30,7 @@ const { text, class: className = '' } = Astro.props;
     display: inline-flex;
     white-space: nowrap;
     animation: marquee 20s linear infinite;
+    will-change: transform;
   }
 
   @media (prefers-reduced-motion: reduce) {

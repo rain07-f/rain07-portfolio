@@ -21,10 +21,10 @@ const navItems = [
       aria-label="RAIN07 — Home"
     >
       <img
-        src="/images/rain07-logo.png"
+        src="/images/rain07-logo-360w.png"
         alt="Rain07 Logo"
-        width="785"
-        height="220"
+        width="360"
+        height="101"
         class="h-9 md:h-10 w-auto object-contain block"
         loading="eager"
         decoding="async"
@@ -71,7 +71,7 @@ const navItems = [
       aria-expanded="false"
       aria-controls="mobile-nav-menu"
     >
-      <!-- Hamburger Icon (Closed State) -->
+      <!-- Hamburger Icon (Closed State Only) -->
       <span id="nav-toggle-icon" class="inline-flex items-center justify-center">
         <svg
           class="w-5 h-5 fill-current"
@@ -83,8 +83,8 @@ const navItems = [
           <rect y="15" width="20" height="2"></rect>
         </svg>
       </span>
-      <!-- Close Text (Open State) -->
-      <span id="nav-toggle-text" class="hidden font-mono text-sm tracking-wider">CLOSE</span>
+      <!-- Close Text (Open State Only) -->
+      <span id="nav-toggle-text" class="hidden font-mono text-xs sm:text-sm font-bold tracking-widest uppercase">CLOSE</span>
     </button>
   </div>
 
@@ -119,37 +119,61 @@ const navItems = [
   </div>
 </header>
 
+<style>
+  /* Guaranteed state-driven display rules overriding utility cascade */
+  #mobile-nav-toggle[aria-expanded="true"] #nav-toggle-icon {
+    display: none !important;
+  }
+  #mobile-nav-toggle[aria-expanded="true"] #nav-toggle-text {
+    display: inline-flex !important;
+  }
+  #mobile-nav-toggle[aria-expanded="false"] #nav-toggle-icon {
+    display: inline-flex !important;
+  }
+  #mobile-nav-toggle[aria-expanded="false"] #nav-toggle-text {
+    display: none !important;
+  }
+</style>
+
 <script>
   const toggleBtn = document.getElementById("mobile-nav-toggle");
   const menu = document.getElementById("mobile-nav-menu");
   const icon = document.getElementById("nav-toggle-icon");
   const text = document.getElementById("nav-toggle-text");
   const links = document.querySelectorAll(".mobile-nav-link");
+  const header = document.querySelector("header");
 
   function openMenu() {
-    menu?.classList.remove("hidden");
-    menu?.classList.add("flex");
-    icon?.classList.add("hidden");
-    text?.classList.remove("hidden");
-    toggleBtn?.setAttribute("aria-expanded", "true");
-    toggleBtn?.setAttribute("aria-label", "Close menu");
+    if (!menu || !toggleBtn) return;
+    if (header) {
+      menu.style.top = `${header.offsetHeight}px`;
+    }
+    menu.classList.remove("hidden");
+    menu.classList.add("flex");
+    if (icon) icon.style.display = "none";
+    if (text) text.style.display = "inline-flex";
+    toggleBtn.setAttribute("aria-expanded", "true");
+    toggleBtn.setAttribute("aria-label", "Close menu");
+    document.body.classList.add("overflow-hidden");
   }
 
   function closeMenu() {
-    menu?.classList.add("hidden");
-    menu?.classList.remove("flex");
-    icon?.classList.remove("hidden");
-    text?.classList.add("hidden");
-    toggleBtn?.setAttribute("aria-expanded", "false");
-    toggleBtn?.setAttribute("aria-label", "Open menu");
+    if (!menu || !toggleBtn) return;
+    menu.classList.add("hidden");
+    menu.classList.remove("flex");
+    if (icon) icon.style.display = "inline-flex";
+    if (text) text.style.display = "none";
+    toggleBtn.setAttribute("aria-expanded", "false");
+    toggleBtn.setAttribute("aria-label", "Open menu");
+    document.body.classList.remove("overflow-hidden");
   }
 
   toggleBtn?.addEventListener("click", () => {
-    const isHidden = menu?.classList.contains("hidden");
-    if (isHidden) {
-      openMenu();
-    } else {
+    const isExpanded = toggleBtn.getAttribute("aria-expanded") === "true";
+    if (isExpanded) {
       closeMenu();
+    } else {
+      openMenu();
     }
   });
 
@@ -157,5 +181,27 @@ const navItems = [
     l.addEventListener("click", () => {
       closeMenu();
     });
+  });
+
+  // Close menu on backdrop click
+  menu?.addEventListener("click", (e) => {
+    if (e.target === menu) {
+      closeMenu();
+    }
+  });
+
+  // Close menu on Escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && toggleBtn?.getAttribute("aria-expanded") === "true") {
+      closeMenu();
+      toggleBtn.focus();
+    }
+  });
+
+  // Reset when viewport resizes to desktop
+  window.addEventListener("resize", () => {
+    if (window.innerWidth >= 768 && toggleBtn?.getAttribute("aria-expanded") === "true") {
+      closeMenu();
+    }
   });
 </script>
