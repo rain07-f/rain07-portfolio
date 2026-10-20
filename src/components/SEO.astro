@@ -29,11 +29,8 @@ const {
   jsonLd
 } = Astro.props;
 
-const siteUrl = (
-  (typeof process !== 'undefined' && process.env?.PUBLIC_SITE_URL) ||
-  import.meta.env?.PUBLIC_SITE_URL ||
-  'https://rain07.my.id'
-).replace(/\/$/, '');
+const rawSiteUrl = (typeof process !== 'undefined' && process.env?.PUBLIC_SITE_URL) || import.meta.env?.PUBLIC_SITE_URL || 'https://rain07.my.id';
+const siteUrl = rawSiteUrl.replace(/\/$/, '');
 
 // Format canonical URL ensuring clean domain + trailing slash consistency matching Astro static builds
 const formatCanonical = (urlPath: string): string => {

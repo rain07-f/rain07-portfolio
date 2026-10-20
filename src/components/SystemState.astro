@@ -34,9 +34,10 @@ const {
   tertiaryAction,
   class: className = ''
 } = Astro.props;
+const isLongCode = statusCode.length > 3;
 ---
 
-<div class={`w-full max-w-5xl mx-auto ${className}`}>
+<div class={`w-full ${className}`}>
   <!-- Outer Brutalist System Container -->
   <div class="border-2 border-[#111111] bg-[#FFFFFF] shadow-hard">
     <!-- Top System Telemetry Bar -->
@@ -62,12 +63,16 @@ const {
     <!-- Main Content Grid: Asymmetric Layout -->
     <div class="grid grid-cols-1 lg:grid-cols-12 divide-y-2 lg:divide-y-0 lg:divide-x-2 divide-[#111111]">
       <!-- Left Column: Big Status Number / Monolithic Indicator -->
-      <div class="lg:col-span-4 p-8 md:p-12 bg-[#F2F0EA]/40 flex flex-col justify-between items-start">
+      <div class="lg:col-span-4 p-6 sm:p-8 md:p-12 bg-[#F2F0EA]/40 flex flex-col justify-between items-start">
         <div class="space-y-2 w-full">
           <div class="font-mono text-xs font-bold text-[#0057FF] uppercase tracking-widest">
             STATE IDENTIFIER
           </div>
-          <div class="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-none text-[#111111] font-mono select-none">
+          <div class={`${
+            isLongCode
+              ? 'text-5xl sm:text-6xl md:text-7xl lg:text-6xl xl:text-7xl 2xl:text-8xl'
+              : 'text-6xl sm:text-7xl md:text-8xl lg:text-9xl'
+          } font-black tracking-tighter leading-none text-[#111111] font-mono select-none break-all sm:break-normal`}>
             {statusCode}
           </div>
         </div>
