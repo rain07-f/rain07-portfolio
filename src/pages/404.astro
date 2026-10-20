@@ -1,41 +1,199 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionLabel from '../components/SectionLabel.astro';
-import SystemState from '../components/SystemState.astro';
+import BrutalistButton from '../components/BrutalistButton.astro';
+
+// Only link to destinations that actually exist in the site structure
+const validRoutes = [
+  {
+    code: '00',
+    label: 'HOME',
+    href: '/',
+    description: 'Portfolio overview, background, and full engineering profile',
+  },
+  {
+    code: '01',
+    label: 'SELECTED WORK',
+    href: '/work/',
+    description: 'Case studies, web applications, and production systems',
+  },
+  {
+    code: '02',
+    label: 'TECHNICAL NOTES',
+    href: '/notes/',
+    description: 'Articles on Linux, WordPress, networking, and deployment',
+  },
+  {
+    code: '03',
+    label: 'CAPABILITIES',
+    href: '/#expertise',
+    description: 'Full-stack development, server administration, and DevOps',
+  },
+  {
+    code: '04',
+    label: 'CONTACT',
+    href: '/#contact',
+    description: 'Direct inquiry, technical consulting, and project briefing',
+  },
+];
 ---
 
 <BaseLayout
   title="404 — Page Not Found // RAIN07"
-  description="The requested resource does not exist in the RAIN07 site manifest."
+  description="The page you're looking for doesn't exist, may have moved, or is no longer available."
   noindex={true}
 >
-  <div class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-20">
+  <div class="max-w-7xl mx-auto px-4 md:px-8 py-10 md:py-16">
+    <!-- Section Header -->
     <SectionLabel index="00 // ERROR" title="PAGE NOT FOUND" />
 
-    <SystemState
-      statusCode="404"
-      statusType="NOT FOUND"
-      systemName="RAIN07"
-      subtitle="PAGE NOT FOUND"
-      title="PAGE NOT FOUND."
-      description="The page you are looking for does not exist or has been moved."
-      technicalMessage="The requested URL was not found on this server."
-      primaryAction={{
-        label: "← BACK TO HOME",
-        href: "/",
-        variant: "primary"
-      }}
-      secondaryAction={{
-        label: "SELECTED WORK →",
-        href: "/work",
-        variant: "secondary"
-      }}
-      tertiaryAction={{
-        label: "TECHNICAL NOTES →",
-        href: "/notes",
-        variant: "secondary"
-      }}
-    />
+    <!-- Main Diagnostic Brutalist Panel -->
+    <div class="border-2 border-[#111111] bg-[#FFFFFF] shadow-hard mb-12">
+      <!-- Top Telemetry Strip -->
+      <div
+        class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-[#111111] bg-[#F2F0EA] px-4 md:px-6 py-2.5 font-mono text-xs"
+      >
+        <div class="flex items-center gap-2.5">
+          <span class="bg-[#FF3B30] text-[#FFFFFF] font-bold px-2 py-0.5 text-[11px] tracking-wider">
+            HTTP STATUS // 404
+          </span>
+          <span class="font-bold text-[#111111] uppercase tracking-wider">
+            NOT FOUND
+          </span>
+        </div>
+        <div class="flex items-center gap-2 text-[#111111]/70 text-[11px]">
+          <span>SYSTEM:</span>
+          <span class="font-bold text-[#111111]">RAIN07 // EDGE</span>
+        </div>
+      </div>
+
+      <!-- Asymmetric Two-Column Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 divide-y-2 lg:divide-y-0 lg:divide-x-2 divide-[#111111]">
+        <!-- Left: Monolithic 404 State Identifier & System Diagnostic -->
+        <div class="lg:col-span-5 p-6 sm:p-8 md:p-12 bg-[#F2F0EA]/40 flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="font-mono text-xs font-bold text-[#0057FF] uppercase tracking-widest">
+              STATE IDENTIFIER
+            </div>
+            <div
+              class="text-7xl sm:text-8xl md:text-9xl font-black font-mono tracking-tighter leading-none text-[#111111] select-none"
+              aria-hidden="true"
+            >
+              404
+            </div>
+            <div class="font-mono text-xs font-bold text-[#111111]/70 uppercase tracking-wider">
+              CONDITION: RESOURCE_NOT_FOUND
+            </div>
+          </div>
+
+          <div class="mt-8 pt-4 border-t-2 border-[#111111]/20 font-mono text-xs text-[#111111]/80 space-y-1.5 leading-relaxed">
+            <div class="text-[#0057FF] font-bold uppercase tracking-wider text-[11px]">
+              // SYSTEM DIAGNOSTIC:
+            </div>
+            <p class="text-[11px] text-[#111111]/80">
+              The requested path could not be resolved in the static site manifest.
+            </p>
+            <div class="text-[10px] text-[#111111]/60 pt-1">
+              STATUS CODE: 404 · ORIGIN: CLOUDFLARE_WORKERS_EDGE
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Primary Editorial Content, Metadata Matrix, and Actions -->
+        <div class="lg:col-span-7 p-6 sm:p-8 md:p-12 flex flex-col justify-between space-y-8">
+          <div class="space-y-4">
+            <div class="font-mono text-xs sm:text-sm font-bold tracking-widest text-[#0057FF] uppercase">
+              ERROR // 404
+            </div>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-[#111111] leading-[1.02]">
+              PAGE NOT FOUND.
+            </h1>
+            <p class="font-mono text-sm sm:text-base text-[#111111]/85 leading-relaxed max-w-xl">
+              The page you're looking for doesn't exist, may have moved, or is no longer available.
+            </p>
+          </div>
+
+          <!-- Technical Telemetry Matrix -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-6 border-t-2 border-[#111111]/20 font-mono text-xs">
+            <div>
+              <div class="text-[#111111]/60 uppercase text-[10px] tracking-wider">STATUS</div>
+              <div class="font-bold text-[#111111]">404 NOT FOUND</div>
+            </div>
+            <div>
+              <div class="text-[#111111]/60 uppercase text-[10px] tracking-wider">INDEX STATUS</div>
+              <div class="font-bold text-[#FF3B30]">NOINDEX / NOFOLLOW</div>
+            </div>
+            <div class="col-span-2 sm:col-span-1">
+              <div class="text-[#111111]/60 uppercase text-[10px] tracking-wider">DEPLOYMENT</div>
+              <div class="font-bold text-[#0057FF]">CLOUDFLARE EDGE</div>
+            </div>
+          </div>
+
+          <!-- Primary Actions -->
+          <div class="pt-6 border-t-2 border-[#111111]/20 flex flex-wrap items-center gap-4">
+            <BrutalistButton
+              href="/"
+              variant="primary"
+              class="!text-xs sm:!text-sm !px-6 !py-3.5"
+              aria-label="Return to homepage"
+            >
+              ← BACK TO HOME
+            </BrutalistButton>
+            <BrutalistButton
+              href="/work/"
+              variant="secondary"
+              class="!text-xs sm:!text-sm !px-6 !py-3.5"
+              aria-label="View selected work portfolio"
+            >
+              VIEW SELECTED WORK →
+            </BrutalistButton>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Structured Route Index Panel (Swiss Editorial Style) -->
+    <section class="border-2 border-[#111111] bg-[#FFFFFF] shadow-hard" aria-labelledby="valid-routes-heading">
+      <div class="border-b-2 border-[#111111] bg-[#F2F0EA] px-4 md:px-6 py-3 flex flex-wrap items-center justify-between gap-2 font-mono text-xs">
+        <div class="flex items-center gap-2">
+          <span class="bg-[#111111] text-[#F2F0EA] px-1.5 py-0.5 font-bold text-[10px]">INDEX</span>
+          <h2 id="valid-routes-heading" class="font-bold text-[#111111] uppercase tracking-wider text-xs">
+            VALID DESTINATION DIRECTORY
+          </h2>
+        </div>
+        <span class="text-[#0057FF] font-semibold text-[11px]">// NAVIGATION_FALLBACK</span>
+      </div>
+
+      <nav class="divide-y-2 divide-[#111111]" aria-label="Valid destinations">
+        {
+          validRoutes.map((route) => (
+            <a
+              href={route.href}
+              class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-4 md:px-6 md:py-4 bg-[#FFFFFF] hover:bg-[#0057FF] hover:text-[#FFFFFF] text-[#111111] transition-colors group select-none"
+            >
+              <div class="flex items-center gap-3">
+                <span class="font-mono text-xs font-bold px-2 py-0.5 bg-[#F2F0EA] text-[#111111] border border-[#111111] group-hover:bg-[#FFFFFF] group-hover:text-[#0057FF] group-hover:border-[#FFFFFF] transition-colors">
+                  {route.code}
+                </span>
+                <span class="font-mono text-sm md:text-base font-bold tracking-wide">
+                  {route.label}
+                </span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="font-mono text-xs text-[#111111]/70 group-hover:text-[#FFFFFF]/90 transition-colors">
+                  {route.description}
+                </span>
+                <span
+                  class="font-mono font-bold text-sm text-[#0057FF] group-hover:text-[#FFFFFF] group-hover:translate-x-1 transition-all"
+                  aria-hidden="true"
+                >
+                  →
+                </span>
+              </div>
+            </a>
+          ))
+        }
+      </nav>
+    </section>
   </div>
 </BaseLayout>
-
