@@ -46,8 +46,8 @@ const expertiseCards = [
     <SectionLabel index="02 // CAPABILITIES" title="AREAS OF WORK" />
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {expertiseCards.map((card) => (
-        <div class="border-2 border-[#111111] bg-[#FFFFFF] p-6 shadow-hard-interactive flex flex-col justify-between space-y-6 group">
+      {expertiseCards.map((card, idx) => (
+        <div class="reveal-item border-2 border-[#111111] bg-[#FFFFFF] p-6 shadow-hard-interactive flex flex-col justify-between space-y-6 group" style={`--stagger: ${idx % 3};`}>
           <div class="space-y-4">
             <div class="flex items-center justify-between border-b-2 border-[#111111] pb-3">
               <span class="font-mono text-xl font-black px-2 py-0.5 bg-[#111111] text-[#F2F0EA] group-hover:bg-[#0057FF] group-hover:text-[#FFFFFF] transition-colors">

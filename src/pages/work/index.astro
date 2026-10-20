@@ -82,11 +82,14 @@ const workJsonLd = {
     {projects.length > 0 ? (
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {projects.map((project, idx) => (
-          <ProjectCard project={project} featured={idx === 0} />
+          <div class={`reveal-item flex flex-col ${idx === 0 ? 'md:col-span-2' : ''}`} style={`--stagger: ${idx % 3};`}>
+            <ProjectCard project={project} featured={idx === 0} />
+          </div>
         ))}
       </div>
     ) : (
       <SystemState
+        class="reveal-item"
         statusCode="EMPTY"
         statusType="WORK ARCHIVE"
         systemName="RAIN07 // ARCHIVE"

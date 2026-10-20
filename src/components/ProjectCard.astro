@@ -10,7 +10,7 @@ interface Props {
 const { project, featured = false } = Astro.props;
 ---
 
-<article class={`border-2 border-[#111111] bg-[#FFFFFF] shadow-hard flex flex-col justify-between group transition-transform duration-100 ${featured ? 'md:col-span-2' : ''}`}>
+<article class={`border-2 border-[#111111] bg-[#FFFFFF] shadow-hard-interactive flex flex-col justify-between group ${featured ? 'md:col-span-2' : ''}`}>
   <!-- Top meta bar -->
   <div class="flex items-center justify-between border-b-2 border-[#111111] bg-[#F2F0EA] px-4 py-2 font-mono text-xs">
     <div class="flex items-center gap-2">
@@ -55,8 +55,8 @@ const { project, featured = false } = Astro.props;
   <!-- Project Info -->
   <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
     <div class="space-y-2">
-      <h3 class="text-xl md:text-2xl font-bold tracking-tight text-[#111111] group-hover:text-[#0057FF] transition-colors">
-        <a href={`/work/${project.slug}`}>
+      <h3 class="text-xl md:text-2xl font-bold tracking-tight text-[#111111] group-hover:text-[#0057FF] transition-colors duration-150">
+        <a href={`/work/${project.slug}`} class="focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0057FF] focus-visible:ring-offset-2">
           {project.title}
         </a>
       </h3>

@@ -107,6 +107,59 @@ const {
     </main>
     <Footer />
     <FloatingActions />
+
+    <!-- Unified Motion System: Progressive Scroll Reveal -->
+    <script>
+      function setupMotionSystem() {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          return;
+        }
+
+        const revealItems = document.querySelectorAll('.reveal-item:not(.is-revealed)');
+        if (!revealItems.length) return;
+
+        // Activate progressive reveal styling only when JS & IntersectionObserver are operational
+        document.documentElement.classList.add('js-reveal');
+
+        if (!('IntersectionObserver' in window)) {
+          revealItems.forEach((el) => el.classList.add('is-revealed'));
+          return;
+        }
+
+        const observer = new IntersectionObserver(
+          (entries, obs) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-revealed');
+                obs.unobserve(entry.target);
+              }
+            });
+          },
+          {
+            root: null,
+            rootMargin: '0px 0px -40px 0px',
+            threshold: 0.08,
+          }
+        );
+
+        revealItems.forEach((el) => {
+          const rect = el.getBoundingClientRect();
+          // Elements already in initial viewport reveal immediately to prevent any LCP delay
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            el.classList.add('is-revealed');
+          } else {
+            observer.observe(el);
+          }
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupMotionSystem);
+      } else {
+        setupMotionSystem();
+      }
+      document.addEventListener('astro:page-load', setupMotionSystem);
+    </script>
   </body>
 </html>
 

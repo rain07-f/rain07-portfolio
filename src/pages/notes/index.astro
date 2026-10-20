@@ -82,12 +82,15 @@ const notesJsonLd = {
     <!-- Posts Grid -->
     {posts.length > 0 ? (
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {posts.map((post) => (
-          <BlogCard post={post} />
+        {posts.map((post, idx) => (
+          <div class="reveal-item flex flex-col" style={`--stagger: ${idx % 3};`}>
+            <BlogCard post={post} />
+          </div>
         ))}
       </div>
     ) : (
       <SystemState
+        class="reveal-item"
         statusCode="EMPTY"
         statusType="TECHNICAL NOTES"
         systemName="RAIN07 // ARCHIVE"

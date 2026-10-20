@@ -33,6 +33,24 @@
     scroll-behavior: smooth;
   }
 
+  /* Anchor target offset for sticky header */
+  section[id],
+  [id] {
+    scroll-margin-top: 5rem;
+  }
+
+  @media (min-width: 768px) {
+    section[id],
+    [id] {
+      scroll-margin-top: 5.5rem;
+    }
+  }
+
+  #home,
+  #top {
+    scroll-margin-top: 0;
+  }
+
   :root {
     --bg-primary: #F2F0EA;
     --text-primary: #111111;
@@ -66,6 +84,45 @@
     background-color: var(--accent-blue);
     color: #FFFFFF;
   }
+}
+
+/* ==========================================================================
+   Brutalist / Swiss Editorial Custom Scrollbar
+   ========================================================================== */
+@supports (scrollbar-color: auto) {
+  html {
+    scrollbar-color: #111111 #F2F0EA;
+    scrollbar-width: thin;
+  }
+}
+
+/* Chromium / WebKit Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #F2F0EA;
+  border-left: 2px solid #111111;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #111111;
+  border-radius: 0px;
+  border: 1px solid #F2F0EA;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #0057FF;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: #0046CC;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: #F2F0EA;
 }
 
 /* Brutalist utility borders and shadows */
@@ -108,17 +165,23 @@
 
 .shadow-hard-interactive {
   box-shadow: 4px 4px 0px #111111;
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  transition: transform 160ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 160ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.shadow-hard-interactive:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px #0057FF;
+@media (hover: hover) {
+  .shadow-hard-interactive:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #0057FF;
+  }
 }
 
 .shadow-hard-interactive:active {
   transform: translate(2px, 2px);
   box-shadow: 2px 2px 0px #111111;
+}
+
+.shadow-hard-interactive:focus-within {
+  box-shadow: 6px 6px 0px #0057FF;
 }
 
 /* Subtle Technical Grid Background */
@@ -142,10 +205,41 @@
   contain-intrinsic-size: auto 600px;
 }
 
+/* ==========================================================================
+   Motion System: Progressive Section & Card Reveal Animations
+   ========================================================================== */
+.reveal-item {
+  /* Default: 100% visible for SSR, crawlers/bots, and no-JS */
+  opacity: 1;
+  transform: none;
+}
+
+html.js-reveal .reveal-item {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 350ms cubic-bezier(0.16, 1, 0.3, 1), transform 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--stagger, 0) * 45ms);
+  will-change: opacity, transform;
+}
+
+html.js-reveal .reveal-item.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+  will-change: auto;
+}
+
 /* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto !important;
+  }
+  html.js-reveal .reveal-item,
+  .reveal-item {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    transition-delay: 0ms !important;
+    will-change: auto !important;
   }
   *, ::before, ::after {
     animation-duration: 0.01ms !important;

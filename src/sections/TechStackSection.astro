@@ -18,8 +18,8 @@ import { TECH_INVENTORY } from '../lib/content/profile';
 
     <!-- 16+ Inventory Grid -->
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
-      {TECH_INVENTORY.map((item) => (
-        <div class="border-2 border-[#111111] bg-[#FFFFFF] p-4 shadow-hard-interactive flex flex-col justify-between group">
+      {TECH_INVENTORY.map((item, idx) => (
+        <div class="reveal-item border-2 border-[#111111] bg-[#FFFFFF] p-4 shadow-hard-interactive flex flex-col justify-between group" style={`--stagger: ${idx % 5};`}>
           <div class="flex items-center justify-between border-b border-[#111111]/20 pb-2 mb-3">
             <span class="font-mono text-xs font-black text-[#111111] group-hover:text-[#0057FF] transition-colors">
               {item.id}

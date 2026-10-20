@@ -7,7 +7,9 @@ import tailwindcss from '@tailwindcss/vite';
 let hasPublishedNotes = false;
 try {
   const apiUrl = (process.env.PUBLIC_API_URL || 'https://be-web-por-rey.rey07.my.id').replace(/\/$/, '');
-  const res = await fetch(`${apiUrl}/wp-json/wp/v2/posts?per_page=10&status=publish`);
+  const res = await fetch(`${apiUrl}/wp-json/wp/v2/posts?per_page=10&status=publish`, {
+    signal: AbortSignal.timeout(3000)
+  });
   if (res.ok) {
     const data = await res.json();
     if (Array.isArray(data)) {
@@ -51,6 +53,14 @@ export default defineConfig({
   vite: {
     plugins: [
       tailwindcss()
-    ]
+    ],
+    optimizeDeps: {
+      exclude: ['@cloudflare/unenv-preset', 'unenv']
+    },
+    ssr: {
+      optimizeDeps: {
+        exclude: ['@cloudflare/unenv-preset', 'unenv']
+      }
+    }
   }
 });

@@ -48,11 +48,10 @@ const canonicalUrl = formatCanonical(Astro.url.pathname);
 const resolvedImage = image?.startsWith('http') ? image : `${siteUrl}${image.startsWith('/') ? '' : '/'}${image}`;
 
 // Google Search Console verification token (if supplied via env)
-const googleSiteVerification = (
+const googleSiteVerification =
   (typeof process !== 'undefined' && (process.env?.PUBLIC_GOOGLE_SITE_VERIFICATION || process.env?.GOOGLE_SITE_VERIFICATION)) ||
   import.meta.env?.PUBLIC_GOOGLE_SITE_VERIFICATION ||
-  ''
-);
+  '';
 ---
 
 <!-- Core Meta -->

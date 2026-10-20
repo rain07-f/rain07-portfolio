@@ -19,7 +19,7 @@ import { EXPERIENCE_ROLES } from '../lib/content/profile';
     <!-- Roles Grid -->
     <div class="space-y-6">
       {EXPERIENCE_ROLES.map((role, idx) => (
-        <div class="border-2 border-[#111111] bg-[#FFFFFF] p-6 md:p-8 shadow-hard">
+        <div class="reveal-item border-2 border-[#111111] bg-[#FFFFFF] p-6 md:p-8 shadow-hard" style={`--stagger: ${idx};`}>
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b-2 border-[#111111] pb-4 mb-6">
             <div class="flex items-center gap-3">
               <span class="font-mono text-xs font-bold px-2 py-0.5 bg-[#111111] text-[#F2F0EA]">

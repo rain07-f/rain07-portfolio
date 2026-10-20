@@ -71,9 +71,10 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappText}`;
     updateVisibility();
 
     topBtn.addEventListener("click", () => {
+      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       window.scrollTo({
         top: 0,
-        behavior: "smooth",
+        behavior: prefersReduced ? "auto" : "smooth",
       });
     });
   }
