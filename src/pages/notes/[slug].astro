@@ -71,12 +71,12 @@ const articleJsonLd = {
       ...(primaryImage ? { 'image': primaryImage } : {}),
       'author': {
         '@type': 'Person',
-        'name': post.authorName || 'Reyno Fahreza',
+        'name': post.authorName || 'Reyno Nur Fahreza',
         'url': siteUrl
       },
       'publisher': {
         '@type': 'Person',
-        'name': 'Reyno Fahreza',
+        'name': 'Reyno Nur Fahreza',
         'alternateName': 'RAIN07',
         'url': siteUrl
       },
@@ -99,7 +99,7 @@ const articleJsonLd = {
   noindex={!post}
   publishedTime={post?.date}
   modifiedTime={post ? (post.modified || post.date) : undefined}
-  author={post ? (post.authorName || 'Reyno Fahreza') : 'Reyno Fahreza'}
+  author={post ? (post.authorName || 'Reyno Nur Fahreza') : 'Reyno Nur Fahreza'}
   section={post?.categories?.[0]?.name}
   jsonLd={post ? articleJsonLd : undefined}
 >

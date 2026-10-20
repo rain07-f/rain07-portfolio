@@ -71,36 +71,45 @@ const navItems = [
       aria-expanded="false"
       aria-controls="mobile-nav-menu"
     >
-      <!-- Hamburger Icon (Closed State Only) -->
-      <span id="nav-toggle-icon" class="inline-flex items-center justify-center">
-        <svg
-          class="w-5 h-5 fill-current"
-          viewBox="0 0 20 20"
-          aria-hidden="true"
+      <span class="relative flex items-center justify-center w-[52px] h-5 overflow-hidden">
+        <!-- Hamburger Icon (Closed State) -->
+        <span id="nav-toggle-icon" class="absolute inset-0 flex items-center justify-center">
+          <svg
+            class="w-5 h-5 fill-current"
+            viewBox="0 0 20 20"
+            aria-hidden="true"
+          >
+            <rect y="3" width="20" height="2"></rect>
+            <rect y="9" width="20" height="2"></rect>
+            <rect y="15" width="20" height="2"></rect>
+          </svg>
+        </span>
+        <!-- Close Text (Open State) -->
+        <span
+          id="nav-toggle-text"
+          class="absolute inset-0 flex items-center justify-center font-mono text-xs sm:text-sm font-bold tracking-widest uppercase"
         >
-          <rect y="3" width="20" height="2"></rect>
-          <rect y="9" width="20" height="2"></rect>
-          <rect y="15" width="20" height="2"></rect>
-        </svg>
+          CLOSE
+        </span>
       </span>
-      <!-- Close Text (Open State Only) -->
-      <span id="nav-toggle-text" class="hidden font-mono text-xs sm:text-sm font-bold tracking-widest uppercase">CLOSE</span>
     </button>
   </div>
 
   <!-- Mobile Fullscreen Brutalist Drawer -->
   <div
     id="mobile-nav-menu"
-    class="hidden md:hidden fixed inset-0 top-[61px] bg-[#F2F0EA] z-40 border-t-2 border-[#111111] flex-col p-6 overflow-y-auto"
+    class="flex md:hidden fixed inset-0 top-[61px] bg-[#F2F0EA] z-40 border-t-2 border-[#111111] flex-col p-6 overflow-y-auto"
+    aria-hidden="true"
   >
     <div
       class="flex flex-col border-2 border-[#111111] shadow-hard divide-y-2 divide-[#111111] bg-[#FFFFFF]"
     >
       {
-        navItems.map((item) => (
+        navItems.map((item, index) => (
           <a
             href={item.href}
             class="mobile-nav-link font-mono text-lg font-bold p-4 text-[#111111] hover:bg-[#0057FF] hover:text-[#FFFFFF] transition-colors"
+            style={`--link-index: ${index};`}
           >
             {item.label} →
           </a>
@@ -108,7 +117,9 @@ const navItems = [
       }
     </div>
     <div
+      id="mobile-nav-info"
       class="mt-8 p-4 border-2 border-[#111111] bg-[#F2F0EA] font-mono text-xs space-y-1"
+      style={`--link-index: ${navItems.length};`}
     >
       <div class="font-bold text-[#111111]">RAIN07 / REYNO07</div>
       <div class="text-[#111111] opacity-75">LOCATION: INDONESIA</div>
@@ -120,26 +131,130 @@ const navItems = [
 </header>
 
 <style>
-  /* Guaranteed state-driven display rules overriding utility cascade */
+  /* 1. Hamburger to CLOSE Smooth Transition */
+  #nav-toggle-icon {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+    pointer-events: auto;
+    visibility: visible;
+    transition:
+      opacity 180ms ease,
+      transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s 0s;
+  }
+
+  #nav-toggle-text {
+    opacity: 0;
+    transform: translateX(8px);
+    pointer-events: none;
+    visibility: hidden;
+    transition:
+      opacity 180ms ease,
+      transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s 200ms;
+  }
+
   #mobile-nav-toggle[aria-expanded="true"] #nav-toggle-icon {
-    display: none !important;
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.8);
+    pointer-events: none;
+    visibility: hidden;
+    transition:
+      opacity 180ms ease,
+      transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s 200ms;
   }
+
   #mobile-nav-toggle[aria-expanded="true"] #nav-toggle-text {
-    display: inline-flex !important;
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+    visibility: visible;
+    transition:
+      opacity 180ms ease,
+      transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s 0s;
   }
-  #mobile-nav-toggle[aria-expanded="false"] #nav-toggle-icon {
-    display: inline-flex !important;
+
+  /* 2. Menu Panel Transition */
+  #mobile-nav-menu {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition:
+      opacity 220ms ease,
+      transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s 220ms;
   }
-  #mobile-nav-toggle[aria-expanded="false"] #nav-toggle-text {
-    display: none !important;
+
+  #mobile-nav-menu.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+    transition:
+      opacity 220ms ease,
+      transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s 0s;
+  }
+
+  /* Desktop safeguard */
+  @media (min-width: 768px) {
+    #mobile-nav-menu {
+      display: none !important;
+    }
+  }
+
+  /* 3. Navigation Links Entrance Stagger */
+  .mobile-nav-link,
+  #mobile-nav-info {
+    opacity: 0;
+    transform: translateY(-6px);
+    transition:
+      opacity 180ms ease,
+      transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  #mobile-nav-menu.is-open .mobile-nav-link,
+  #mobile-nav-menu.is-open #mobile-nav-info {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: calc(var(--link-index, 0) * 35ms + 40ms);
+  }
+
+  /* Snappy exit without stagger delays when closing */
+  #mobile-nav-menu:not(.is-open) .mobile-nav-link,
+  #mobile-nav-menu:not(.is-open) #mobile-nav-info {
+    transition:
+      opacity 140ms ease,
+      transform 140ms ease;
+    transition-delay: 0ms !important;
+  }
+
+  /* 4. Reduced Motion Support */
+  @media (prefers-reduced-motion: reduce) {
+    #nav-toggle-icon,
+    #nav-toggle-text,
+    #mobile-nav-toggle[aria-expanded="true"] #nav-toggle-icon,
+    #mobile-nav-toggle[aria-expanded="true"] #nav-toggle-text,
+    #mobile-nav-menu,
+    #mobile-nav-menu.is-open,
+    .mobile-nav-link,
+    #mobile-nav-info,
+    #mobile-nav-menu.is-open .mobile-nav-link,
+    #mobile-nav-menu.is-open #mobile-nav-info {
+      transition: none !important;
+      animation: none !important;
+      transform: none !important;
+      transition-delay: 0ms !important;
+    }
   }
 </style>
 
 <script>
   const toggleBtn = document.getElementById("mobile-nav-toggle");
   const menu = document.getElementById("mobile-nav-menu");
-  const icon = document.getElementById("nav-toggle-icon");
-  const text = document.getElementById("nav-toggle-text");
   const links = document.querySelectorAll(".mobile-nav-link");
   const header = document.querySelector("header");
 
@@ -148,10 +263,8 @@ const navItems = [
     if (header) {
       menu.style.top = `${header.offsetHeight}px`;
     }
-    menu.classList.remove("hidden");
-    menu.classList.add("flex");
-    if (icon) icon.style.display = "none";
-    if (text) text.style.display = "inline-flex";
+    menu.classList.add("is-open");
+    menu.setAttribute("aria-hidden", "false");
     toggleBtn.setAttribute("aria-expanded", "true");
     toggleBtn.setAttribute("aria-label", "Close menu");
     document.body.classList.add("overflow-hidden");
@@ -159,10 +272,8 @@ const navItems = [
 
   function closeMenu() {
     if (!menu || !toggleBtn) return;
-    menu.classList.add("hidden");
-    menu.classList.remove("flex");
-    if (icon) icon.style.display = "inline-flex";
-    if (text) text.style.display = "none";
+    menu.classList.remove("is-open");
+    menu.setAttribute("aria-hidden", "true");
     toggleBtn.setAttribute("aria-expanded", "false");
     toggleBtn.setAttribute("aria-label", "Open menu");
     document.body.classList.remove("overflow-hidden");
