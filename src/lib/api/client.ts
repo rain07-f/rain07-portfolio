@@ -5,7 +5,7 @@ import type {
   NormalizedPost,
   NormalizedTaxonomyTerm
 } from './types';
-import { normalizePortfolioItem, normalizeBlogPost } from '../content/normalizer';
+import { normalizePortfolioItem, normalizeBlogPost, decodeHtmlEntities } from '../content/normalizer';
 
 // In Astro build/server, process.env or import.meta.env can be accessed
 const BASE_URL = (
@@ -120,7 +120,7 @@ export async function getPortfolioCategories(): Promise<NormalizedTaxonomyTerm[]
   }
   return rawCategories.map(c => ({
     id: c.id,
-    name: c.name,
+    name: decodeHtmlEntities(c.name),
     slug: c.slug,
     taxonomy: c.taxonomy || 'cat-portfolio'
   }));
@@ -136,7 +136,7 @@ export async function getBlogCategories(): Promise<NormalizedTaxonomyTerm[]> {
   }
   return rawCategories.map(c => ({
     id: c.id,
-    name: c.name,
+    name: decodeHtmlEntities(c.name),
     slug: c.slug,
     taxonomy: c.taxonomy || 'category'
   }));

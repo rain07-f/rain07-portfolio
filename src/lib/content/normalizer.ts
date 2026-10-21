@@ -24,7 +24,7 @@ export function extractGalleryImagesFromHtml(html: string): NormalizedGalleryIma
     
     // Extract alt if present
     const altMatch = fullTag.match(/alt=["']([^"']*)["']/i);
-    const alt = altMatch ? altMatch[1] : '';
+    const alt = altMatch ? decodeHtmlEntities(altMatch[1]) : '';
 
     if (src && !images.some(img => img.src === src)) {
       images.push({ src, alt });
@@ -35,11 +35,79 @@ export function extractGalleryImagesFromHtml(html: string): NormalizedGalleryIma
 }
 
 /**
- * Cleans basic HTML tags from an excerpt
+ * Common HTML named entity map for fast lookup
+ */
+const NAMED_ENTITIES: Record<string, string> = {
+  amp: '&',
+  quot: '"',
+  apos: "'",
+  lt: '<',
+  gt: '>',
+  nbsp: ' ',
+  ndash: '–',
+  mdash: '—',
+  lsquo: '‘',
+  rsquo: '’',
+  sbquo: '‚',
+  ldquo: '“',
+  rdquo: '”',
+  bdquo: '„',
+  hellip: '…',
+  laquo: '«',
+  raquo: '»',
+  middot: '·',
+  bull: '•',
+  prime: '′',
+  Prime: '″',
+  trade: '™',
+  copy: '©',
+  reg: '®',
+  euro: '€',
+  pound: '£',
+  yen: '¥',
+  cent: '¢',
+  deg: '°',
+  plusmn: '±',
+  times: '×',
+  divide: '÷',
+  para: '¶',
+  sect: '§'
+};
+
+/**
+ * Safely decodes HTML entities (both numeric decimal/hex and named entities)
+ * without using DOM/browser APIs or dangerous innerHTML.
+ */
+export function decodeHtmlEntities(text: string): string {
+  if (!text || typeof text !== 'string') return '';
+  if (!text.includes('&')) return text;
+
+  return text.replace(/&(#x[0-9a-fA-F]+|#\d+|[a-zA-Z]+);/g, (match, entity) => {
+    // Hexadecimal numeric entity: &#x2013;
+    if (entity.startsWith('#x') || entity.startsWith('#X')) {
+      const code = parseInt(entity.slice(2), 16);
+      return (!Number.isNaN(code) && code >= 0 && code <= 0x10FFFF) ? String.fromCodePoint(code) : match;
+    }
+
+    // Decimal numeric entity: &#8211; or &#039;
+    if (entity.startsWith('#')) {
+      const code = parseInt(entity.slice(1), 10);
+      return (!Number.isNaN(code) && code >= 0 && code <= 0x10FFFF) ? String.fromCodePoint(code) : match;
+    }
+
+    // Named entity: &quot;, &amp;, &ndash;, etc.
+    const lower = entity.toLowerCase();
+    return Object.prototype.hasOwnProperty.call(NAMED_ENTITIES, lower) ? NAMED_ENTITIES[lower] : match;
+  });
+}
+
+/**
+ * Strips HTML tags and decodes HTML entities to produce clean plain text
  */
 export function stripHtml(html: string): string {
   if (!html) return '';
-  return html.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+  const withoutTags = html.replace(/<[^>]+>/g, ' ');
+  return decodeHtmlEntities(withoutTags).replace(/\s+/g, ' ').trim();
 }
 
 /**
@@ -59,20 +127,22 @@ function deriveStatusBadge(slug: string, title: string, categories: NormalizedTa
  * Normalizes a raw WordPress Portfolio item into our clean UI model
  */
 export function normalizePortfolioItem(raw: WPRawPortfolioItem): NormalizedPortfolioItem {
+  const cleanTitle = stripHtml(raw.title?.rendered || 'Untitled Project');
+
   // Extract embedded featured media
   let featuredImage: NormalizedPortfolioItem['featuredImage'] = null;
   const embeddedMedia = raw._embedded?.['wp:featuredmedia']?.[0];
   if (embeddedMedia?.source_url) {
     featuredImage = {
       url: embeddedMedia.source_url,
-      alt: embeddedMedia.alt_text || raw.title?.rendered || 'Project preview',
+      alt: embeddedMedia.alt_text ? decodeHtmlEntities(embeddedMedia.alt_text) : cleanTitle,
       width: embeddedMedia.media_details?.width,
       height: embeddedMedia.media_details?.height
     };
   } else if (raw.yoast_head_json?.og_image?.[0]?.url) {
     featuredImage = {
       url: raw.yoast_head_json.og_image[0].url,
-      alt: raw.title?.rendered || 'Project preview',
+      alt: cleanTitle,
       width: raw.yoast_head_json.og_image[0].width,
       height: raw.yoast_head_json.og_image[0].height
     };
@@ -89,7 +159,7 @@ export function normalizePortfolioItem(raw: WPRawPortfolioItem): NormalizedPortf
       if (term.taxonomy === 'cat-portfolio') {
         categories.push({
           id: term.id,
-          name: term.name,
+          name: decodeHtmlEntities(term.name),
           slug: term.slug,
           taxonomy: term.taxonomy
         });
@@ -97,7 +167,6 @@ export function normalizePortfolioItem(raw: WPRawPortfolioItem): NormalizedPortf
     }
   }
 
-  const cleanTitle = stripHtml(raw.title?.rendered || 'Untitled Project');
   const statusBadge = deriveStatusBadge(raw.slug, cleanTitle, categories);
 
   return {
@@ -111,8 +180,8 @@ export function normalizePortfolioItem(raw: WPRawPortfolioItem): NormalizedPortf
     categories,
     date: raw.date,
     modified: raw.modified,
-    yoastTitle: raw.yoast_head_json?.title,
-    yoastDescription: raw.yoast_head_json?.og_description,
+    yoastTitle: raw.yoast_head_json?.title ? decodeHtmlEntities(raw.yoast_head_json.title) : undefined,
+    yoastDescription: raw.yoast_head_json?.og_description ? decodeHtmlEntities(raw.yoast_head_json.og_description) : undefined,
     yoastImage: raw.yoast_head_json?.og_image?.[0]?.url,
     statusBadge
   };
@@ -122,20 +191,22 @@ export function normalizePortfolioItem(raw: WPRawPortfolioItem): NormalizedPortf
  * Normalizes a raw WordPress Blog Post into our clean UI model
  */
 export function normalizeBlogPost(raw: WPRawPost): NormalizedPost {
+  const cleanTitle = stripHtml(raw.title?.rendered || 'Untitled Post');
+
   // Extract embedded featured media
   let featuredImage: NormalizedPost['featuredImage'] = null;
   const embeddedMedia = raw._embedded?.['wp:featuredmedia']?.[0];
   if (embeddedMedia?.source_url) {
     featuredImage = {
       url: embeddedMedia.source_url,
-      alt: embeddedMedia.alt_text || raw.title?.rendered || 'Blog post image',
+      alt: embeddedMedia.alt_text ? decodeHtmlEntities(embeddedMedia.alt_text) : cleanTitle,
       width: embeddedMedia.media_details?.width,
       height: embeddedMedia.media_details?.height
     };
   } else if (raw.yoast_head_json?.og_image?.[0]?.url) {
     featuredImage = {
       url: raw.yoast_head_json.og_image[0].url,
-      alt: raw.title?.rendered || 'Blog post image',
+      alt: cleanTitle,
       width: raw.yoast_head_json.og_image[0].width,
       height: raw.yoast_head_json.og_image[0].height
     };
@@ -150,14 +221,14 @@ export function normalizeBlogPost(raw: WPRawPost): NormalizedPost {
       if (term.taxonomy === 'category') {
         categories.push({
           id: term.id,
-          name: term.name,
+          name: decodeHtmlEntities(term.name),
           slug: term.slug,
           taxonomy: term.taxonomy
         });
       } else if (term.taxonomy === 'post_tag') {
         tags.push({
           id: term.id,
-          name: term.name,
+          name: decodeHtmlEntities(term.name),
           slug: term.slug,
           taxonomy: term.taxonomy
         });
@@ -165,12 +236,12 @@ export function normalizeBlogPost(raw: WPRawPost): NormalizedPost {
     }
   }
 
-  const authorName = raw._embedded?.author?.[0]?.name || 'RAIN07';
+  const authorName = raw._embedded?.author?.[0]?.name ? decodeHtmlEntities(raw._embedded.author[0].name) : 'RAIN07';
 
   return {
     id: raw.id,
     slug: raw.slug,
-    title: stripHtml(raw.title?.rendered || 'Untitled Post'),
+    title: cleanTitle,
     excerpt: stripHtml(raw.excerpt?.rendered || raw.content?.rendered || ''),
     contentHtml: raw.content?.rendered || '',
     featuredImage,
@@ -179,8 +250,8 @@ export function normalizeBlogPost(raw: WPRawPost): NormalizedPost {
     authorName,
     date: raw.date,
     modified: raw.modified,
-    yoastTitle: raw.yoast_head_json?.title,
-    yoastDescription: raw.yoast_head_json?.og_description,
+    yoastTitle: raw.yoast_head_json?.title ? decodeHtmlEntities(raw.yoast_head_json.title) : undefined,
+    yoastDescription: raw.yoast_head_json?.og_description ? decodeHtmlEntities(raw.yoast_head_json.og_description) : undefined,
     yoastImage: raw.yoast_head_json?.og_image?.[0]?.url
   };
 }
