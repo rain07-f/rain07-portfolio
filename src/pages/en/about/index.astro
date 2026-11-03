@@ -1,0 +1,107 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SectionLabel from '../../../components/SectionLabel.astro';
+import BrutalistButton from '../../../components/BrutalistButton.astro';
+
+const siteUrl = 'https://rain07.my.id';
+
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': `${siteUrl}/en/about/#person`,
+  name: 'Reyno Nur Fahreza',
+  alternateName: ['RAIN07', 'REYNO07'],
+  jobTitle: 'Web Development & IT Infrastructure Engineer',
+  url: `${siteUrl}/en/about/`,
+  sameAs: [
+    'https://www.linkedin.com/in/reyno-nur-fahreza-85908999/'
+  ],
+  knowsAbout: [
+    'Web Development',
+    'WordPress',
+    'Elementor',
+    'Laravel',
+    'PHP',
+    'Astro',
+    'Linux Administration',
+    'Docker',
+    'Proxmox',
+    'MikroTik',
+    'Cloudflare',
+    'IT Infrastructure'
+  ]
+};
+---
+
+<BaseLayout
+  title="About Reyno Nur Fahreza | RAIN07"
+  description="Learn about Reyno Nur Fahreza, an independent technology professional combining web development, IT infrastructure, and technical project engineering."
+  canonical="/en/about/"
+  locale="en"
+  jsonLd={personJsonLd}
+>
+  <div class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
+    <SectionLabel index="04 // ABOUT" title="PROFESSIONAL PROFILE" />
+
+    <!-- Editorial Hero -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mb-12">
+      <!-- Left Asymmetric Editorial Column -->
+      <div class="lg:col-span-7 border-2 border-[#111111] bg-[#FFFFFF] p-8 md:p-12 shadow-hard flex flex-col justify-between">
+        <div>
+          <span class="font-mono text-xs font-bold text-[#0057FF] uppercase tracking-widest block mb-3">
+            // A PRACTICAL APPROACH TO TECHNOLOGY
+          </span>
+          <h1 class="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight leading-[1.05] text-[#111111]">
+            BUILDING DIGITAL EXPERIENCES. MANAGING RELIABLE INFRASTRUCTURE.
+          </h1>
+        </div>
+
+        <p class="font-mono text-sm md:text-base text-[#111111]/85 leading-relaxed my-6 md:my-8">
+          I'm Reyno Nur Fahreza, an independent technology professional with experience across web development, IT infrastructure, and technical project engineering. My work combines software development and infrastructure operations — from building websites and web applications to deploying and managing servers, networks, and IT systems.
+        </p>
+
+        <div class="border-t-2 border-[#111111]/20 pt-6 font-mono text-xs sm:text-sm text-[#111111]/70 leading-relaxed space-y-4">
+          <p>
+            I believe technology should solve real problems, work reliably, and remain practical to maintain over the long term without unnecessary overhead.
+          </p>
+          <div class="pt-2">
+            <BrutalistButton href="/en/about/experience/" variant="primary" class="!text-xs">
+              VIEW COMPLETE CAREER HISTORY (2015 – PRESENT) →
+            </BrutalistButton>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: System Tenets -->
+      <div class="lg:col-span-5 flex flex-col gap-6">
+        <div class="border-2 border-[#111111] bg-[#111111] text-[#F2F0EA] p-6 md:p-8 shadow-hard flex-1 flex flex-col justify-center">
+          <div class="font-mono text-xs font-bold text-[#D9FF00] uppercase tracking-wider mb-2.5">
+            01 // PRACTICAL APPROACH
+          </div>
+          <p class="font-mono text-xs sm:text-sm leading-relaxed text-[#F2F0EA]/90">
+            Understand project requirements and operational realities before selecting tools. Avoid unnecessary complexity and prioritize proven maintainability.
+          </p>
+        </div>
+
+        <div class="border-2 border-[#111111] bg-[#FFFFFF] text-[#111111] p-6 md:p-8 shadow-hard flex-1 flex flex-col justify-center">
+          <div class="font-mono text-xs font-bold text-[#0057FF] uppercase tracking-wider mb-2.5">
+            02 // TECHNICAL BREADTH
+          </div>
+          <p class="font-mono text-xs sm:text-sm leading-relaxed text-[#111111]/90">
+            Mastering both application code and host environments enables fast, accurate troubleshooting across software, web servers, and network layers.
+          </p>
+        </div>
+
+        <div class="border-2 border-[#111111] bg-[#0057FF] text-[#FFFFFF] p-6 md:p-8 shadow-hard flex-1 flex flex-col justify-center">
+          <div class="font-mono text-xs font-bold text-[#FFFFFF] uppercase tracking-wider mb-2.5">
+            03 // HANDS-ON EXECUTION
+          </div>
+          <p class="font-mono text-xs sm:text-sm leading-relaxed text-[#FFFFFF]/90">
+            From technical specifications and BOQ/RAB cost estimation to server provisioning and high-uptime production deployments.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+

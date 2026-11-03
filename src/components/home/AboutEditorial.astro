@@ -1,0 +1,47 @@
+---
+import SectionLabel from '../SectionLabel.astro';
+import BrutalistButton from '../BrutalistButton.astro';
+import { useTranslations } from '../../i18n/utils';
+import type { SupportedLang } from '../../i18n/config';
+
+interface Props {
+  currentLang?: SupportedLang;
+}
+
+const { currentLang = 'id' } = Astro.props;
+const t = useTranslations(currentLang);
+const prefix = currentLang === 'en' ? '/en' : '';
+---
+
+<section id="about" class="border-b-2 border-[#111111] bg-[#F2F0EA] py-16 md:py-24">
+  <div class="max-w-7xl mx-auto px-4 md:px-8">
+    <SectionLabel index={t('about.index')} title={t('about.sectionTitle')} />
+
+    <div class="reveal-item border-2 border-[#111111] bg-[#FFFFFF] p-8 sm:p-10 md:p-14 shadow-hard">
+      <div class="max-w-4xl space-y-6">
+        <span class="font-mono text-xs font-bold text-[#0057FF] uppercase tracking-widest block">
+          // PROFESSIONAL PROFILE
+        </span>
+
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-[#111111] leading-[1.05]">
+          {t('about.headline')}
+        </h2>
+
+        <p class="font-mono text-sm sm:text-base md:text-lg text-[#111111]/85 leading-relaxed pt-2">
+          {t('about.summary')}
+        </p>
+
+        <div class="pt-6 border-t-2 border-[#111111]/20 flex flex-wrap items-center justify-between gap-4">
+          <div class="font-mono text-xs text-[#111111]/70">
+            EXPERIENCE TIMELINE: 2015 – PRESENT · INDEPENDENT & CONTRACT
+          </div>
+
+          <BrutalistButton href={`${prefix}/about/experience/`} variant="primary" class="!text-xs sm:!text-sm">
+            {t('about.experienceCta')}
+          </BrutalistButton>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

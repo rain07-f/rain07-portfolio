@@ -1,8 +1,16 @@
 ---
-// FloatingActions.astro - Reusable floating controls (Back to Top & WhatsApp)
-// Reuses the exact WhatsApp number from ContactSection: 6282243856452
+import { useTranslations } from '../i18n/utils';
+import type { SupportedLang } from '../i18n/config';
+
+interface Props {
+  currentLang?: SupportedLang;
+}
+
+const { currentLang = 'id' } = Astro.props;
+const t = useTranslations(currentLang);
+
 const whatsappNumber = "6282243856452";
-const whatsappText = encodeURIComponent("Hi RAIN07, I'd like to discuss a project.");
+const whatsappText = encodeURIComponent(t('floating.waMsg'));
 const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappText}`;
 ---
 
@@ -20,7 +28,7 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappText}`;
     class="pointer-events-auto opacity-0 invisible translate-y-3 transition-all duration-200 ease-out flex items-center justify-center gap-1.5 px-3 py-2 sm:px-3.5 sm:py-2.5 bg-[#111111] text-[#F2F0EA] border-2 border-[#111111] shadow-hard hover:bg-[#0057FF] hover:text-[#FFFFFF] hover:border-[#111111] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0057FF] font-mono text-xs font-bold tracking-wider cursor-pointer"
   >
     <span aria-hidden="true" class="text-sm leading-none">↑</span>
-    <span>TOP</span>
+    <span>{t('floating.top')}</span>
   </button>
 
   <!-- 2. WHATSAPP BUTTON (Always visible brutalist button, compact rectangular) -->

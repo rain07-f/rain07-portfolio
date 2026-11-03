@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SectionLabel from '../../../components/SectionLabel.astro';
+import BrutalistButton from '../../../components/BrutalistButton.astro';
+import TechnicalDiagram from '../../../components/TechnicalDiagram.astro';
+import { TECH_INVENTORY } from '../../../lib/content/profile';
+
+const siteUrl = 'https://rain07.my.id';
+
+const expertiseJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  'name': 'Expertise & Technology Inventory — RAIN07',
+  'url': `${siteUrl}/en/expertise/`,
+  'description': 'Full technology inventory, system tools, and infrastructure architectural blueprint by Reyno Nur Fahreza.'
+};
+---
+
+<BaseLayout
+  title="Technical Expertise & Infrastructure Blueprint | RAIN07"
+  description="Explore the complete technology stack, DevOps tools, and architectural blueprint utilized by Reyno across web development and server management."
+  canonical="/en/expertise/"
+  locale="en"
+  jsonLd={expertiseJsonLd}
+>
+  <div class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
+    <SectionLabel index="03 // EXPERTISE" title="TECHNOLOGY & BLUEPRINT" />
+
+    <!-- Hero Header -->
+    <div class="border-2 border-[#111111] bg-[#FFFFFF] p-8 md:p-12 shadow-hard mb-12">
+      <div class="max-w-3xl space-y-4">
+        <span class="font-mono text-xs font-bold px-2 py-1 bg-[#0057FF] text-[#FFFFFF]">
+          FULL TECHNICAL SPECIFICATIONS
+        </span>
+        <h1 class="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-[#111111]">
+          EXPERTISE & INFRASTRUCTURE
+        </h1>
+        <p class="font-mono text-sm md:text-base text-[#111111]/80 leading-relaxed">
+          Comprehensive inventory of development frameworks, databases, operating systems, networking tools, and the infrastructure blueprint powering reliable systems.
+        </p>
+      </div>
+
+      <div class="mt-8 pt-6 border-t-2 border-[#111111]/20 flex flex-wrap items-center gap-4">
+        <BrutalistButton href="/en/work/" variant="primary" class="!text-xs">
+          EXPLORE WORK EXAMPLES →
+        </BrutalistButton>
+        <BrutalistButton href="/en/services/" variant="secondary" class="!text-xs">
+          VIEW SERVICES CATALOG →
+        </BrutalistButton>
+      </div>
+    </div>
+
+    <!-- Infrastructure Blueprint Diagram (Relocated from homepage) -->
+    <div class="border-2 border-[#111111] bg-[#FFFFFF] p-6 sm:p-8 md:p-10 shadow-hard mb-16">
+      <div class="border-b-2 border-[#111111] pb-4 mb-8 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <span class="font-mono text-xs font-bold text-[#0057FF] uppercase tracking-wider block mb-1">
+            // ARCHITECTURE BLUEPRINT
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-[#111111]">
+            SYSTEM INFRASTRUCTURE BLUEPRINT
+          </h2>
+        </div>
+        <span class="font-mono text-xs px-2.5 py-1 bg-[#111111] text-[#F2F0EA]">
+          DEBIAN / UBUNTU / NGINX / DOCKER
+        </span>
+      </div>
+
+      <TechnicalDiagram />
+    </div>
+
+    <!-- Full 20-item Technology Inventory -->
+    <div class="space-y-6">
+      <div class="border-b-2 border-[#111111] pb-3">
+        <h2 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-[#111111]">
+          COMPLETE TECHNOLOGY INVENTORY
+        </h2>
+        <p class="font-mono text-xs sm:text-sm text-[#111111]/70 mt-1">
+          20 verified technical competencies and tools.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
+        {TECH_INVENTORY.map((item, idx) => (
+          <div class="reveal-item border-2 border-[#111111] bg-[#FFFFFF] p-4 shadow-hard-interactive flex flex-col justify-between group" style={`--stagger: ${idx % 5};`}>
+            <div class="flex items-center justify-between border-b border-[#111111]/20 pb-2 mb-3">
+              <span class="font-mono text-xs font-black text-[#111111] group-hover:text-[#0057FF] transition-colors">
+                {item.id}
+              </span>
+              <span class="font-mono text-[9px] px-1 bg-[#111111] text-[#F2F0EA] font-semibold uppercase">
+                {item.badge}
+              </span>
+            </div>
+
+            <div class="font-mono font-bold text-xs sm:text-sm tracking-tight text-[#111111] uppercase group-hover:text-[#0057FF] transition-colors">
+              {item.name}
+            </div>
+
+            <div class="font-mono text-[9px] text-[#111111]/60 uppercase tracking-tighter mt-2">
+              {item.category}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+

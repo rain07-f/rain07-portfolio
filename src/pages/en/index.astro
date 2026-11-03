@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/home/Hero.astro';
+import CoreServices from '../../components/home/CoreServices.astro';
+import SelectedWork from '../../components/home/SelectedWork.astro';
+import ExpertiseTech from '../../components/home/ExpertiseTech.astro';
+import AboutEditorial from '../../components/home/AboutEditorial.astro';
+import ContactCta from '../../components/home/ContactCta.astro';
+
+const siteUrl = 'https://rain07.my.id';
+
+const homepageJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/en/#website`,
+      url: `${siteUrl}/en/`,
+      name: 'RAIN07',
+      description: 'Web Development & IT Infrastructure',
+      inLanguage: 'en'
+    },
+    {
+      '@type': 'Person',
+      '@id': `${siteUrl}/#person`,
+      name: 'Reyno Nur Fahreza',
+      alternateName: ['RAIN07', 'REYNO07'],
+      jobTitle: 'Web Development & IT Infrastructure Engineer',
+      url: `${siteUrl}/`,
+      sameAs: [
+        'https://www.linkedin.com/in/reyno-nur-fahreza-85908999/'
+      ],
+      knowsAbout: [
+        'Web Development',
+        'WordPress',
+        'Elementor',
+        'Laravel',
+        'PHP',
+        'Astro',
+        'Linux Administration',
+        'Docker',
+        'Proxmox',
+        'MikroTik',
+        'Cloudflare',
+        'IT Infrastructure'
+      ]
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title="RAIN07 | Web Development & IT Infrastructure"
+  description="Explore web development and IT infrastructure solutions by Reyno, from business websites and applications to reliable server and network systems."
+  canonical="/en/"
+  ogType="website"
+  jsonLd={homepageJsonLd}
+  locale="en"
+>
+  <!-- 01 HERO / INTRODUCTION -->
+  <Hero currentLang="en" />
+
+  <!-- 02 CORE SERVICES (Web Development & IT Infrastructure) -->
+  <CoreServices currentLang="en" />
+
+  <!-- 03 SELECTED PROJECTS (Max 3 verified project cards) -->
+  <SelectedWork currentLang="en" />
+
+  <!-- 04 EXPERTISE & TECHNOLOGIES (4 organized categories) -->
+  <ExpertiseTech currentLang="en" />
+
+  <!-- 05 ABOUT (Concise editorial under 100 words) -->
+  <AboutEditorial currentLang="en" />
+
+  <!-- 06 CONTACT (Direct brutalist contact channels) -->
+  <ContactCta currentLang="en" />
+</BaseLayout>
+

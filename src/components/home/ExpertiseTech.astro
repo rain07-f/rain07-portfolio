@@ -1,0 +1,90 @@
+---
+import SectionLabel from '../SectionLabel.astro';
+import BrutalistButton from '../BrutalistButton.astro';
+import { useTranslations } from '../../i18n/utils';
+import type { SupportedLang } from '../../i18n/config';
+
+interface Props {
+  currentLang?: SupportedLang;
+}
+
+const { currentLang = 'id' } = Astro.props;
+const t = useTranslations(currentLang);
+const prefix = currentLang === 'en' ? '/en' : '';
+
+const categories = [
+  {
+    name: 'WEB DEVELOPMENT',
+    desc: currentLang === 'id' ? 'Framework modern & CMS stabil' : 'Modern frameworks & stable CMS',
+    items: ['WordPress', 'Elementor', 'Laravel', 'PHP', 'Astro']
+  },
+  {
+    name: 'DATABASE',
+    desc: currentLang === 'id' ? 'Relasional & performa query' : 'Relational & query performance',
+    items: ['MySQL', 'MariaDB', 'PostgreSQL']
+  },
+  {
+    name: 'SERVER & DEVOPS',
+    desc: currentLang === 'id' ? 'Lingkungan server & virtualisasi' : 'Server environments & virtualization',
+    items: ['Linux', 'Nginx', 'Docker', 'Proxmox']
+  },
+  {
+    name: 'NETWORK & SECURITY',
+    desc: currentLang === 'id' ? 'Konektivitas, routing & proteksi' : 'Connectivity, routing & edge protection',
+    items: ['MikroTik', 'Cloudflare', 'DNS', 'VPN']
+  }
+];
+---
+
+<section id="expertise" class="border-b-2 border-[#111111] bg-[#F2F0EA] py-16 md:py-24">
+  <div class="max-w-7xl mx-auto px-4 md:px-8">
+    <SectionLabel index={t('expertise.index')} title={t('expertise.sectionTitle')} />
+
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+      <div class="max-w-3xl">
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-[#111111]">
+          {t('expertise.headline')}
+        </h2>
+        <p class="font-mono text-xs sm:text-sm text-[#111111]/75 mt-2">
+          {t('expertise.description')}
+        </p>
+      </div>
+
+      <BrutalistButton href={`${prefix}/expertise/`} variant="secondary" class="self-start md:self-auto !text-xs sm:!text-sm">
+        {t('expertise.viewAll')}
+      </BrutalistButton>
+    </div>
+
+    <!-- 4 Grouped Categories Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {categories.map((cat, idx) => (
+        <div class="reveal-item border-2 border-[#111111] bg-[#FFFFFF] p-6 shadow-hard flex flex-col justify-between group" style={`--stagger: ${idx};`}>
+          <div>
+            <div class="flex items-center justify-between border-b-2 border-[#111111] pb-3 mb-4">
+              <span class="font-mono text-xs font-bold px-2 py-0.5 bg-[#111111] text-[#F2F0EA] group-hover:bg-[#0057FF] group-hover:text-[#FFFFFF] transition-colors">
+                0{idx + 1}
+              </span>
+              <span class="font-mono text-[10px] text-[#0057FF] font-bold">STACK</span>
+            </div>
+
+            <h3 class="font-mono text-base font-bold uppercase tracking-tight text-[#111111] mb-1">
+              {cat.name}
+            </h3>
+            <p class="font-mono text-[11px] text-[#111111]/60 mb-6">
+              {cat.desc}
+            </p>
+          </div>
+
+          <div class="pt-4 border-t-2 border-[#111111]/10 flex flex-wrap gap-2">
+            {cat.items.map((tech) => (
+              <span class="font-mono text-xs px-2.5 py-1 border border-[#111111] bg-[#F2F0EA] text-[#111111] font-semibold group-hover:border-[#0057FF] transition-colors">
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+

@@ -1,16 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Marquee from '../components/Marquee.astro';
-import HeroSection from '../sections/HeroSection.astro';
-import AboutSection from '../sections/AboutSection.astro';
-import ExpertiseSection from '../sections/ExpertiseSection.astro';
-import SelectedWorkSection from '../sections/SelectedWorkSection.astro';
-import InfrastructureSection from '../sections/InfrastructureSection.astro';
-import TechStackSection from '../sections/TechStackSection.astro';
-import ExperienceSection from '../sections/ExperienceSection.astro';
-import ServicesSection from '../sections/ServicesSection.astro';
-import NotesSection from '../sections/NotesSection.astro';
-import ContactSection from '../sections/ContactSection.astro';
+import Hero from '../components/home/Hero.astro';
+import CoreServices from '../components/home/CoreServices.astro';
+import SelectedWork from '../components/home/SelectedWork.astro';
+import ExpertiseTech from '../components/home/ExpertiseTech.astro';
+import AboutEditorial from '../components/home/AboutEditorial.astro';
+import ContactCta from '../components/home/ContactCta.astro';
+
 const siteUrl = 'https://rain07.my.id';
 
 const homepageJsonLd = {
@@ -19,32 +15,33 @@ const homepageJsonLd = {
     {
       '@type': 'WebSite',
       '@id': `${siteUrl}/#website`,
-      url: siteUrl,
+      url: `${siteUrl}/`,
       name: 'RAIN07',
-      description: 'Web Developer & Infrastructure Engineer Portfolio',
-      inLanguage: 'en-US'
+      description: 'Web Development & IT Infrastructure',
+      inLanguage: 'id'
     },
     {
       '@type': 'Person',
       '@id': `${siteUrl}/#person`,
       name: 'Reyno Nur Fahreza',
       alternateName: ['RAIN07', 'REYNO07'],
-      jobTitle: 'Web Developer & Infrastructure Engineer',
-      url: siteUrl,
+      jobTitle: 'Web Development & IT Infrastructure Engineer',
+      url: `${siteUrl}/`,
       sameAs: [
         'https://www.linkedin.com/in/reyno-nur-fahreza-85908999/'
       ],
       knowsAbout: [
         'Web Development',
         'WordPress',
-        'Elementor Pro',
+        'Elementor',
         'Laravel',
         'PHP',
         'Astro',
-        'TypeScript',
         'Linux Administration',
-        'Cloudflare Workers',
-        'Networking',
+        'Docker',
+        'Proxmox',
+        'MikroTik',
+        'Cloudflare',
         'IT Infrastructure'
       ]
     }
@@ -53,42 +50,28 @@ const homepageJsonLd = {
 ---
 
 <BaseLayout
-  title="RAIN07 — Web Developer & Infrastructure Engineer"
-  description="Reyno Nur Fahreza (RAIN07) is a Web Developer & Infrastructure Engineer working across WordPress, Laravel, Linux infrastructure, cloud deployment, and technical systems."
+  title="RAIN07 | Web Development & IT Infrastructure Indonesia"
+  description="Solusi pengembangan website, aplikasi web, dan infrastruktur IT untuk kebutuhan bisnis. Kenali layanan, project, dan keahlian Reyno."
   canonical="/"
   ogType="website"
   jsonLd={homepageJsonLd}
+  locale="id"
 >
-  <!-- Hero Section -->
-  <HeroSection />
+  <!-- 01 HERO / INTRODUCTION -->
+  <Hero currentLang="id" />
 
-  <!-- Dynamic Marquee Bar -->
-  <Marquee text="RAIN07 · WEB DEVELOPER · INFRASTRUCTURE ENGINEER · CLOUDFLARE WORKERS · LINUX · LARAVEL · ASTRO" />
+  <!-- 02 CORE SERVICES (Web Development & IT Infrastructure) -->
+  <CoreServices currentLang="id" />
 
-  <!-- 01 About Section -->
-  <AboutSection />
+  <!-- 03 SELECTED PROJECTS (Max 3 verified project cards) -->
+  <SelectedWork currentLang="id" />
 
-  <!-- 02 Expertise Section -->
-  <ExpertiseSection />
+  <!-- 04 EXPERTISE & TECHNOLOGIES (4 organized categories) -->
+  <ExpertiseTech currentLang="id" />
 
-  <!-- 03 Selected Work Section (Dynamic WordPress CPT) -->
-  <SelectedWorkSection />
+  <!-- 05 ABOUT (Concise editorial under 100 words) -->
+  <AboutEditorial currentLang="id" />
 
-  <!-- 04 Infrastructure Blueprint -->
-  <InfrastructureSection />
-
-  <!-- 05 Technology Stack Inventory -->
-  <TechStackSection />
-
-  <!-- 06 Experience & Roles -->
-  <ExperienceSection />
-
-  <!-- 07 Services Editorial List -->
-  <ServicesSection />
-
-  <!-- 08 Technical Notes (Dynamic WordPress Posts) -->
-  <NotesSection />
-
-  <!-- 09 Contact Section -->
-  <ContactSection />
+  <!-- 06 CONTACT (Direct brutalist contact channels) -->
+  <ContactCta currentLang="id" />
 </BaseLayout>

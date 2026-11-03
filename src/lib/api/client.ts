@@ -14,6 +14,12 @@ const BASE_URL = (
   'https://be-web-por-rey.rey07.my.id'
 ).replace(/\/$/, '');
 
+// In-memory memoization caches for static SSG pre-rendering
+let cachedPortfolioItems: Promise<NormalizedPortfolioItem[]> | null = null;
+let cachedPosts: Promise<NormalizedPost[]> | null = null;
+let cachedPortfolioCategories: Promise<NormalizedTaxonomyTerm[]> | null = null;
+let cachedBlogCategories: Promise<NormalizedTaxonomyTerm[]> | null = null;
+
 /**
  * Low-level safe fetch utility with timeout and error handling
  */
@@ -24,7 +30,8 @@ async function fetchApi<T>(endpoint: string): Promise<T | null> {
       headers: {
         'Accept': 'application/json',
         'User-Agent': 'RAIN07-Astro-SSG/1.0'
-      }
+      },
+      signal: AbortSignal.timeout(10000)
     });
 
     if (!res.ok) {
@@ -44,17 +51,26 @@ async function fetchApi<T>(endpoint: string): Promise<T | null> {
  * Fetch all published portfolio items (using _embed for media and terms)
  */
 export async function getPortfolioItems(): Promise<NormalizedPortfolioItem[]> {
-  const rawItems = await fetchApi<WPRawPortfolioItem[]>('/wp-json/wp/v2/portfolio?_embed&per_page=100&status=publish');
-  if (!rawItems || !Array.isArray(rawItems)) {
-    return [];
+  if (!cachedPortfolioItems) {
+    cachedPortfolioItems = (async () => {
+      const rawItems = await fetchApi<WPRawPortfolioItem[]>('/wp-json/wp/v2/portfolio?_embed&per_page=100&status=publish');
+      if (!rawItems || !Array.isArray(rawItems)) {
+        return [];
+      }
+      return rawItems.map(normalizePortfolioItem);
+    })();
   }
-  return rawItems.map(normalizePortfolioItem);
+  return cachedPortfolioItems;
 }
 
 /**
  * Fetch a single portfolio item by slug
  */
 export async function getPortfolioItemBySlug(slug: string): Promise<NormalizedPortfolioItem | null> {
+  const items = await getPortfolioItems();
+  const match = items.find((p) => p.slug === slug);
+  if (match) return match;
+
   const rawItems = await fetchApi<WPRawPortfolioItem[]>(`/wp-json/wp/v2/portfolio?slug=${encodeURIComponent(slug)}&_embed`);
   if (!rawItems || !Array.isArray(rawItems) || rawItems.length === 0) {
     return null;
@@ -83,13 +99,18 @@ function isPlaceholderPost(slug: string, title?: string): boolean {
  * Excludes default WordPress placeholder posts like 'halo-dunia' / 'hello-world'
  */
 export async function getPosts(): Promise<NormalizedPost[]> {
-  const rawPosts = await fetchApi<WPRawPost[]>('/wp-json/wp/v2/posts?_embed&per_page=100&status=publish');
-  if (!rawPosts || !Array.isArray(rawPosts)) {
-    return [];
+  if (!cachedPosts) {
+    cachedPosts = (async () => {
+      const rawPosts = await fetchApi<WPRawPost[]>('/wp-json/wp/v2/posts?_embed&per_page=100&status=publish');
+      if (!rawPosts || !Array.isArray(rawPosts)) {
+        return [];
+      }
+      return rawPosts
+        .filter(p => !isPlaceholderPost(p.slug, p.title?.rendered))
+        .map(normalizeBlogPost);
+    })();
   }
-  return rawPosts
-    .filter(p => !isPlaceholderPost(p.slug, p.title?.rendered))
-    .map(normalizeBlogPost);
+  return cachedPosts;
 }
 
 /**
@@ -99,6 +120,10 @@ export async function getPostBySlug(slug: string): Promise<NormalizedPost | null
   if (isPlaceholderPost(slug)) {
     return null;
   }
+  const posts = await getPosts();
+  const match = posts.find((p) => p.slug === slug);
+  if (match) return match;
+
   const rawPosts = await fetchApi<WPRawPost[]>(`/wp-json/wp/v2/posts?slug=${encodeURIComponent(slug)}&_embed`);
   if (!rawPosts || !Array.isArray(rawPosts) || rawPosts.length === 0) {
     return null;
@@ -114,30 +139,40 @@ export async function getPostBySlug(slug: string): Promise<NormalizedPost | null
  * Fetch portfolio categories (cat-portfolio)
  */
 export async function getPortfolioCategories(): Promise<NormalizedTaxonomyTerm[]> {
-  const rawCategories = await fetchApi<Array<{ id: number; name: string; slug: string; taxonomy: string }>>('/wp-json/wp/v2/cat-portfolio');
-  if (!rawCategories || !Array.isArray(rawCategories)) {
-    return [];
+  if (!cachedPortfolioCategories) {
+    cachedPortfolioCategories = (async () => {
+      const rawCategories = await fetchApi<Array<{ id: number; name: string; slug: string; taxonomy: string }>>('/wp-json/wp/v2/cat-portfolio');
+      if (!rawCategories || !Array.isArray(rawCategories)) {
+        return [];
+      }
+      return rawCategories.map(c => ({
+        id: c.id,
+        name: decodeHtmlEntities(c.name),
+        slug: c.slug,
+        taxonomy: c.taxonomy || 'cat-portfolio'
+      }));
+    })();
   }
-  return rawCategories.map(c => ({
-    id: c.id,
-    name: decodeHtmlEntities(c.name),
-    slug: c.slug,
-    taxonomy: c.taxonomy || 'cat-portfolio'
-  }));
+  return cachedPortfolioCategories;
 }
 
 /**
  * Fetch blog categories
  */
 export async function getBlogCategories(): Promise<NormalizedTaxonomyTerm[]> {
-  const rawCategories = await fetchApi<Array<{ id: number; name: string; slug: string; taxonomy: string }>>('/wp-json/wp/v2/categories');
-  if (!rawCategories || !Array.isArray(rawCategories)) {
-    return [];
+  if (!cachedBlogCategories) {
+    cachedBlogCategories = (async () => {
+      const rawCategories = await fetchApi<Array<{ id: number; name: string; slug: string; taxonomy: string }>>('/wp-json/wp/v2/categories');
+      if (!rawCategories || !Array.isArray(rawCategories)) {
+        return [];
+      }
+      return rawCategories.map(c => ({
+        id: c.id,
+        name: decodeHtmlEntities(c.name),
+        slug: c.slug,
+        taxonomy: c.taxonomy || 'category'
+      }));
+    })();
   }
-  return rawCategories.map(c => ({
-    id: c.id,
-    name: decodeHtmlEntities(c.name),
-    slug: c.slug,
-    taxonomy: c.taxonomy || 'category'
-  }));
+  return cachedBlogCategories;
 }

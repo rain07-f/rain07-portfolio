@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionLabel from '../../components/SectionLabel.astro';
+import BrutalistButton from '../../components/BrutalistButton.astro';
+import { SERVICES_LIST } from '../../lib/content/profile';
+
+const siteUrl = 'https://rain07.my.id';
+
+const servicesJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  'name': 'Layanan Web Development & IT Infrastructure',
+  'provider': {
+    '@type': 'Person',
+    'name': 'Reyno Nur Fahreza',
+    'url': siteUrl
+  },
+  'areaServed': 'Indonesia & International',
+  'description': 'Layanan pengembangan website bisnis, WordPress, aplikasi web, dan pengelolaan infrastruktur IT server Linux.'
+};
+---
+
+<BaseLayout
+  title="Layanan Web Development & IT Infrastructure | RAIN07"
+  description="Solusi pengembangan website bisnis, WordPress, aplikasi web kustom, serta pengelolaan infrastruktur server Linux dan jaringan."
+  canonical="/services/"
+  locale="id"
+  jsonLd={servicesJsonLd}
+>
+  <div class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
+    <SectionLabel index="01 // LAYANAN" title="SERVICES CATALOG" />
+
+    <!-- Hero Header -->
+    <div class="border-2 border-[#111111] bg-[#FFFFFF] p-8 md:p-12 shadow-hard mb-12">
+      <div class="max-w-3xl space-y-4">
+        <span class="font-mono text-xs font-bold px-2 py-1 bg-[#0057FF] text-[#FFFFFF]">
+          COMMERCIAL SERVICES // WEB & INFRASTRUCTURE
+        </span>
+        <h1 class="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-[#111111]">
+          LAYANAN TEKNOLOGI
+        </h1>
+        <p class="font-mono text-sm md:text-base text-[#111111]/80 leading-relaxed">
+          Membantu bisnis, korporat, dan UMKM merancang, membangun, dan merawat ekosistem digital yang berkinerja tinggi serta infrastruktur server yang stabil.
+        </p>
+      </div>
+
+      <div class="mt-8 pt-6 border-t-2 border-[#111111]/20 flex flex-wrap items-center gap-4">
+        <BrutalistButton href="/#contact" variant="primary" class="!text-xs">
+          KONSULTASIKAN KEBUTUHAN ANDA →
+        </BrutalistButton>
+        <BrutalistButton href="/work/" variant="secondary" class="!text-xs">
+          LIHAT CONTOH PROJECT →
+        </BrutalistButton>
+      </div>
+    </div>
+
+    <!-- Editorial Service List -->
+    <div class="reveal-item border-2 border-[#111111] bg-[#FFFFFF] shadow-hard divide-y-2 divide-[#111111]">
+      {SERVICES_LIST.map((srv) => (
+        <article class="p-6 md:p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6 hover:bg-[#F2F0EA]/40 transition-colors">
+          <div class="lg:w-1/3">
+            <div class="flex items-center gap-3">
+              <span class="font-mono text-sm font-black px-2.5 py-1 bg-[#0057FF] text-[#FFFFFF]">
+                {srv.id}
+              </span>
+              <h2 class="text-lg md:text-xl font-bold uppercase tracking-tight text-[#111111]">
+                {srv.title}
+              </h2>
+            </div>
+          </div>
+
+          <div class="lg:w-1/3 font-mono text-xs md:text-sm text-[#111111]/80 leading-relaxed">
+            {srv.description}
+          </div>
+
+          <div class="lg:w-1/3 font-mono text-xs space-y-1.5">
+            <div class="text-[#0057FF] font-bold uppercase mb-1">// DELIVERABLES</div>
+            {srv.deliverables.map((d) => (
+              <div class="text-[#111111]/90 flex items-center gap-2">
+                <span class="text-[#0057FF] font-bold">▪</span>
+                <span>{d}</span>
+              </div>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+

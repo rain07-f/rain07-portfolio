@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FloatingActions from '../components/FloatingActions.astro';
 import SEO from '../components/SEO.astro';
+import type { SupportedLang } from '../i18n/config';
 
 interface Props {
   title?: string;
@@ -18,13 +19,14 @@ interface Props {
   author?: string;
   section?: string;
   jsonLd?: Record<string, any> | Array<Record<string, any>>;
+  locale?: SupportedLang;
 }
 
 const {
-  title = 'RAIN07 — Web Developer & Infrastructure Engineer',
-  description = 'Reyno Nur Fahreza (RAIN07) is a Web Developer & Infrastructure Engineer working across WordPress, Laravel, Linux infrastructure, cloud deployment, and technical systems.',
+  title = 'RAIN07 — Web Development & IT Infrastructure',
+  description = 'Solusi pengembangan website, aplikasi web, dan infrastruktur IT untuk kebutuhan bisnis.',
   ogImage = 'https://be-web-por-rey.rey07.my.id/wp-content/uploads/2026/09/pembuatan-website-featured-1788341128.png',
-  imageAlt = 'RAIN07 — Web Developer & Infrastructure Engineer',
+  imageAlt = 'RAIN07 — Web Development & IT Infrastructure',
   ogType = 'website',
   canonical,
   noindex = false,
@@ -32,12 +34,13 @@ const {
   modifiedTime,
   author = 'Reyno Nur Fahreza',
   section,
-  jsonLd
+  jsonLd,
+  locale = 'id'
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -98,15 +101,16 @@ const {
       author={author}
       section={section}
       jsonLd={jsonLd}
+      locale={locale}
     />
   </head>
   <body class="min-h-screen flex flex-col bg-[#F2F0EA] text-[#111111]">
-    <Header />
+    <Header currentLang={locale} />
     <main class="flex-1">
       <slot />
     </main>
-    <Footer />
-    <FloatingActions />
+    <Footer currentLang={locale} />
+    <FloatingActions currentLang={locale} />
 
     <!-- Unified Motion System: Progressive Scroll Reveal -->
     <script>
@@ -162,4 +166,3 @@ const {
     </script>
   </body>
 </html>
-

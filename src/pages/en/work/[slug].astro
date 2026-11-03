@@ -1,0 +1,334 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SectionLabel from '../../../components/SectionLabel.astro';
+import BrutalistButton from '../../../components/BrutalistButton.astro';
+import SystemState from '../../../components/SystemState.astro';
+import { getPortfolioItems } from '../../../lib/api/client';
+import type { NormalizedPortfolioItem } from '../../../lib/api/types';
+
+export async function getStaticPaths() {
+  const items = await getPortfolioItems();
+  return items.map((item) => ({
+    params: { slug: item.slug },
+    props: { project: item }
+  }));
+}
+
+interface Props {
+  project: NormalizedPortfolioItem;
+}
+
+const { project } = Astro.props;
+
+// Fetch all items to compute next project link
+const allItems = await getPortfolioItems();
+const currentIndex = allItems.findIndex((p) => p.slug === project.slug);
+const nextProject = currentIndex >= 0 && currentIndex < allItems.length - 1 ? allItems[currentIndex + 1] : allItems[0];
+
+const siteUrl = 'https://rain07.my.id';
+const pageCanonical = `/en/work/${project.slug}/`;
+const pageFullUrl = `${siteUrl}${pageCanonical}`;
+
+// Extract clean description without HTML
+const pageDescription = project.yoastDescription || project.excerpt || `Technical case study and architectural overview of ${project.title} by RAIN07.`;
+const pageTitle = `${project.title} — RAIN07`;
+const primaryImage = project.featuredImage?.url || project.yoastImage;
+
+// Structured data for Portfolio Detail
+const detailJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'BreadcrumbList',
+      'itemListElement': [
+        {
+          '@type': 'ListItem',
+          'position': 1,
+          'name': 'Home',
+          'item': `${siteUrl}/en/`
+        },
+        {
+          '@type': 'ListItem',
+          'position': 2,
+          'name': 'Work',
+          'item': `${siteUrl}/en/work/`
+        },
+        {
+          '@type': 'ListItem',
+          'position': 3,
+          'name': project.title,
+          'item': pageFullUrl
+        }
+      ]
+    },
+    {
+      '@type': 'CreativeWork',
+      '@id': `${pageFullUrl}#project`,
+      'url': pageFullUrl,
+      'name': project.title,
+      'headline': project.title,
+      'description': pageDescription,
+      'datePublished': project.date,
+      'dateModified': project.modified || project.date,
+      ...(primaryImage ? { 'image': primaryImage } : {}),
+      'author': {
+        '@type': 'Person',
+        'name': 'Reyno Nur Fahreza',
+        'alternateName': 'RAIN07',
+        'url': siteUrl
+      },
+      'creator': {
+        '@type': 'Person',
+        'name': 'Reyno Nur Fahreza',
+        'alternateName': 'RAIN07',
+        'url': siteUrl
+      },
+      'mainEntityOfPage': {
+        '@type': 'WebPage',
+        '@id': pageFullUrl
+      }
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title={project ? pageTitle : '404 — Work Not Found // RAIN07'}
+  description={project ? pageDescription : 'The requested project could not be found in the work archive.'}
+  canonical={project ? pageCanonical : undefined}
+  ogImage={primaryImage}
+  imageAlt={project?.featuredImage?.alt || project?.title}
+  ogType="website"
+  noindex={!project}
+  publishedTime={project?.date}
+  modifiedTime={project ? (project.modified || project.date) : undefined}
+  author="Reyno Nur Fahreza"
+  jsonLd={project ? detailJsonLd : undefined}
+  locale="en"
+>
+  <div class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
+    <SectionLabel index="02 // SELECTED WORK" title="PROJECT DETAIL" />
+
+    {!project ? (
+      <SystemState
+        statusCode="404"
+        statusType="WORK NOT FOUND"
+        systemName="RAIN07 // ARCHIVE"
+        subtitle="PROJECT RECORD MISSING"
+        title="WORK NOT FOUND."
+        description="The requested project case study could not be found in the work archive or has been unpublished from the repository."
+        technicalMessage="Custom Post Type lookup yielded no matching entity."
+        primaryAction={{
+          label: "← ALL PROJECTS",
+          href: "/en/work",
+          variant: "primary"
+        }}
+        secondaryAction={{
+          label: "BACK TO HOME →",
+          href: "/en/",
+          variant: "secondary"
+        }}
+      />
+    ) : (
+    <>
+    <!-- Project Header Block -->
+    <div class="border-2 border-[#111111] bg-[#FFFFFF] p-6 sm:p-10 md:p-14 shadow-hard mb-12">
+      <!-- Breadcrumb Meta bar -->
+      <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-[#111111] pb-4 mb-6 font-mono text-xs">
+        <div class="flex items-center gap-2">
+          <a href="/en/work" class="text-[#0057FF] hover:underline font-bold">WORK</a>
+          <span class="text-[#111111]/40">/</span>
+          <span class="text-[#111111]/70 truncate max-w-[200px] sm:max-w-xs">{project.slug}</span>
+        </div>
+        <div class="flex items-center gap-2">
+          {project.categories.map((c) => (
+            <span class="px-2 py-0.5 bg-[#111111] text-[#F2F0EA] font-semibold text-[10px] uppercase">
+              {c.name}
+            </span>
+          ))}
+          <span class="px-2 py-0.5 border border-[#111111] font-bold text-[10px] bg-[#0057FF] text-[#FFFFFF]">
+            [{project.statusBadge}]
+          </span>
+        </div>
+      </div>
+
+      <h1 class="text-3xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-[#111111] leading-none mb-6">
+        {project.title}
+      </h1>
+
+      {project.excerpt && (
+        <p class="font-mono text-base md:text-lg text-[#111111]/85 max-w-3xl leading-relaxed mb-6">
+          {project.excerpt}
+        </p>
+      )}
+
+      <!-- Metadata Matrix -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t-2 border-[#111111]/20 font-mono text-xs">
+        <div>
+          <div class="text-[#111111]/60 uppercase text-[10px]">PUBLISHED</div>
+          <div class="font-bold text-[#111111]">
+            {new Date(project.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+          </div>
+        </div>
+        <div>
+          <div class="text-[#111111]/60 uppercase text-[10px]">LAST UPDATED</div>
+          <div class="font-bold text-[#111111]">
+            {new Date(project.modified).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+          </div>
+        </div>
+        <div>
+          <div class="text-[#111111]/60 uppercase text-[10px]">ROLE</div>
+          <div class="font-bold text-[#0057FF]">ENGINEERING / WEB</div>
+        </div>
+        <div>
+          <div class="text-[#111111]/60 uppercase text-[10px]">CMS ORIGIN</div>
+          <div class="font-bold text-[#111111]">WP HEADLESS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content & Sidebar Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <!-- Left Column: Primary Case Study Body & Gallery -->
+      <div class="lg:col-span-8 space-y-8">
+        <!-- Featured Image -->
+        {project.featuredImage && (
+          <div class="border-2 border-[#111111] bg-[#111111] shadow-hard overflow-hidden">
+            <img
+              src={project.featuredImage.url}
+              alt={project.featuredImage.alt || project.title}
+              width={project.featuredImage.width || 1200}
+              height={project.featuredImage.height || 675}
+              loading="eager"
+              class="w-full h-auto object-cover max-h-[500px]"
+            />
+            <div class="bg-[#FFFFFF] p-2.5 border-t-2 border-[#111111] font-mono text-xs text-[#111111]/70 flex items-center justify-between">
+              <span>PRIMARY FEATURED VISUAL // REPOSITORY ASSET</span>
+              <span>{project.slug}</span>
+            </div>
+          </div>
+        )}
+
+        <!-- Editorial Content -->
+        <article class="border-2 border-[#111111] bg-[#FFFFFF] p-6 sm:p-10 shadow-hard space-y-6 font-mono text-sm leading-relaxed text-[#111111]">
+          <div class="border-b-2 border-[#111111] pb-3 mb-6">
+            <h2 class="font-mono text-xs font-bold text-[#0057FF] uppercase tracking-widest">
+              // CASE STUDY & ARCHITECTURAL SUMMARY
+            </h2>
+          </div>
+
+          <!-- WordPress Rendered Body -->
+          {project.contentHtml ? (
+            <div class="wordpress-content space-y-4" set:html={project.contentHtml} />
+          ) : (
+            <div class="p-6 border border-[#111111] bg-[#F2F0EA] text-[#111111]/80">
+              No detailed documentation body published for this item. Refer to metadata and screenshots below.
+            </div>
+          )}
+        </article>
+
+        <!-- Gutenberg Extracted Gallery (if available) -->
+        {project.galleryImages.length > 0 && (
+          <div class="border-2 border-[#111111] bg-[#FFFFFF] p-6 sm:p-8 shadow-hard space-y-6">
+            <div class="border-b-2 border-[#111111] pb-3 flex items-center justify-between">
+              <h3 class="font-mono text-xs font-bold text-[#0057FF] uppercase tracking-widest">
+                // EXTRACTED ARTIFACTS ({project.galleryImages.length})
+              </h3>
+              <span class="font-mono text-xs text-[#111111]/60">GUTENBERG GALLERY</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {project.galleryImages.map((img, i) => (
+                <div class="border-2 border-[#111111] bg-[#F2F0EA] p-2 space-y-2">
+                  <img
+                    src={img.src}
+                    alt={img.alt || `Gallery Image ${i + 1}`}
+                    class="w-full h-48 object-cover border border-[#111111]"
+                    loading="lazy"
+                  />
+                  <div class="font-mono text-[10px] text-[#111111]/70 truncate">
+                    FIG {i + 1}: {img.alt || `Asset capture ${i + 1}`}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <!-- Right Column: Metadata Sidebar -->
+      <div class="lg:col-span-4 space-y-6">
+        <!-- Project Scope Panel -->
+        <div class="border-2 border-[#111111] bg-[#FFFFFF] p-6 shadow-hard space-y-4 font-mono text-xs">
+          <div class="font-bold text-[#0057FF] uppercase tracking-wider border-b-2 border-[#111111] pb-2">
+            // PROJECT METRICS
+          </div>
+          <div>
+            <span class="text-[#111111]/60 block mb-0.5">CATEGORY:</span>
+            <span class="font-bold text-[#111111]">
+              {project.categories.length > 0 ? project.categories.map(c => c.name).join(', ') : 'Uncategorized'}
+            </span>
+          </div>
+          <div>
+            <span class="text-[#111111]/60 block mb-0.5">STATUS:</span>
+            <span class="font-bold text-[#111111]">PRODUCTION / DELIVERED</span>
+          </div>
+
+          <div class="pt-2 border-t border-[#111111]/20">
+            <span class="text-[#111111]/60 block mb-1">TECHNICAL SPECIFICATIONS:</span>
+            <ul class="space-y-1 text-[#111111]">
+              <li class="flex items-center gap-1.5">
+                <span class="text-[#0057FF]">▪</span> WordPress & Elementor
+              </li>
+              <li class="flex items-center gap-1.5">
+                <span class="text-[#0057FF]">▪</span> Performance Optimization
+              </li>
+              <li class="flex items-center gap-1.5">
+                <span class="text-[#0057FF]">▪</span> Hosting & Server Configuration
+              </li>
+            </ul>
+          </div>
+
+          <div class="pt-4 border-t-2 border-[#111111]/20">
+            <BrutalistButton href="/en/work" variant="primary" class="w-full text-center">
+              ← ALL PROJECTS
+            </BrutalistButton>
+          </div>
+        </div>
+
+        <!-- Next Project Card -->
+        {nextProject && (
+          <div class="border-2 border-[#111111] bg-[#F2F0EA] p-6 shadow-hard space-y-3">
+            <div class="font-mono text-[10px] font-bold text-[#0057FF] uppercase tracking-widest">
+              NEXT ENTRY
+            </div>
+            <h4 class="font-bold text-lg text-[#111111]">
+              {nextProject.title}
+            </h4>
+            <BrutalistButton href={`/en/work/${nextProject.slug}`} variant="secondary" class="!px-3 !py-2 !text-xs">
+              NEXT PROJECT →
+            </BrutalistButton>
+          </div>
+        )}
+      </div>
+    </div>
+    </>
+    )}
+  </div>
+</BaseLayout>
+
+<style is:global>
+  .wordpress-content img {
+    border: 2px solid #111111;
+    margin: 1.5rem 0;
+    max-width: 100%;
+    height: auto;
+  }
+  .wordpress-content figure {
+    margin: 1.5rem 0;
+  }
+  .wordpress-content p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+  }
+</style>

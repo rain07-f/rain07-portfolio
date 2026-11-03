@@ -1,0 +1,39 @@
+---
+import { supportedLangs, langLabels, type SupportedLang } from '../i18n/config';
+import { getLocalizedPath } from '../i18n/utils';
+
+interface Props {
+  currentLang: SupportedLang;
+  class?: string;
+}
+
+const { currentLang, class: className = '' } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<div class={`inline-flex items-center border-2 border-[#111111] bg-[#FFFFFF] shadow-hard font-mono text-xs font-bold ${className}`} role="navigation" aria-label="Language selection">
+  {supportedLangs.map((lang, idx) => {
+    const isActive = lang === currentLang;
+    const targetUrl = getLocalizedPath(currentPath, lang);
+    const isFirst = idx === 0;
+
+    return (
+      <a
+        href={targetUrl}
+        hreflang={lang}
+        class={`px-2.5 py-1 transition-colors select-none ${
+          !isFirst ? 'border-l-2 border-[#111111]' : ''
+        } ${
+          isActive
+            ? 'bg-[#111111] text-[#FFFFFF] pointer-events-none'
+            : 'bg-[#FFFFFF] text-[#111111] hover:bg-[#0057FF] hover:text-[#FFFFFF]'
+        }`}
+        aria-current={isActive ? 'true' : undefined}
+        title={lang === 'id' ? 'Bahasa Indonesia' : 'English'}
+      >
+        {langLabels[lang]}
+      </a>
+    );
+  })}
+</div>
+

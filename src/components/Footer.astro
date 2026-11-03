@@ -1,5 +1,16 @@
 ---
+import { useTranslations } from '../i18n/utils';
+import type { SupportedLang } from '../i18n/config';
+
+interface Props {
+  currentLang?: SupportedLang;
+}
+
+const { currentLang = 'id' } = Astro.props;
 const currentYear = new Date().getFullYear();
+const t = useTranslations(currentLang);
+const prefix = currentLang === 'en' ? '/en' : '';
+const homeHref = currentLang === 'en' ? '/en/' : '/';
 ---
 
 <footer class="bg-[#111111] text-[#F2F0EA] border-t-2 border-[#111111] mt-20">
@@ -10,15 +21,17 @@ const currentYear = new Date().getFullYear();
       <!-- Col 1: Brand & Spec -->
       <div class="md:col-span-5 space-y-4">
         <div class="flex items-center gap-3">
-          <img
-            src="/images/rain07-logo-360w.png"
-            alt="Rain07 Logo"
-            width="360"
-            height="101"
-            class="h-10 w-auto object-contain invert brightness-0 invert-1 block"
-            loading="lazy"
-            decoding="async"
-          />
+          <a href={homeHref} class="inline-block hover:opacity-85 transition-opacity">
+            <img
+              src="/images/rain07-logo-360w.png"
+              alt="Rain07 Logo"
+              width="360"
+              height="101"
+              class="h-9 sm:h-10 w-auto object-contain invert brightness-0 invert-1 block"
+              loading="lazy"
+              decoding="async"
+            />
+          </a>
           <span
             class="font-mono text-xs px-2 py-0.5 bg-[#0057FF] text-[#FFFFFF] font-bold"
             >R07</span
@@ -27,12 +40,12 @@ const currentYear = new Date().getFullYear();
         <p
           class="font-mono text-xs md:text-sm text-[#F2F0EA]/80 max-w-sm leading-relaxed"
         >
-          Web development, WordPress, Linux, and IT infrastructure.
+          {t('footer.tagline')}
         </p>
         <div
           class="font-mono text-[11px] text-[#F2F0EA]/50 uppercase tracking-wider"
         >
-          INDEPENDENT WEB & IT WORK
+          {t('footer.badge')}
         </div>
       </div>
 
@@ -41,44 +54,42 @@ const currentYear = new Date().getFullYear();
         <div
           class="font-mono text-xs font-bold text-[#0057FF] tracking-widest uppercase mb-3"
         >
-          // INDEX
+          {t('footer.indexTitle')}
         </div>
-        <ul class="space-y-1 font-mono text-xs">
+        <ul class="space-y-1.5 font-mono text-xs">
           <li>
-            <a href="/" class="hover:text-[#0057FF] transition-colors"
+            <a href={homeHref} class="hover:text-[#0057FF] transition-colors"
               >00 // HOME</a
             >
           </li>
           <li>
-            <a href="/#about" class="hover:text-[#0057FF] transition-colors"
-              >01 // ABOUT</a
+            <a href={`${prefix}/services/`} class="hover:text-[#0057FF] transition-colors"
+              >01 // {t('nav.services')}</a
             >
           </li>
           <li>
-            <a href="/#expertise" class="hover:text-[#0057FF] transition-colors"
-              >02 // CAPABILITIES</a
+            <a href={`${prefix}/work/`} class="hover:text-[#0057FF] transition-colors"
+              >02 // {t('nav.work')}</a
             >
           </li>
           <li>
-            <a href="/work" class="hover:text-[#0057FF] transition-colors"
-              >03 // SELECTED WORK</a
+            <a href={`${prefix}/expertise/`} class="hover:text-[#0057FF] transition-colors"
+              >03 // {t('nav.expertise')}</a
             >
           </li>
           <li>
-            <a
-              href="/#infrastructure"
-              class="hover:text-[#0057FF] transition-colors"
-              >04 // INFRASTRUCTURE</a
+            <a href={`${prefix}/about/`} class="hover:text-[#0057FF] transition-colors"
+              >04 // {t('nav.about')}</a
             >
           </li>
           <li>
-            <a href="/notes" class="hover:text-[#0057FF] transition-colors"
-              >08 // TECHNICAL NOTES</a
+            <a href={`${prefix}/notes/`} class="hover:text-[#0057FF] transition-colors"
+              >05 // {t('nav.notes')}</a
             >
           </li>
           <li>
-            <a href="/#contact" class="hover:text-[#0057FF] transition-colors"
-              >09 // CONTACT</a
+            <a href={`${prefix}/#contact`} class="hover:text-[#0057FF] transition-colors"
+              >06 // {t('nav.contact')}</a
             >
           </li>
         </ul>
@@ -89,14 +100,16 @@ const currentYear = new Date().getFullYear();
         <div
           class="font-mono text-xs font-bold text-[#0057FF] tracking-widest uppercase mb-3"
         >
-          // SITE DETAILS
+          {t('footer.specTitle')}
         </div>
         <div
           class="font-mono text-xs space-y-1.5 text-[#F2F0EA]/80 bg-[#1A1A1A] p-3 border border-[#F2F0EA]/20"
         >
           <div>
-            <span class="text-[#0057FF]">FRONTEND:</span> Astro + TypeScript + Tailwind
-            CSS
+            <span class="text-[#0057FF]">CORE:</span> Web Development & IT Infrastructure
+          </div>
+          <div>
+            <span class="text-[#0057FF]">FRONTEND:</span> Astro + TypeScript + Tailwind CSS
           </div>
           <div>
             <span class="text-[#0057FF]">RUNTIME:</span> Cloudflare Workers Edge
@@ -110,14 +123,14 @@ const currentYear = new Date().getFullYear();
       class="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 font-mono text-[11px] text-[#F2F0EA]/60"
     >
       <div>
-        © {currentYear} RAIN07. REYNO07. ALL RIGHTS RESERVED.
+        © {currentYear} RAIN07. REYNO07. {t('footer.allRights')}
       </div>
       <div class="flex items-center gap-4">
         <span>DIGITAL BRUTALISM</span>
         <span>•</span>
-        <span>NO TRACKERS</span>
+        <span>STATIC SSG</span>
         <span>•</span>
-        <span>STATIC GENERATION</span>
+        <span>INDONESIA</span>
       </div>
     </div>
   </div>

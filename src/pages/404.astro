@@ -7,33 +7,39 @@ import BrutalistButton from '../components/BrutalistButton.astro';
 const validRoutes = [
   {
     code: '00',
-    label: 'HOME',
+    label: 'HOME / BERANDA',
     href: '/',
-    description: 'Portfolio overview, background, and full engineering profile',
+    description: 'Portfolio overview, background, and core specializations',
   },
   {
     code: '01',
-    label: 'SELECTED WORK',
+    label: 'SERVICES / LAYANAN',
+    href: '/services/',
+    description: 'Web development and IT infrastructure solutions',
+  },
+  {
+    code: '02',
+    label: 'SELECTED WORK / PROJECT',
     href: '/work/',
     description: 'Case studies, web applications, and production systems',
   },
   {
-    code: '02',
-    label: 'TECHNICAL NOTES',
-    href: '/notes/',
-    description: 'Articles on Linux, WordPress, networking, and deployment',
-  },
-  {
     code: '03',
-    label: 'CAPABILITIES',
-    href: '/#expertise',
-    description: 'Full-stack development, server administration, and DevOps',
+    label: 'EXPERTISE & BLUEPRINT',
+    href: '/expertise/',
+    description: 'Complete technology inventory and infrastructure architecture',
   },
   {
     code: '04',
-    label: 'CONTACT',
-    href: '/#contact',
-    description: 'Direct inquiry, technical consulting, and project briefing',
+    label: 'ABOUT & EXPERIENCE',
+    href: '/about/',
+    description: 'Professional background, philosophy, and verified career history',
+  },
+  {
+    code: '05',
+    label: 'TECHNICAL NOTES',
+    href: '/notes/',
+    description: 'Articles on Linux, WordPress, networking, and deployment',
   },
 ];
 ---

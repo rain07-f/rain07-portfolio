@@ -1,0 +1,116 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SectionLabel from '../../../components/SectionLabel.astro';
+import BlogCard from '../../../components/BlogCard.astro';
+import SystemState from '../../../components/SystemState.astro';
+import { getPosts, getBlogCategories } from '../../../lib/api/client';
+
+const posts = await getPosts();
+const categories = await getBlogCategories();
+const siteUrl = 'https://rain07.my.id';
+
+const notesJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'BreadcrumbList',
+      'itemListElement': [
+        {
+          '@type': 'ListItem',
+          'position': 1,
+          'name': 'Home',
+          'item': `${siteUrl}/en/`
+        },
+        {
+          '@type': 'ListItem',
+          'position': 2,
+          'name': 'Notes',
+          'item': `${siteUrl}/en/notes/`
+        }
+      ]
+    },
+    {
+      '@type': 'CollectionPage',
+      '@id': `${siteUrl}/en/notes/#webpage`,
+      'url': `${siteUrl}/en/notes/`,
+      'name': 'Technical Notes — RAIN07',
+      'description': 'Engineering journal, notes on web development, Linux systems, network architecture, and performance optimization.'
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title="Technical Notes & Engineering Journal — RAIN07"
+  description="Engineering journal, notes on web development, Linux systems, network architecture, and performance optimization."
+  canonical="/en/notes/"
+  ogType="website"
+  noindex={posts.length === 0}
+  jsonLd={notesJsonLd}
+  locale="en"
+>
+  <div class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
+    <SectionLabel index="05 // JOURNAL" title="TECHNICAL NOTES" />
+
+    <!-- Intro Header -->
+    <div class="border-2 border-[#111111] bg-[#FFFFFF] p-8 md:p-12 shadow-hard mb-12">
+      <div class="max-w-3xl space-y-4">
+        <span class="font-mono text-xs font-bold px-2 py-1 bg-[#0057FF] text-[#FFFFFF]">
+          LIVE DATA STREAM // WORDPRESS POSTS
+        </span>
+        <h1 class="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-[#111111]">
+          TECHNICAL NOTES
+        </h1>
+        <p class="font-mono text-sm md:text-base text-[#111111]/80 leading-relaxed">
+          Observations, technical references, server configurations, and web development documentation synced directly from the headless WordPress instance.
+        </p>
+      </div>
+
+      <!-- Categories Filter bar -->
+      {categories.length > 0 && (
+        <div class="mt-8 pt-6 border-t-2 border-[#111111]/20 flex flex-wrap items-center gap-2 font-mono text-xs">
+          <span class="font-bold text-[#111111] mr-2">TAXONOMY:</span>
+          <span class="px-2 py-1 bg-[#111111] text-[#F2F0EA] font-semibold">ALL ({posts.length})</span>
+          {categories.map((cat) => (
+            <span class="px-2 py-1 border border-[#111111] bg-[#F2F0EA] text-[#111111] font-semibold">
+              {cat.name} ({cat.slug})
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+
+    <!-- Posts Grid -->
+    {posts.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {posts.map((post, idx) => (
+          <div class="reveal-item flex flex-col" style={`--stagger: ${idx % 3};`}>
+            <BlogCard post={post} />
+          </div>
+        ))}
+      </div>
+    ) : (
+      <SystemState
+        class="reveal-item"
+        statusCode="EMPTY"
+        statusType="TECHNICAL NOTES"
+        systemName="RAIN07 // ARCHIVE"
+        subtitle="TECHNICAL NOTES"
+        title="NO TECHNICAL NOTES YET"
+        description="The technical journal is currently empty. New articles will appear here as I publish notes on web development, WordPress, Linux, and IT infrastructure."
+        technicalMessage="Archive empty or filtered. Valid technical posts count: 0."
+        primaryAction={{
+          label: "← BACK TO HOME",
+          href: "/en/",
+          variant: "primary"
+        }}
+        secondaryAction={{
+          label: "SELECTED WORK →",
+          href: "/en/work",
+          variant: "secondary"
+        }}
+      />
+    )}
+  </div>
+</BaseLayout>
+

@@ -1,0 +1,266 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SectionLabel from '../../../components/SectionLabel.astro';
+import BrutalistButton from '../../../components/BrutalistButton.astro';
+import SystemState from '../../../components/SystemState.astro';
+import { getPosts } from '../../../lib/api/client';
+import type { NormalizedPost } from '../../../lib/api/types';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post }
+  }));
+}
+
+interface Props {
+  post: NormalizedPost;
+}
+
+const { post } = Astro.props;
+
+const allPosts = await getPosts();
+const currentIndex = allPosts.findIndex((p) => p.slug === post.slug);
+const nextPost = currentIndex >= 0 && currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : allPosts[0];
+
+const siteUrl = 'https://rain07.my.id';
+const pageCanonical = `/en/notes/${post.slug}/`;
+const pageFullUrl = `${siteUrl}${pageCanonical}`;
+
+// Extract clean description without HTML
+const pageDescription = post.yoastDescription || post.excerpt || `Technical note on ${post.title} by RAIN07.`;
+const pageTitle = `${post.title} — RAIN07`;
+const primaryImage = post.featuredImage?.url || post.yoastImage;
+
+// Structured data for Blog Article Detail
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'BreadcrumbList',
+      'itemListElement': [
+        {
+          '@type': 'ListItem',
+          'position': 1,
+          'name': 'Home',
+          'item': `${siteUrl}/en/`
+        },
+        {
+          '@type': 'ListItem',
+          'position': 2,
+          'name': 'Notes',
+          'item': `${siteUrl}/en/notes/`
+        },
+        {
+          '@type': 'ListItem',
+          'position': 3,
+          'name': post.title,
+          'item': pageFullUrl
+        }
+      ]
+    },
+    {
+      '@type': 'Article',
+      '@id': `${pageFullUrl}#article`,
+      'url': pageFullUrl,
+      'headline': post.title,
+      'description': pageDescription,
+      'datePublished': post.date,
+      'dateModified': post.modified || post.date,
+      ...(primaryImage ? { 'image': primaryImage } : {}),
+      'author': {
+        '@type': 'Person',
+        'name': post.authorName || 'Reyno Nur Fahreza',
+        'url': siteUrl
+      },
+      'publisher': {
+        '@type': 'Person',
+        'name': 'Reyno Nur Fahreza',
+        'alternateName': 'RAIN07',
+        'url': siteUrl
+      },
+      'mainEntityOfPage': {
+        '@type': 'WebPage',
+        '@id': pageFullUrl
+      }
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title={post ? pageTitle : '404 — Note Not Found // RAIN07'}
+  description={post ? pageDescription : 'The requested technical note could not be found.'}
+  canonical={post ? pageCanonical : undefined}
+  ogImage={primaryImage}
+  imageAlt={post?.featuredImage?.alt || post?.title}
+  ogType="article"
+  noindex={!post}
+  publishedTime={post?.date}
+  modifiedTime={post ? (post.modified || post.date) : undefined}
+  author={post ? (post.authorName || 'Reyno Nur Fahreza') : 'Reyno Nur Fahreza'}
+  section={post?.categories?.[0]?.name}
+  jsonLd={post ? articleJsonLd : undefined}
+  locale="en"
+>
+  <div class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
+    <SectionLabel index="05 // NOTE" title="TECHNICAL JOURNAL" />
+
+    {!post ? (
+      <SystemState
+        statusCode="404"
+        statusType="NOTE NOT FOUND"
+        systemName="RAIN07 // JOURNAL"
+        subtitle="ARTICLE NOT RESOLVED"
+        title="NOTE NOT FOUND."
+        description="The requested technical documentation note could not be found or has been unpublished from the repository."
+        technicalMessage="WordPress post entity lookup returned zero results for the supplied slug."
+        primaryAction={{
+          label: "← ALL TECHNICAL NOTES",
+          href: "/en/notes",
+          variant: "primary"
+        }}
+        secondaryAction={{
+          label: "BACK TO HOME →",
+          href: "/en/",
+          variant: "secondary"
+        }}
+      />
+    ) : (
+    <>
+    <!-- Note Header Block -->
+    <div class="border-2 border-[#111111] bg-[#FFFFFF] p-6 sm:p-10 md:p-14 shadow-hard mb-12">
+      <!-- Top meta breadcrumb strip -->
+      <div class="flex flex-wrap items-center justify-between gap-3 border-b-2 border-[#111111] pb-4 mb-6 font-mono text-xs">
+        <div class="flex items-center gap-2">
+          <a href="/en/notes" class="text-[#0057FF] hover:underline font-bold">NOTES</a>
+          <span class="text-[#111111]/40">/</span>
+          <span class="text-[#111111]/70 truncate max-w-[200px] sm:max-w-xs">{post.slug}</span>
+        </div>
+        <div class="flex items-center gap-2">
+          {post.categories.map((c) => (
+            <span class="px-2 py-0.5 bg-[#111111] text-[#F2F0EA] font-semibold text-[10px] uppercase">
+              {c.name}
+            </span>
+          ))}
+          <span class="px-2 py-0.5 border border-[#111111] font-bold text-[10px] bg-[#0057FF] text-[#FFFFFF]">
+            READING // WP_POST
+          </span>
+        </div>
+      </div>
+
+      <h1 class="text-3xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-[#111111] leading-none mb-6">
+        {post.title}
+      </h1>
+
+      <!-- Meta Matrix -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t-2 border-[#111111]/20 font-mono text-xs">
+        <div>
+          <div class="text-[#111111]/60 uppercase text-[10px]">PUBLISHED</div>
+          <div class="font-bold text-[#111111]">
+            {new Date(post.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+          </div>
+        </div>
+        <div>
+          <div class="text-[#111111]/60 uppercase text-[10px]">AUTHOR</div>
+          <div class="font-bold text-[#0057FF]">{post.authorName || 'Reyno Nur Fahreza'}</div>
+        </div>
+        <div>
+          <div class="text-[#111111]/60 uppercase text-[10px]">TAXONOMY</div>
+          <div class="font-bold text-[#111111]">
+            {post.categories.length > 0 ? post.categories[0].name : 'Technical'}
+          </div>
+        </div>
+        <div>
+          <div class="text-[#111111]/60 uppercase text-[10px]">ORIGIN</div>
+          <div class="font-bold text-[#111111]">WP HEADLESS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content & Sidebar Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <!-- Article Content -->
+      <div class="lg:col-span-8 space-y-8">
+        {post.featuredImage && (
+          <div class="border-2 border-[#111111] bg-[#111111] shadow-hard overflow-hidden">
+            <img
+              src={post.featuredImage.url}
+              alt={post.featuredImage.alt || post.title}
+              width={post.featuredImage.width || 1200}
+              height={post.featuredImage.height || 675}
+              loading="eager"
+              class="w-full h-auto object-cover max-h-[480px]"
+            />
+          </div>
+        )}
+
+        <article class="border-2 border-[#111111] bg-[#FFFFFF] p-6 sm:p-10 shadow-hard space-y-6 font-mono text-sm leading-relaxed text-[#111111]">
+          {post.contentHtml ? (
+            <div class="wordpress-content space-y-4" set:html={post.contentHtml} />
+          ) : (
+            <div class="p-6 border border-[#111111] bg-[#F2F0EA] text-[#111111]/80">
+              No content published for this post yet.
+            </div>
+          )}
+        </article>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="lg:col-span-4 space-y-6">
+        <div class="border-2 border-[#111111] bg-[#FFFFFF] p-6 shadow-hard space-y-4 font-mono text-xs">
+          <div class="font-bold text-[#0057FF] uppercase tracking-wider border-b-2 border-[#111111] pb-2">
+            // AUTHOR & META
+          </div>
+          <div>
+            <span class="text-[#111111]/60 block mb-0.5">AUTHOR:</span>
+            <span class="font-bold text-[#111111]">Reyno Nur Fahreza (RAIN07)</span>
+          </div>
+          <div>
+            <span class="text-[#111111]/60 block mb-0.5">SYSTEM RUNTIME:</span>
+            <span class="font-bold text-[#111111]">Cloudflare Workers Edge</span>
+          </div>
+          <div class="pt-4 border-t-2 border-[#111111]/20">
+            <BrutalistButton href="/en/notes" variant="primary" class="w-full text-center">
+              ← ALL NOTES
+            </BrutalistButton>
+          </div>
+        </div>
+
+        {nextPost && (
+          <div class="border-2 border-[#111111] bg-[#F2F0EA] p-6 shadow-hard space-y-3">
+            <div class="font-mono text-[10px] font-bold text-[#0057FF] uppercase tracking-widest">
+              NEXT ENTRY
+            </div>
+            <h4 class="font-bold text-lg text-[#111111]">
+              {nextPost.title}
+            </h4>
+            <BrutalistButton href={`/en/notes/${nextPost.slug}`} variant="secondary" class="!px-3 !py-2 !text-xs">
+              READ NOTE →
+            </BrutalistButton>
+          </div>
+        )}
+      </div>
+    </div>
+    </>
+    )}
+  </div>
+</BaseLayout>
+
+<style is:global>
+  .wordpress-content img {
+    border: 2px solid #111111;
+    margin: 1.5rem 0;
+    max-width: 100%;
+    height: auto;
+  }
+  .wordpress-content figure {
+    margin: 1.5rem 0;
+  }
+  .wordpress-content p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+  }
+</style>
+

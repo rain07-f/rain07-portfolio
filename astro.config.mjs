@@ -44,6 +44,7 @@ export default defineConfig({
     sitemap({
       filter: (page) => {
         if (page.includes('/404')) return false;
+        if (page.includes('/projects')) return false;
         if (!hasPublishedNotes && page.includes('/notes')) return false;
         return true;
       }

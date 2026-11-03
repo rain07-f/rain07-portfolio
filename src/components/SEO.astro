@@ -1,4 +1,7 @@
 ---
+import { getAlternateLinks } from '../i18n/utils';
+import type { SupportedLang } from '../i18n/config';
+
 interface Props {
   title: string;
   description: string;
@@ -12,6 +15,7 @@ interface Props {
   author?: string;
   section?: string;
   jsonLd?: Record<string, any> | Array<Record<string, any>>;
+  locale?: SupportedLang;
 }
 
 const {
@@ -19,14 +23,15 @@ const {
   description,
   canonical,
   image = 'https://be-web-por-rey.rey07.my.id/wp-content/uploads/2026/09/pembuatan-website-featured-1788341128.png',
-  imageAlt = 'RAIN07 — Web Developer & Infrastructure Engineer',
+  imageAlt = 'RAIN07 — Web Development & IT Infrastructure',
   type = 'website',
   noindex = false,
   publishedTime,
   modifiedTime,
   author = 'Reyno Nur Fahreza',
   section,
-  jsonLd
+  jsonLd,
+  locale = 'id'
 } = Astro.props;
 
 const rawSiteUrl = (typeof process !== 'undefined' && process.env?.PUBLIC_SITE_URL) || import.meta.env?.PUBLIC_SITE_URL || 'https://rain07.my.id';
@@ -43,6 +48,7 @@ const formatCanonical = (urlPath: string): string => {
 };
 
 const canonicalUrl = formatCanonical(Astro.url.pathname);
+const alternateLinks = getAlternateLinks(Astro.url.pathname, siteUrl);
 
 // Resolve social preview image (must be absolute URL)
 const resolvedImage = image?.startsWith('http') ? image : `${siteUrl}${image.startsWith('/') ? '' : '/'}${image}`;
@@ -52,6 +58,8 @@ const googleSiteVerification =
   (typeof process !== 'undefined' && (process.env?.PUBLIC_GOOGLE_SITE_VERIFICATION || process.env?.GOOGLE_SITE_VERIFICATION)) ||
   import.meta.env?.PUBLIC_GOOGLE_SITE_VERIFICATION ||
   '';
+
+const ogLocale = locale === 'id' ? 'id_ID' : 'en_US';
 ---
 
 <!-- Core Meta -->
@@ -64,6 +72,15 @@ const googleSiteVerification =
 )}
 {!noindex && <link rel="canonical" href={canonicalUrl} />}
 
+<!-- Reciprocal Hreflang Tags for Bilingual International SEO -->
+{!noindex && (
+  <>
+    <link rel="alternate" hreflang="id" href={alternateLinks.id} />
+    <link rel="alternate" hreflang="en" href={alternateLinks.en} />
+    <link rel="alternate" hreflang="x-default" href={alternateLinks.xDefault} />
+  </>
+)}
+
 <!-- Optional Google Search Console Verification Meta -->
 {googleSiteVerification && (
   <meta name="google-site-verification" content={googleSiteVerification} />
@@ -75,7 +92,7 @@ const googleSiteVerification =
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonicalUrl} />
-<meta property="og:locale" content="en_US" />
+<meta property="og:locale" content={ogLocale} />
 {resolvedImage && (
   <meta property="og:image" content={resolvedImage} />
 )}
