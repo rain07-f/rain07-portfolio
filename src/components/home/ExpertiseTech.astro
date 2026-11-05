@@ -38,27 +38,29 @@ const categories = [
 
 <section id="expertise" class="border-b-2 border-[#111111] bg-[#F2F0EA] py-16 md:py-24">
   <div class="max-w-7xl mx-auto px-4 md:px-8">
-    <SectionLabel index={t('expertise.index')} title={t('expertise.sectionTitle')} />
+    <div class="expertise-header">
+      <SectionLabel index={t('expertise.index')} title={t('expertise.sectionTitle')} />
 
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
-      <div class="max-w-3xl">
-        <h2 class="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-[#111111]">
-          {t('expertise.headline')}
-        </h2>
-        <p class="font-mono text-xs sm:text-sm text-[#111111]/75 mt-2">
-          {t('expertise.description')}
-        </p>
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+        <div class="max-w-3xl">
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-[#111111]">
+            {t('expertise.headline')}
+          </h2>
+          <p class="font-mono text-xs sm:text-sm text-[#111111]/75 mt-2">
+            {t('expertise.description')}
+          </p>
+        </div>
+
+        <BrutalistButton href={`${prefix}/expertise/`} variant="secondary" class="self-start md:self-auto !text-xs sm:!text-sm">
+          {t('expertise.viewAll')}
+        </BrutalistButton>
       </div>
-
-      <BrutalistButton href={`${prefix}/expertise/`} variant="secondary" class="self-start md:self-auto !text-xs sm:!text-sm">
-        {t('expertise.viewAll')}
-      </BrutalistButton>
     </div>
 
     <!-- 4 Grouped Categories Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {categories.map((cat, idx) => (
-        <div class="reveal-item border-2 border-[#111111] bg-[#FFFFFF] p-6 shadow-hard flex flex-col justify-between group" style={`--stagger: ${idx};`}>
+        <div class="expertise-card reveal-item border-2 border-[#111111] bg-[#FFFFFF] p-6 shadow-hard flex flex-col justify-between group" style={`--stagger: ${idx};`}>
           <div>
             <div class="flex items-center justify-between border-b-2 border-[#111111] pb-3 mb-4">
               <span class="font-mono text-xs font-bold px-2 py-0.5 bg-[#111111] text-[#F2F0EA] group-hover:bg-[#0057FF] group-hover:text-[#FFFFFF] transition-colors">
@@ -77,7 +79,7 @@ const categories = [
 
           <div class="pt-4 border-t-2 border-[#111111]/10 flex flex-wrap gap-2">
             {cat.items.map((tech) => (
-              <span class="font-mono text-xs px-2.5 py-1 border border-[#111111] bg-[#F2F0EA] text-[#111111] font-semibold group-hover:border-[#0057FF] transition-colors">
+              <span class="tech-pill font-mono text-xs px-2.5 py-1 border border-[#111111] bg-[#F2F0EA] text-[#111111] font-semibold group-hover:border-[#0057FF] transition-colors">
                 {tech}
               </span>
             ))}

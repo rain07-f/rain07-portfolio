@@ -39,7 +39,7 @@ const dateLocale = currentLang === 'id' ? 'id-ID' : 'en-GB';
 
   <!-- Preview Image (if any) -->
   {project.featuredImage ? (
-    <div class="relative overflow-hidden border-b-2 border-[#111111] bg-[#111111] aspect-[16/9] flex items-center justify-center">
+    <div class="project-thumb-wrap relative overflow-hidden border-b-2 border-[#111111] bg-[#111111] aspect-[16/9] flex items-center justify-center">
       <img
         src={project.featuredImage.url}
         alt={project.featuredImage.alt}
@@ -60,7 +60,7 @@ const dateLocale = currentLang === 'id' ? 'id-ID' : 'en-GB';
   )}
 
   <!-- Project Info -->
-  <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+  <div class="project-info-wrap p-6 flex-1 flex flex-col justify-between space-y-4">
     <div class="space-y-2">
       <h3 class="text-xl md:text-2xl font-bold tracking-tight text-[#111111] group-hover:text-[#0057FF] transition-colors duration-150">
         <a href={detailHref} class="focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0057FF] focus-visible:ring-offset-2">

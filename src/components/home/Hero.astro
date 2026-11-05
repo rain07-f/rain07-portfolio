@@ -10,6 +10,10 @@ interface Props {
 const { currentLang = 'id' } = Astro.props;
 const t = useTranslations(currentLang);
 const prefix = currentLang === 'en' ? '/en' : '';
+
+const headlineLines = currentLang === 'en'
+  ? ['BUILDING DIGITAL SOLUTIONS.', 'POWERING THE INFRASTRUCTURE BEHIND THEM.']
+  : ['MEMBANGUN SOLUSI DIGITAL.', 'MENGHADIRKAN INFRASTRUKTUR YANG ANDAL.'];
 ---
 
 <section
@@ -22,7 +26,7 @@ const prefix = currentLang === 'en' ? '/en' : '';
   <div class="max-w-7xl mx-auto px-4 md:px-8 py-14 sm:py-20 md:py-24 relative z-10">
     <!-- Top Metadata Bar -->
     <div
-      class="flex flex-wrap items-center justify-between gap-3 border-2 border-[#111111] bg-[#FFFFFF] p-3 shadow-hard mb-8 font-mono text-xs"
+      class="hero-meta-bar flex flex-wrap items-center justify-between gap-3 border-2 border-[#111111] bg-[#FFFFFF] p-3 shadow-hard mb-8 font-mono text-xs"
     >
       <div class="flex items-center gap-2.5">
         <span class="bg-[#111111] text-[#F2F0EA] px-2 py-0.5 font-bold">RAIN07</span>
@@ -40,39 +44,47 @@ const prefix = currentLang === 'en' ? '/en' : '';
       <div class="lg:col-span-7 flex flex-col justify-between space-y-6 sm:space-y-8">
         <div class="space-y-4">
           <div
-            class="font-mono text-xs md:text-sm font-bold tracking-widest text-[#0057FF] uppercase"
+            class="hero-badge font-mono text-xs md:text-sm font-bold tracking-widest text-[#0057FF] uppercase"
           >
             {t('hero.badge')}
           </div>
           <h1
-            class="text-3xl sm:text-5xl md:text-6xl lg:text-[4.75rem] font-black tracking-tight leading-[0.94] uppercase text-[#111111]"
+            class="hero-headline text-3xl sm:text-5xl md:text-6xl lg:text-[4.75rem] font-black tracking-tight leading-[0.94] uppercase text-[#111111]"
           >
-            {t('hero.headline')}
+            {headlineLines.map((line) => (
+              <span class="block overflow-hidden">
+                <span class="hero-line block">{line}</span>
+              </span>
+            ))}
           </h1>
         </div>
 
         <p
-          class="font-mono text-sm sm:text-base md:text-lg text-[#111111]/90 max-w-2xl leading-relaxed border-l-4 border-[#0057FF] pl-4"
+          class="hero-desc font-mono text-sm sm:text-base md:text-lg text-[#111111]/90 max-w-2xl leading-relaxed border-l-4 border-[#0057FF] pl-4"
         >
           {t('hero.description')}
         </p>
 
         <!-- CTA Buttons -->
         <div class="flex flex-wrap gap-4 pt-2">
-          <BrutalistButton
-            href={`${prefix}/work/`}
-            variant="primary"
-            class="!text-xs sm:!text-sm md:!text-base !px-6 !py-4"
-          >
-            {t('hero.cta.work')}
-          </BrutalistButton>
-          <BrutalistButton
-            href={`${prefix}/#contact`}
-            variant="secondary"
-            class="!text-xs sm:!text-sm md:!text-base !px-6 !py-4"
-          >
-            {t('hero.cta.contact')}
-          </BrutalistButton>
+          <div class="hero-cta-btn inline-block">
+            <BrutalistButton
+              href={`${prefix}/work/`}
+              variant="primary"
+              class="!text-xs sm:!text-sm md:!text-base !px-6 !py-4"
+            >
+              {t('hero.cta.work')}
+            </BrutalistButton>
+          </div>
+          <div class="hero-cta-btn inline-block">
+            <BrutalistButton
+              href={`${prefix}/#contact`}
+              variant="secondary"
+              class="!text-xs sm:!text-sm md:!text-base !px-6 !py-4"
+            >
+              {t('hero.cta.contact')}
+            </BrutalistButton>
+          </div>
         </div>
       </div>
 
@@ -82,7 +94,7 @@ const prefix = currentLang === 'en' ? '/en' : '';
           class="border-2 border-[#111111] bg-[#111111] shadow-hard flex flex-col h-full overflow-hidden group"
         >
           <div
-            class="relative flex-1 min-h-[280px] sm:min-h-[360px] lg:min-h-[440px] bg-[#111111] overflow-hidden"
+            class="hero-image-wrap relative flex-1 min-h-[280px] sm:min-h-[360px] lg:min-h-[440px] bg-[#111111] overflow-hidden"
           >
             <picture class="w-full h-full block">
               <source
@@ -105,11 +117,11 @@ const prefix = currentLang === 'en' ? '/en' : '';
                 loading="eager"
                 decoding="async"
                 fetchpriority="high"
-                class="w-full h-full object-cover grayscale contrast-110 group-hover:grayscale-0 transition-all duration-300"
+                class="hero-image w-full h-full object-cover grayscale contrast-110 group-hover:grayscale-0 transition-all duration-300"
               />
             </picture>
             <div
-              class="absolute bottom-3 left-3 bg-[#111111]/90 text-[#F2F0EA] border border-[#111111] px-2.5 py-1 font-mono text-[10px] tracking-wider uppercase"
+              class="hero-image-tag absolute bottom-3 left-3 bg-[#111111]/90 text-[#F2F0EA] border border-[#111111] px-2.5 py-1 font-mono text-[10px] tracking-wider uppercase"
             >
               SYS // WORKSTATION · DUAL ROLE
             </div>
@@ -117,7 +129,7 @@ const prefix = currentLang === 'en' ? '/en' : '';
 
           <!-- Bottom Telemetry strip -->
           <div
-            class="border-t-2 border-[#111111] bg-[#FFFFFF] px-4 py-2.5 flex items-center justify-between font-mono text-[11px] text-[#111111]/80"
+            class="hero-telemetry border-t-2 border-[#111111] bg-[#FFFFFF] px-4 py-2.5 flex items-center justify-between font-mono text-[11px] text-[#111111]/80"
           >
             <span>{t('hero.runtime')}</span>
           </div>

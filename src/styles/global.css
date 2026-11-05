@@ -209,23 +209,9 @@
    Motion System: Progressive Section & Card Reveal Animations
    ========================================================================== */
 .reveal-item {
-  /* Default: 100% visible for SSR, crawlers/bots, and no-JS */
+  /* Default: 100% visible for SSR, crawlers/bots, and no-JS fallback */
   opacity: 1;
   transform: none;
-}
-
-html.js-reveal .reveal-item {
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 350ms cubic-bezier(0.16, 1, 0.3, 1), transform 350ms cubic-bezier(0.16, 1, 0.3, 1);
-  transition-delay: calc(var(--stagger, 0) * 45ms);
-  will-change: opacity, transform;
-}
-
-html.js-reveal .reveal-item.is-revealed {
-  opacity: 1;
-  transform: translateY(0);
-  will-change: auto;
 }
 
 /* Reduced motion preference */
@@ -233,12 +219,14 @@ html.js-reveal .reveal-item.is-revealed {
   html {
     scroll-behavior: auto !important;
   }
-  html.js-reveal .reveal-item,
-  .reveal-item {
+  .reveal-item,
+  .hero-line,
+  .hero-image-wrap,
+  .project-thumb-wrap {
     opacity: 1 !important;
     transform: none !important;
+    clip-path: none !important;
     transition: none !important;
-    transition-delay: 0ms !important;
     will-change: auto !important;
   }
   *, ::before, ::after {

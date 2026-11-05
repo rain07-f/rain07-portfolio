@@ -19,19 +19,21 @@ const whatsapp = `https://wa.me/6282243856452?text=${whatsappMsg}`;
 
 <section id="contact" class="bg-[#F2F0EA] py-16 md:py-24">
   <div class="max-w-7xl mx-auto px-4 md:px-8">
-    <SectionLabel index={t('contact.index')} title={t('contact.sectionTitle')} />
+    <div class="contact-header">
+      <SectionLabel index={t('contact.index')} title={t('contact.sectionTitle')} />
+    </div>
 
     <div
-      class="reveal-item border-2 border-[#111111] bg-[#FFFFFF] p-8 sm:p-12 md:p-16 shadow-hard-lg"
+      class="contact-card reveal-item border-2 border-[#111111] bg-[#FFFFFF] p-8 sm:p-12 md:p-16 shadow-hard-lg"
     >
       <div class="max-w-3xl space-y-4 mb-12">
         <h2
-          class="text-3xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-[#111111] leading-[0.98]"
+          class="contact-title text-3xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-[#111111] leading-[0.98]"
         >
           {t('contact.headline')}
         </h2>
         <p
-          class="font-mono text-sm sm:text-base text-[#111111]/85 leading-relaxed"
+          class="contact-desc font-mono text-sm sm:text-base text-[#111111]/85 leading-relaxed"
         >
           {t('contact.description')}
         </p>
@@ -39,47 +41,53 @@ const whatsapp = `https://wa.me/6282243856452?text=${whatsappMsg}`;
 
       <!-- Large Brutalist Contact Buttons Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <BrutalistButton
-          href={`mailto:${email}`}
-          variant="primary"
-          class="!py-6 !text-sm md:!text-base flex-col gap-1 items-start !px-6"
-        >
-          <span class="text-[10px] text-[#0057FF] opacity-90">
-            {t('contact.emailLabel')}
-          </span>
-          <span class="font-bold">{t('contact.emailBtn')}</span>
-          <span class="text-[11px] lowercase opacity-80 truncate w-full">
-            {email}
-          </span>
-        </BrutalistButton>
+        <div class="contact-cta-btn">
+          <BrutalistButton
+            href={`mailto:${email}`}
+            variant="primary"
+            class="w-full !py-6 !text-sm md:!text-base flex-col gap-1 items-start !px-6"
+          >
+            <span class="text-[10px] text-[#0057FF] opacity-90">
+              {t('contact.emailLabel')}
+            </span>
+            <span class="font-bold">{t('contact.emailBtn')}</span>
+            <span class="text-[11px] lowercase opacity-80 truncate w-full">
+              {email}
+            </span>
+          </BrutalistButton>
+        </div>
 
-        <BrutalistButton
-          href={linkedIn}
-          target="_blank"
-          rel="noopener noreferrer"
-          variant="secondary"
-          class="!py-6 !text-sm md:!text-base flex-col gap-1 items-start !px-6"
-        >
-          <span class="text-[10px] text-[#0057FF] opacity-90">
-            {t('contact.linkedInLabel')}
-          </span>
-          <span class="font-bold">{t('contact.linkedInBtn')}</span>
-          <span class="text-[11px] opacity-80">Reyno Nur Fahreza</span>
-        </BrutalistButton>
+        <div class="contact-cta-btn">
+          <BrutalistButton
+            href={linkedIn}
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="secondary"
+            class="w-full !py-6 !text-sm md:!text-base flex-col gap-1 items-start !px-6"
+          >
+            <span class="text-[10px] text-[#0057FF] opacity-90">
+              {t('contact.linkedInLabel')}
+            </span>
+            <span class="font-bold">{t('contact.linkedInBtn')}</span>
+            <span class="text-[11px] opacity-80">Reyno Nur Fahreza</span>
+          </BrutalistButton>
+        </div>
 
-        <BrutalistButton
-          href={whatsapp}
-          target="_blank"
-          rel="noopener noreferrer"
-          variant="accent"
-          class="!py-6 !text-sm md:!text-base flex-col gap-1 items-start !px-6"
-        >
-          <span class="text-[10px] text-[#FFFFFF] opacity-90">
-            {t('contact.whatsappLabel')}
-          </span>
-          <span class="font-bold">{t('contact.whatsappBtn')}</span>
-          <span class="text-[11px] opacity-90">{t('contact.whatsappDirect')}</span>
-        </BrutalistButton>
+        <div class="contact-cta-btn">
+          <BrutalistButton
+            href={whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="accent"
+            class="w-full !py-6 !text-sm md:!text-base flex-col gap-1 items-start !px-6"
+          >
+            <span class="text-[10px] text-[#FFFFFF] opacity-90">
+              {t('contact.whatsappLabel')}
+            </span>
+            <span class="font-bold">{t('contact.whatsappBtn')}</span>
+            <span class="text-[11px] opacity-90">{t('contact.whatsappDirect')}</span>
+          </BrutalistButton>
+        </div>
       </div>
 
       <!-- Bottom telemetry -->
