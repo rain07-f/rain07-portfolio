@@ -1,0 +1,534 @@
+---
+import { useTranslations } from '../i18n/utils';
+import type { SupportedLang } from '../i18n/config';
+
+interface Props {
+  currentLang?: SupportedLang;
+  class?: string;
+}
+
+const { currentLang = 'id', class: className = '' } = Astro.props;
+const t = useTranslations(currentLang);
+
+// Read WordPress base URL from environment or fall back to production endpoint
+const wpBaseUrl = (
+  import.meta.env?.PUBLIC_WP_BASE_URL ||
+  import.meta.env?.PUBLIC_API_URL ||
+  'https://be-web-por-rey.rey07.my.id'
+).replace(/\/$/, '');
+
+// Contact Form 7 Form ID:
+// Form ID 203 corresponds to shortcode [contact-form-7 id="deb68e9" title="Formulir kontak 1"]
+const formId = '203';
+const formUnitTag = `wpcf7-f${formId}-p0-o1`;
+const cf7Locale = currentLang === 'en' ? 'en_US' : 'id_ID';
+const feedbackEndpoint = `${wpBaseUrl}/wp-json/contact-form-7/v1/contact-forms/${formId}/feedback`;
+
+// Client-side i18n dictionary for dynamic messages
+const i18nConfig = JSON.stringify({
+  submitBtn: t('contact.form.submitBtn'),
+  submittingBtn: t('contact.form.submittingBtn'),
+  successTitle: t('contact.form.successTitle'),
+  successMessage: t('contact.form.successMessage'),
+  errorTitle: t('contact.form.errorTitle'),
+  validationFailed: t('contact.form.validationFailed'),
+  serverError: t('contact.form.serverError'),
+  spamError: t('contact.form.spamError'),
+  errName: t('contact.form.errName'),
+  errEmail: t('contact.form.errEmail'),
+  errEmailFormat: t('contact.form.errEmailFormat'),
+  errService: t('contact.form.errService'),
+  errSubject: t('contact.form.errSubject'),
+  errMessage: t('contact.form.errMessage'),
+  errMessageMin: t('contact.form.errMessageMin'),
+  charCounter: t('contact.form.charCounter')
+});
+---
+
+<div class={`contact-form-container border-2 border-[#111111] bg-[#FFFFFF] p-6 sm:p-8 md:p-10 shadow-hard ${className}`}>
+  <!-- Form Header -->
+  <div class="border-b-2 border-[#111111] pb-6 mb-6">
+    <div class="flex items-center justify-between gap-3 mb-2">
+      <span class="font-mono text-xs font-bold px-2 py-0.5 bg-[#0057FF] text-[#FFFFFF]">
+        CF7 // REST API
+      </span>
+      <span class="font-mono text-[11px] text-[#111111]/60 tracking-wider">
+        FORM ID #{formId}
+      </span>
+    </div>
+    <h3 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-[#111111]">
+      {t('contact.formTitle')}
+    </h3>
+    <p class="font-mono text-xs sm:text-sm text-[#111111]/75 mt-1 leading-relaxed">
+      {t('contact.formSubtitle')}
+    </p>
+  </div>
+
+  <!-- Global Alert Banner (Hidden by default, shown via state) -->
+  <div
+    id="cf7-status-banner"
+    class="hidden p-4 mb-6 border-2 font-mono text-xs leading-relaxed transition-all"
+    role="alert"
+    aria-live="polite"
+  >
+    <div class="flex items-start gap-3">
+      <span id="cf7-status-icon" class="font-bold text-sm shrink-0"></span>
+      <div>
+        <h4 id="cf7-status-title" class="font-bold uppercase tracking-wider text-sm mb-1"></h4>
+        <p id="cf7-status-desc" class="opacity-90"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Form -->
+  <form
+    id="rain07-contact-form"
+    data-endpoint={feedbackEndpoint}
+    data-i18n={i18nConfig}
+    method="POST"
+    novalidate
+    class="space-y-5"
+  >
+    <!-- Hidden Contact Form 7 System Parameters -->
+    <input type="hidden" name="_wpcf7" value={formId} />
+    <input type="hidden" name="_wpcf7_version" value="5.8" />
+    <input type="hidden" name="_wpcf7_locale" value={cf7Locale} />
+    <input type="hidden" name="_wpcf7_unit_tag" value={formUnitTag} />
+    <input type="hidden" name="_wpcf7_container_post" value="0" />
+
+    <!-- Anti-bot Honeypot Field (hidden from genuine users) -->
+    <div class="hidden" aria-hidden="true">
+      <label for="form-hp-field">Leave this empty</label>
+      <input
+        type="text"
+        id="form-hp-field"
+        name="_wpcf7_ak_hp_textarea"
+        tabindex="-1"
+        autocomplete="off"
+      />
+    </div>
+
+    <!-- Row 1: Full Name & Email Address -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      <!-- Field: Name -->
+      <div class="space-y-1.5">
+        <label
+          for="cf7-name"
+          class="block font-mono text-xs font-bold text-[#111111] uppercase tracking-wider"
+        >
+          {t('contact.form.nameLabel')}
+        </label>
+        <input
+          type="text"
+          id="cf7-name"
+          name="your-name"
+          required
+          autocomplete="name"
+          placeholder={t('contact.form.namePlaceholder')}
+          class="w-full h-11 px-3.5 bg-[#FFFFFF] border-2 border-[#111111] font-mono text-xs sm:text-sm text-[#111111] placeholder:text-[#111111]/40 focus:outline-none focus:border-[#0057FF] focus:ring-1 focus:ring-[#0057FF] transition-colors"
+          aria-describedby="cf7-error-your-name"
+        />
+        <p
+          id="cf7-error-your-name"
+          class="field-error-msg hidden font-mono text-[11px] text-[#FF3B30] font-bold mt-1"
+        ></p>
+      </div>
+
+      <!-- Field: Email -->
+      <div class="space-y-1.5">
+        <label
+          for="cf7-email"
+          class="block font-mono text-xs font-bold text-[#111111] uppercase tracking-wider"
+        >
+          {t('contact.form.emailLabel')}
+        </label>
+        <input
+          type="email"
+          id="cf7-email"
+          name="your-email"
+          required
+          autocomplete="email"
+          placeholder={t('contact.form.emailPlaceholder')}
+          class="w-full h-11 px-3.5 bg-[#FFFFFF] border-2 border-[#111111] font-mono text-xs sm:text-sm text-[#111111] placeholder:text-[#111111]/40 focus:outline-none focus:border-[#0057FF] focus:ring-1 focus:ring-[#0057FF] transition-colors"
+          aria-describedby="cf7-error-your-email"
+        />
+        <p
+          id="cf7-error-your-email"
+          class="field-error-msg hidden font-mono text-[11px] text-[#FF3B30] font-bold mt-1"
+        ></p>
+      </div>
+    </div>
+
+    <!-- Row 2: Service Selection & Subject -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      <!-- Field: Service -->
+      <div class="space-y-1.5">
+        <label
+          for="cf7-service"
+          class="block font-mono text-xs font-bold text-[#111111] uppercase tracking-wider"
+        >
+          {t('contact.form.serviceLabel')}
+        </label>
+        <div class="relative">
+          <select
+            id="cf7-service"
+            name="your-service"
+            required
+            class="w-full h-11 px-3.5 pr-8 bg-[#FFFFFF] border-2 border-[#111111] font-mono text-xs sm:text-sm text-[#111111] appearance-none cursor-pointer focus:outline-none focus:border-[#0057FF] focus:ring-1 focus:ring-[#0057FF] transition-colors"
+            aria-describedby="cf7-error-your-service"
+          >
+            <option value="" disabled selected>
+              {t('contact.form.serviceSelectPlaceholder')}
+            </option>
+            <option value="Web Development">
+              {t('contact.form.serviceWeb')}
+            </option>
+            <option value="IT Infrastructure">
+              {t('contact.form.serviceInfra')}
+            </option>
+            <option value="Project Engineering">
+              {t('contact.form.serviceEng')}
+            </option>
+            <option value="Technical Consultation">
+              {t('contact.form.serviceConsult')}
+            </option>
+            <option value="Job / Collaboration">
+              {t('contact.form.serviceCollab')}
+            </option>
+            <option value="Other">
+              {t('contact.form.serviceOther')}
+            </option>
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-[#111111]">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+              <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+            </svg>
+          </div>
+        </div>
+        <p
+          id="cf7-error-your-service"
+          class="field-error-msg hidden font-mono text-[11px] text-[#FF3B30] font-bold mt-1"
+        ></p>
+      </div>
+
+      <!-- Field: Subject -->
+      <div class="space-y-1.5">
+        <label
+          for="cf7-subject"
+          class="block font-mono text-xs font-bold text-[#111111] uppercase tracking-wider"
+        >
+          {t('contact.form.subjectLabel')}
+        </label>
+        <input
+          type="text"
+          id="cf7-subject"
+          name="your-subject"
+          required
+          placeholder={t('contact.form.subjectPlaceholder')}
+          class="w-full h-11 px-3.5 bg-[#FFFFFF] border-2 border-[#111111] font-mono text-xs sm:text-sm text-[#111111] placeholder:text-[#111111]/40 focus:outline-none focus:border-[#0057FF] focus:ring-1 focus:ring-[#0057FF] transition-colors"
+          aria-describedby="cf7-error-your-subject"
+        />
+        <p
+          id="cf7-error-your-subject"
+          class="field-error-msg hidden font-mono text-[11px] text-[#FF3B30] font-bold mt-1"
+        ></p>
+      </div>
+    </div>
+
+    <!-- Row 3: Message / Scope -->
+    <div class="space-y-1.5">
+      <div class="flex items-center justify-between gap-2">
+        <label
+          for="cf7-message"
+          class="block font-mono text-xs font-bold text-[#111111] uppercase tracking-wider"
+        >
+          {t('contact.form.messageLabel')}
+        </label>
+        <span
+          id="cf7-char-count"
+          class="font-mono text-[11px] text-[#111111]/60"
+        >
+          0 / 5000 {t('contact.form.charCounter')}
+        </span>
+      </div>
+      <textarea
+        id="cf7-message"
+        name="your-message"
+        required
+        rows="5"
+        minlength="20"
+        maxlength="5000"
+        placeholder={t('contact.form.messagePlaceholder')}
+        class="w-full p-3.5 bg-[#FFFFFF] border-2 border-[#111111] font-mono text-xs sm:text-sm text-[#111111] placeholder:text-[#111111]/40 focus:outline-none focus:border-[#0057FF] focus:ring-1 focus:ring-[#0057FF] transition-colors resize-y min-h-[120px]"
+        aria-describedby="cf7-error-your-message"
+      ></textarea>
+      <p
+        id="cf7-error-your-message"
+        class="field-error-msg hidden font-mono text-[11px] text-[#FF3B30] font-bold mt-1"
+      ></p>
+    </div>
+
+    <!-- Submit Action Row -->
+    <div class="pt-3">
+      <button
+        type="submit"
+        id="cf7-submit-btn"
+        class="w-full sm:w-auto min-h-[48px] px-8 py-3.5 bg-[#111111] text-[#FFFFFF] hover:bg-[#0057FF] border-2 border-[#111111] font-mono font-bold text-xs sm:text-sm uppercase tracking-wider shadow-hard active:translate-x-[2px] active:translate-y-[2px] active:shadow-none focus:outline-none focus:ring-2 focus:ring-[#0057FF] transition-all flex items-center justify-center gap-3 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+      >
+        <span id="cf7-submit-spinner" class="hidden">
+          <svg class="animate-spin w-4 h-4 text-white" viewBox="0 0 24 24" fill="none">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        </span>
+        <span id="cf7-submit-text">{t('contact.form.submitBtn')}</span>
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+  function initContactForm() {
+    const form = document.getElementById('rain07-contact-form') as HTMLFormElement | null;
+    if (!form || form.dataset.cf7Initialized === 'true') return;
+    form.dataset.cf7Initialized = 'true';
+
+    const endpoint = form.dataset.endpoint || '';
+    const i18n = JSON.parse(form.dataset.i18n || '{}');
+
+    const statusBanner = document.getElementById('cf7-status-banner');
+    const statusIcon = document.getElementById('cf7-status-icon');
+    const statusTitle = document.getElementById('cf7-status-title');
+    const statusDesc = document.getElementById('cf7-status-desc');
+
+    const submitBtn = document.getElementById('cf7-submit-btn') as HTMLButtonElement | null;
+    const submitText = document.getElementById('cf7-submit-text');
+    const submitSpinner = document.getElementById('cf7-submit-spinner');
+
+    const nameInput = document.getElementById('cf7-name') as HTMLInputElement | null;
+    const emailInput = document.getElementById('cf7-email') as HTMLInputElement | null;
+    const serviceInput = document.getElementById('cf7-service') as HTMLSelectElement | null;
+    const subjectInput = document.getElementById('cf7-subject') as HTMLInputElement | null;
+    const messageInput = document.getElementById('cf7-message') as HTMLTextAreaElement | null;
+    const charCountEl = document.getElementById('cf7-char-count');
+
+    // Update character counter
+    if (messageInput && charCountEl) {
+      const updateCount = () => {
+        const count = messageInput.value.length;
+        charCountEl.textContent = `${count} / 5000 ${i18n.charCounter || 'karakter (min. 20)'}`;
+      };
+      messageInput.addEventListener('input', updateCount);
+      updateCount();
+    }
+
+    // Helper: set field error
+    function setFieldError(input: HTMLElement | null, errorElId: string, message: string) {
+      if (!input) return;
+      input.classList.add('border-[#FF3B30]', 'ring-1', 'ring-[#FF3B30]');
+      input.setAttribute('aria-invalid', 'true');
+      const errEl = document.getElementById(errorElId);
+      if (errEl) {
+        errEl.textContent = `[!] ${message}`;
+        errEl.classList.remove('hidden');
+      }
+    }
+
+    // Helper: clear field error
+    function clearFieldError(input: HTMLElement | null, errorElId: string) {
+      if (!input) return;
+      input.classList.remove('border-[#FF3B30]', 'ring-1', 'ring-[#FF3B30]');
+      input.removeAttribute('aria-invalid');
+      const errEl = document.getElementById(errorElId);
+      if (errEl) {
+        errEl.textContent = '';
+        errEl.classList.add('hidden');
+      }
+    }
+
+    // Helper: clear all errors
+    function clearAllErrors() {
+      clearFieldError(nameInput, 'cf7-error-your-name');
+      clearFieldError(emailInput, 'cf7-error-your-email');
+      clearFieldError(serviceInput, 'cf7-error-your-service');
+      clearFieldError(subjectInput, 'cf7-error-your-subject');
+      clearFieldError(messageInput, 'cf7-error-your-message');
+
+      if (statusBanner) {
+        statusBanner.className = 'hidden p-4 mb-6 border-2 font-mono text-xs leading-relaxed transition-all';
+      }
+    }
+
+    // Attach real-time input error clearing
+    [
+      { input: nameInput, id: 'cf7-error-your-name' },
+      { input: emailInput, id: 'cf7-error-your-email' },
+      { input: serviceInput, id: 'cf7-error-your-service' },
+      { input: subjectInput, id: 'cf7-error-your-subject' },
+      { input: messageInput, id: 'cf7-error-your-message' },
+    ].forEach(({ input, id }) => {
+      if (!input) return;
+      input.addEventListener('input', () => clearFieldError(input, id));
+      input.addEventListener('change', () => clearFieldError(input, id));
+    });
+
+    // Helper: show banner
+    function showBanner(type: 'success' | 'error' | 'warning', title: string, message: string) {
+      if (!statusBanner || !statusTitle || !statusDesc || !statusIcon) return;
+
+      if (type === 'success') {
+        statusBanner.className = 'p-4 mb-6 border-2 border-[#10B981] bg-[#ECFDF5] text-[#065F46] font-mono text-xs leading-relaxed shadow-hard';
+        statusIcon.textContent = '✓';
+        statusIcon.className = 'font-bold text-base text-[#10B981] shrink-0';
+      } else if (type === 'warning') {
+        statusBanner.className = 'p-4 mb-6 border-2 border-[#F59E0B] bg-[#FFFBEB] text-[#92400E] font-mono text-xs leading-relaxed shadow-hard';
+        statusIcon.textContent = '⚠';
+        statusIcon.className = 'font-bold text-base text-[#F59E0B] shrink-0';
+      } else {
+        statusBanner.className = 'p-4 mb-6 border-2 border-[#FF3B30] bg-[#FEF2F2] text-[#991B1B] font-mono text-xs leading-relaxed shadow-hard';
+        statusIcon.textContent = '✕';
+        statusIcon.className = 'font-bold text-base text-[#FF3B30] shrink-0';
+      }
+
+      statusTitle.textContent = title;
+      statusDesc.textContent = message;
+      statusBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Validate email format
+    function isValidEmail(email: string): boolean {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    // Form submit handler
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearAllErrors();
+
+      // Check anti-spam honeypot
+      const hp = (form.querySelector('input[name="_wpcf7_ak_hp_textarea"]') as HTMLInputElement)?.value;
+      if (hp && hp.trim() !== '') {
+        showBanner('error', i18n.errorTitle, i18n.spamError);
+        return;
+      }
+
+      // Client-side validation
+      let hasError = false;
+      let firstInvalidInput: HTMLElement | null = null;
+
+      const nameVal = nameInput?.value.trim() || '';
+      if (!nameVal) {
+        setFieldError(nameInput, 'cf7-error-your-name', i18n.errName);
+        hasError = true;
+        firstInvalidInput = firstInvalidInput || nameInput;
+      }
+
+      const emailVal = emailInput?.value.trim() || '';
+      if (!emailVal) {
+        setFieldError(emailInput, 'cf7-error-your-email', i18n.errEmail);
+        hasError = true;
+        firstInvalidInput = firstInvalidInput || emailInput;
+      } else if (!isValidEmail(emailVal)) {
+        setFieldError(emailInput, 'cf7-error-your-email', i18n.errEmailFormat);
+        hasError = true;
+        firstInvalidInput = firstInvalidInput || emailInput;
+      }
+
+      const serviceVal = serviceInput?.value.trim() || '';
+      if (!serviceVal) {
+        setFieldError(serviceInput, 'cf7-error-your-service', i18n.errService);
+        hasError = true;
+        firstInvalidInput = firstInvalidInput || serviceInput;
+      }
+
+      const subjectVal = subjectInput?.value.trim() || '';
+      if (!subjectVal) {
+        setFieldError(subjectInput, 'cf7-error-your-subject', i18n.errSubject);
+        hasError = true;
+        firstInvalidInput = firstInvalidInput || subjectInput;
+      }
+
+      const messageVal = messageInput?.value.trim() || '';
+      if (!messageVal) {
+        setFieldError(messageInput, 'cf7-error-your-message', i18n.errMessage);
+        hasError = true;
+        firstInvalidInput = firstInvalidInput || messageInput;
+      } else if (messageVal.length < 20) {
+        setFieldError(messageInput, 'cf7-error-your-message', i18n.errMessageMin);
+        hasError = true;
+        firstInvalidInput = firstInvalidInput || messageInput;
+      }
+
+      if (hasError) {
+        showBanner('error', i18n.errorTitle, i18n.validationFailed);
+        firstInvalidInput?.focus();
+        return;
+      }
+
+      // State: SUBMITTING
+      if (submitBtn) submitBtn.disabled = true;
+      if (submitSpinner) submitSpinner.classList.remove('hidden');
+      if (submitText) submitText.textContent = i18n.submittingBtn;
+
+      try {
+        const formData = new FormData(form);
+
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        const result = await response.json().catch(() => null);
+
+        if (!result) {
+          throw new Error('Invalid JSON response');
+        }
+
+        if (result.status === 'mail_sent') {
+          // SUCCESS STATE
+          showBanner('success', i18n.successTitle, result.message || i18n.successMessage);
+          form.reset();
+          if (charCountEl) {
+            charCountEl.textContent = `0 / 5000 ${i18n.charCounter || 'karakter (min. 20)'}`;
+          }
+        } else if (result.status === 'validation_failed') {
+          // CF7 Validation error
+          showBanner('error', i18n.errorTitle, result.message || i18n.validationFailed);
+          if (Array.isArray(result.invalid_fields)) {
+            result.invalid_fields.forEach((item: { field: string; message: string }) => {
+              if (item.field === 'your-name') setFieldError(nameInput, 'cf7-error-your-name', item.message);
+              if (item.field === 'your-email') setFieldError(emailInput, 'cf7-error-your-email', item.message);
+              if (item.field === 'your-service') setFieldError(serviceInput, 'cf7-error-your-service', item.message);
+              if (item.field === 'your-subject') setFieldError(subjectInput, 'cf7-error-your-subject', item.message);
+              if (item.field === 'your-message') setFieldError(messageInput, 'cf7-error-your-message', item.message);
+            });
+          }
+        } else if (result.status === 'spam') {
+          showBanner('warning', i18n.errorTitle, result.message || i18n.spamError);
+        } else {
+          showBanner('error', i18n.errorTitle, result.message || i18n.serverError);
+        }
+      } catch (err) {
+        console.error('[RAIN07 Contact Form] Error:', err);
+        showBanner('error', i18n.errorTitle, i18n.serverError);
+      } finally {
+        // Reset button state
+        if (submitBtn) submitBtn.disabled = false;
+        if (submitSpinner) submitSpinner.classList.add('hidden');
+        if (submitText) submitText.textContent = i18n.submitBtn;
+      }
+    });
+  }
+
+  // Initialize on DOMContentLoaded and on Astro page transitions
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initContactForm);
+  } else {
+    initContactForm();
+  }
+  document.addEventListener('astro:page-load', initContactForm);
+</script>
+

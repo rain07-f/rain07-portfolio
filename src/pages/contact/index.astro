@@ -1,0 +1,174 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionLabel from '../../components/SectionLabel.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import { useTranslations } from '../../i18n/utils';
+
+const siteUrl = 'https://rain07.my.id';
+const t = useTranslations('id');
+
+const email = 'reyno.fahreza@gmail.com';
+const linkedIn = 'https://www.linkedin.com/in/reyno-nur-fahreza-85908999/';
+const whatsappMsg = encodeURIComponent(t('floating.waMsg'));
+const whatsapp = `https://wa.me/6282243856452?text=${whatsappMsg}`;
+
+const contactJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  '@id': `${siteUrl}/contact/#webpage`,
+  'url': `${siteUrl}/contact/`,
+  'name': 'Kontak & Konsultasi Proyek | RAIN07',
+  'description': 'Hubungi Reyno Nur Fahreza untuk konsultasi web development, WordPress, dan infrastruktur IT server Linux.',
+  'mainEntity': {
+    '@type': 'Person',
+    'name': 'Reyno Nur Fahreza',
+    'alternateName': ['RAIN07', 'REYNO07'],
+    'url': siteUrl,
+    'email': `mailto:${email}`,
+    'contactPoint': [
+      {
+        '@type': 'ContactPoint',
+        'contactType': 'technical inquiry',
+        'email': email,
+        'url': `${siteUrl}/contact/`,
+        'availableLanguage': ['Indonesian', 'English']
+      }
+    ]
+  }
+};
+---
+
+<BaseLayout
+  title={t('contact.pageTitle')}
+  description={t('contact.pageDesc')}
+  canonical="/contact/"
+  locale="id"
+  jsonLd={contactJsonLd}
+>
+  <div class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
+    <SectionLabel index={t('contact.eyebrow')} title={t('contact.sectionTitle')} />
+
+    <!-- Editorial Intro Banner -->
+    <div class="border-2 border-[#111111] bg-[#FFFFFF] p-8 md:p-12 shadow-hard mb-12">
+      <div class="max-w-3xl space-y-4">
+        <span class="font-mono text-xs font-bold px-2.5 py-1 bg-[#0057FF] text-[#FFFFFF]">
+          GET IN TOUCH // INQUIRY & CONSULTATION
+        </span>
+        <h1 class="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-[#111111] leading-[0.98]">
+          {t('contact.headline')}
+        </h1>
+        <p class="font-mono text-sm md:text-base text-[#111111]/80 leading-relaxed">
+          {t('contact.pageSubtitle')}
+        </p>
+      </div>
+    </div>
+
+    <!-- Main 2-Column Content Grid: Sidebar Channels + Interactive Form -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <!-- Left Column: Direct Communication Channels & Telemetry -->
+      <aside class="lg:col-span-5 space-y-6">
+        <!-- Direct Channels Card -->
+        <div class="border-2 border-[#111111] bg-[#FFFFFF] p-6 sm:p-8 shadow-hard space-y-6">
+          <div class="border-b-2 border-[#111111] pb-4">
+            <h2 class="font-mono text-xs font-bold text-[#0057FF] uppercase tracking-wider">
+              {t('contact.channelsTitle')}
+            </h2>
+            <p class="font-mono text-xs text-[#111111]/70 mt-1">
+              Hubungi saya secara langsung melalui email, WhatsApp, atau jaringan profesional.
+            </p>
+          </div>
+
+          <!-- Channel 1: Email -->
+          <div class="space-y-1.5">
+            <div class="font-mono text-[11px] text-[#111111]/60 font-bold uppercase">
+              {t('contact.directEmailLabel')}
+            </div>
+            <a
+              href={`mailto:${email}`}
+              class="group flex items-center justify-between p-3.5 bg-[#F2F0EA] border-2 border-[#111111] font-mono text-xs sm:text-sm font-bold text-[#111111] hover:bg-[#0057FF] hover:text-[#FFFFFF] transition-colors"
+            >
+              <span class="truncate">{email}</span>
+              <span class="font-bold shrink-0 ml-2">→</span>
+            </a>
+          </div>
+
+          <!-- Channel 2: WhatsApp -->
+          <div class="space-y-1.5">
+            <div class="font-mono text-[11px] text-[#111111]/60 font-bold uppercase">
+              {t('contact.directWaLabel')}
+            </div>
+            <a
+              href={whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group flex items-center justify-between p-3.5 bg-[#F2F0EA] border-2 border-[#111111] font-mono text-xs sm:text-sm font-bold text-[#111111] hover:bg-[#25D366] hover:text-[#FFFFFF] transition-colors"
+            >
+              <span>{t('contact.directWaAction')}</span>
+              <span class="font-bold shrink-0 ml-2">↗</span>
+            </a>
+          </div>
+
+          <!-- Channel 3: LinkedIn -->
+          <div class="space-y-1.5">
+            <div class="font-mono text-[11px] text-[#111111]/60 font-bold uppercase">
+              {t('contact.directLinkedInLabel')}
+            </div>
+            <a
+              href={linkedIn}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group flex items-center justify-between p-3.5 bg-[#F2F0EA] border-2 border-[#111111] font-mono text-xs sm:text-sm font-bold text-[#111111] hover:bg-[#0077B5] hover:text-[#FFFFFF] transition-colors"
+            >
+              <span>{t('contact.directLinkedInAction')}</span>
+              <span class="font-bold shrink-0 ml-2">↗</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Telemetry & Operational Info Card -->
+        <div class="border-2 border-[#111111] bg-[#FFFFFF] p-6 sm:p-8 shadow-hard space-y-5">
+          <div class="space-y-1">
+            <div class="font-mono text-[11px] text-[#0057FF] font-bold uppercase tracking-wider">
+              {t('contact.availabilityLabel')}
+            </div>
+            <p class="font-mono text-xs text-[#111111]/85 leading-relaxed">
+              {t('contact.availabilityValue')}
+            </p>
+          </div>
+
+          <div class="border-t-2 border-[#111111]/20 pt-4 space-y-1">
+            <div class="font-mono text-[11px] text-[#0057FF] font-bold uppercase tracking-wider">
+              {t('contact.locationLabel')}
+            </div>
+            <p class="font-mono text-xs text-[#111111]/85 leading-relaxed">
+              {t('contact.locationValue')}
+            </p>
+          </div>
+
+          <div class="border-t-2 border-[#111111]/20 pt-4 space-y-2">
+            <div class="font-mono text-[11px] text-[#111111]/60 font-bold uppercase tracking-wider">
+              // SPESIALISASI UTAMA
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="font-mono text-[11px] px-2 py-0.5 bg-[#111111] text-[#F2F0EA] font-bold">
+                WEB DEVELOPMENT
+              </span>
+              <span class="font-mono text-[11px] px-2 py-0.5 bg-[#111111] text-[#F2F0EA] font-bold">
+                IT INFRASTRUCTURE
+              </span>
+              <span class="font-mono text-[11px] px-2 py-0.5 bg-[#0057FF] text-[#FFFFFF] font-bold">
+                LINUX SERVER
+              </span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Column: Interactive Contact Form Component -->
+      <main class="lg:col-span-7">
+        <ContactForm currentLang="id" />
+      </main>
+    </div>
+  </div>
+</BaseLayout>
+
