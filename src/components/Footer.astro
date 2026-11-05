@@ -21,13 +21,14 @@ const homeHref = currentLang === 'en' ? '/en/' : '/';
       <!-- Col 1: Brand & Spec -->
       <div class="md:col-span-5 space-y-4">
         <div class="flex items-center gap-3">
-          <a href={homeHref} class="inline-block hover:opacity-85 transition-opacity">
+          <a href={homeHref} class="inline-block hover:opacity-85 transition-opacity" aria-label="RAIN07 — Home">
             <img
-              src="/images/rain07-logo-360w.png"
+              src="/images/rain07-logo-white-360w.png"
+              srcset="/images/rain07-logo-white-360w.png 1x, /images/rain07-logo-white.png 2x"
               alt="Rain07 Logo"
               width="360"
               height="101"
-              class="h-9 sm:h-10 w-auto object-contain invert brightness-0 invert-1 block"
+              class="h-9 sm:h-10 w-auto object-contain block"
               loading="lazy"
               decoding="async"
             />
@@ -38,12 +39,12 @@ const homeHref = currentLang === 'en' ? '/en/' : '/';
           >
         </div>
         <p
-          class="font-mono text-xs md:text-sm text-[#F2F0EA]/80 max-w-sm leading-relaxed"
+          class="font-mono text-xs md:text-sm text-[#F2F0EA]/85 max-w-sm leading-relaxed"
         >
           {t('footer.tagline')}
         </p>
         <div
-          class="font-mono text-[11px] text-[#F2F0EA]/50 uppercase tracking-wider"
+          class="font-mono text-[11px] text-[#F2F0EA]/75 uppercase tracking-wider"
         >
           {t('footer.badge')}
         </div>
@@ -52,43 +53,43 @@ const homeHref = currentLang === 'en' ? '/en/' : '/';
       <!-- Col 2: Navigation Links -->
       <div class="md:col-span-3 space-y-2">
         <div
-          class="font-mono text-xs font-bold text-[#0057FF] tracking-widest uppercase mb-3"
+          class="font-mono text-xs font-bold text-[#4D8CFF] tracking-widest uppercase mb-3"
         >
           {t('footer.indexTitle')}
         </div>
         <ul class="space-y-1.5 font-mono text-xs">
           <li>
-            <a href={homeHref} class="hover:text-[#0057FF] transition-colors"
+            <a href={homeHref} class="hover:text-[#4D8CFF] transition-colors"
               >00 // HOME</a
             >
           </li>
           <li>
-            <a href={`${prefix}/services/`} class="hover:text-[#0057FF] transition-colors"
+            <a href={`${prefix}/services/`} class="hover:text-[#4D8CFF] transition-colors"
               >01 // {t('nav.services')}</a
             >
           </li>
           <li>
-            <a href={`${prefix}/work/`} class="hover:text-[#0057FF] transition-colors"
+            <a href={`${prefix}/work/`} class="hover:text-[#4D8CFF] transition-colors"
               >02 // {t('nav.work')}</a
             >
           </li>
           <li>
-            <a href={`${prefix}/expertise/`} class="hover:text-[#0057FF] transition-colors"
+            <a href={`${prefix}/expertise/`} class="hover:text-[#4D8CFF] transition-colors"
               >03 // {t('nav.expertise')}</a
             >
           </li>
           <li>
-            <a href={`${prefix}/about/`} class="hover:text-[#0057FF] transition-colors"
+            <a href={`${prefix}/about/`} class="hover:text-[#4D8CFF] transition-colors"
               >04 // {t('nav.about')}</a
             >
           </li>
           <li>
-            <a href={`${prefix}/notes/`} class="hover:text-[#0057FF] transition-colors"
+            <a href={`${prefix}/notes/`} class="hover:text-[#4D8CFF] transition-colors"
               >05 // {t('nav.notes')}</a
             >
           </li>
           <li>
-            <a href={`${prefix}/#contact`} class="hover:text-[#0057FF] transition-colors"
+            <a href={`${prefix}/#contact`} class="hover:text-[#4D8CFF] transition-colors"
               >06 // {t('nav.contact')}</a
             >
           </li>
@@ -98,21 +99,21 @@ const homeHref = currentLang === 'en' ? '/en/' : '/';
       <!-- Col 3: Technical Specifications -->
       <div class="md:col-span-4 space-y-2">
         <div
-          class="font-mono text-xs font-bold text-[#0057FF] tracking-widest uppercase mb-3"
+          class="font-mono text-xs font-bold text-[#4D8CFF] tracking-widest uppercase mb-3"
         >
           {t('footer.specTitle')}
         </div>
         <div
-          class="font-mono text-xs space-y-1.5 text-[#F2F0EA]/80 bg-[#1A1A1A] p-3 border border-[#F2F0EA]/20"
+          class="font-mono text-xs space-y-1.5 text-[#F2F0EA]/90 bg-[#1A1A1A] p-3 border border-[#F2F0EA]/20"
         >
           <div>
-            <span class="text-[#0057FF]">CORE:</span> Web Development & IT Infrastructure
+            <span class="text-[#4D8CFF] font-semibold">CORE:</span> Web Development & IT Infrastructure
           </div>
           <div>
-            <span class="text-[#0057FF]">FRONTEND:</span> Astro + TypeScript + Tailwind CSS
+            <span class="text-[#4D8CFF] font-semibold">FRONTEND:</span> Astro + TypeScript + Tailwind CSS
           </div>
           <div>
-            <span class="text-[#0057FF]">RUNTIME:</span> Cloudflare Workers Edge
+            <span class="text-[#4D8CFF] font-semibold">RUNTIME:</span> Cloudflare Workers Edge
           </div>
         </div>
       </div>
@@ -120,7 +121,7 @@ const homeHref = currentLang === 'en' ? '/en/' : '/';
 
     <!-- Bottom Bar -->
     <div
-      class="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 font-mono text-[11px] text-[#F2F0EA]/60"
+      class="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 font-mono text-[11px] text-[#F2F0EA]/70"
     >
       <div>
         © {currentYear} RAIN07. REYNO07. {t('footer.allRights')}

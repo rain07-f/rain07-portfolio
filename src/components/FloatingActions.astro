@@ -14,24 +14,24 @@ const whatsappText = encodeURIComponent(t('floating.waMsg'));
 const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappText}`;
 ---
 
-<!-- Fixed Floating Actions Container (Stacked vertically, no overlap) -->
+<!-- Fixed Floating Actions Container (Stacked vertically, exactly 8px gap, right-aligned) -->
 <aside
   aria-label="Floating quick actions"
-  class="fixed bottom-5 right-4 md:bottom-6 md:right-6 z-40 flex flex-col items-end gap-2.5 sm:gap-3 pointer-events-none select-none"
+  class="fixed bottom-5 right-4 md:bottom-6 md:right-6 z-40 flex flex-col items-end gap-2 pointer-events-none select-none"
 >
-  <!-- 1. BACK TO TOP BUTTON (Initially hidden, revealed after 400-500px scroll) -->
+  <!-- 1. BACK TO TOP BUTTON (Fixed 120px x 44px, identical dimensions) -->
   <button
     id="back-to-top"
     type="button"
     aria-label="Back to top"
     title="Back to top"
-    class="pointer-events-auto opacity-0 invisible translate-y-3 transition-all duration-200 ease-out flex items-center justify-center gap-1.5 px-3 py-2 sm:px-3.5 sm:py-2.5 bg-[#111111] text-[#F2F0EA] border-2 border-[#111111] shadow-hard hover:bg-[#0057FF] hover:text-[#FFFFFF] hover:border-[#111111] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0057FF] font-mono text-xs font-bold tracking-wider cursor-pointer"
+    class="floating-action-btn w-[120px] h-[44px] box-border pointer-events-auto opacity-0 invisible translate-y-3 transition-all duration-200 ease-out flex items-center justify-center gap-2 bg-[#111111] text-[#F2F0EA] border-2 border-[#111111] shadow-hard hover:bg-[#0057FF] hover:text-[#FFFFFF] hover:border-[#111111] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0057FF] font-mono text-xs font-bold tracking-wider cursor-pointer"
   >
     <span aria-hidden="true" class="text-sm leading-none">↑</span>
     <span>{t('floating.top')}</span>
   </button>
 
-  <!-- 2. WHATSAPP BUTTON (Always visible brutalist button, compact rectangular) -->
+  <!-- 2. WHATSAPP BUTTON (Fixed 120px x 44px, identical dimensions) -->
   <a
     id="floating-whatsapp"
     href={whatsappUrl}
@@ -39,7 +39,7 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappText}`;
     rel="noopener noreferrer"
     aria-label="Chat on WhatsApp"
     title="Chat on WhatsApp"
-    class="pointer-events-auto flex items-center justify-center gap-2 px-3 py-2 sm:px-3.5 sm:py-2.5 bg-[#111111] text-[#F2F0EA] border-2 border-[#111111] shadow-hard hover:bg-[#25D366] hover:text-[#111111] hover:border-[#111111] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0057FF] font-mono text-xs font-bold tracking-wider cursor-pointer group"
+    class="floating-action-btn w-[120px] h-[44px] box-border pointer-events-auto flex items-center justify-center gap-2 bg-[#111111] text-[#F2F0EA] border-2 border-[#111111] shadow-hard hover:bg-[#25D366] hover:text-[#111111] hover:border-[#111111] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0057FF] font-mono text-xs font-bold tracking-wider cursor-pointer group"
   >
     <!-- Inline SVG WhatsApp Icon (compact 16x16) -->
     <svg
@@ -54,6 +54,16 @@ const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappText}`;
     <span>WA →</span>
   </a>
 </aside>
+
+<style>
+  .floating-action-btn {
+    width: 120px;
+    height: 44px;
+    min-width: 120px;
+    max-width: 120px;
+    box-sizing: border-box;
+  }
+</style>
 
 <script>
   function setupFloatingActions() {
