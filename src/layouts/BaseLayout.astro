@@ -11,6 +11,9 @@ interface Props {
   description?: string;
   ogImage?: string;
   imageAlt?: string;
+  imageWidth?: number | string;
+  imageHeight?: number | string;
+  imageType?: string;
   ogType?: 'website' | 'article';
   canonical?: string;
   noindex?: boolean;
@@ -25,8 +28,11 @@ interface Props {
 const {
   title = 'RAIN07 — Web Development & IT Infrastructure',
   description = 'Solusi pengembangan website, aplikasi web, dan infrastruktur IT untuk kebutuhan bisnis.',
-  ogImage = 'https://be-web-por-rey.rey07.my.id/wp-content/uploads/2026/09/pembuatan-website-featured-1788341128.png',
-  imageAlt = 'RAIN07 — Web Development & IT Infrastructure',
+  ogImage = '/images/hero-developer-og.jpg',
+  imageAlt = 'RAIN07 Engineering Workstation — Web Development & IT Infrastructure',
+  imageWidth = 1200,
+  imageHeight = 630,
+  imageType = 'image/jpeg',
   ogType = 'website',
   canonical,
   noindex = false,
@@ -94,6 +100,9 @@ const {
       canonical={canonical}
       image={ogImage}
       imageAlt={imageAlt}
+      imageWidth={imageWidth}
+      imageHeight={imageHeight}
+      imageType={imageType}
       type={ogType}
       noindex={noindex}
       publishedTime={publishedTime}

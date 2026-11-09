@@ -8,6 +8,9 @@ interface Props {
   canonical?: string;
   image?: string;
   imageAlt?: string;
+  imageWidth?: number | string;
+  imageHeight?: number | string;
+  imageType?: string;
   type?: 'website' | 'article';
   noindex?: boolean;
   publishedTime?: string;
@@ -18,12 +21,22 @@ interface Props {
   locale?: SupportedLang;
 }
 
+const rawSiteUrl = (typeof process !== 'undefined' && process.env?.PUBLIC_SITE_URL) || import.meta.env?.PUBLIC_SITE_URL || 'https://rain07.my.id';
+const siteUrl = rawSiteUrl.replace(/\/$/, '');
+
+// Default RAIN07 Hero Open Graph Image (1200x630 px social derivative)
+const DEFAULT_HERO_OG_IMAGE = `${siteUrl}/images/hero-developer-og.jpg`;
+const DEFAULT_HERO_OG_ALT = 'RAIN07 Engineering Workstation — Web Development & IT Infrastructure';
+
 const {
   title,
   description,
   canonical,
-  image = 'https://be-web-por-rey.rey07.my.id/wp-content/uploads/2026/09/pembuatan-website-featured-1788341128.png',
-  imageAlt = 'RAIN07 — Web Development & IT Infrastructure',
+  image = DEFAULT_HERO_OG_IMAGE,
+  imageAlt = DEFAULT_HERO_OG_ALT,
+  imageWidth,
+  imageHeight,
+  imageType,
   type = 'website',
   noindex = false,
   publishedTime,
@@ -33,9 +46,6 @@ const {
   jsonLd,
   locale = 'id'
 } = Astro.props;
-
-const rawSiteUrl = (typeof process !== 'undefined' && process.env?.PUBLIC_SITE_URL) || import.meta.env?.PUBLIC_SITE_URL || 'https://rain07.my.id';
-const siteUrl = rawSiteUrl.replace(/\/$/, '');
 
 // Format canonical URL ensuring clean domain + trailing slash consistency matching Astro static builds
 const formatCanonical = (urlPath: string): string => {
@@ -50,8 +60,37 @@ const formatCanonical = (urlPath: string): string => {
 const canonicalUrl = formatCanonical(Astro.url.pathname);
 const alternateLinks = getAlternateLinks(Astro.url.pathname, siteUrl);
 
-// Resolve social preview image (must be absolute URL)
-const resolvedImage = image?.startsWith('http') ? image : `${siteUrl}${image.startsWith('/') ? '' : '/'}${image}`;
+// Resolve social preview image (must be absolute URL and NEVER an unrelated WordPress media asset)
+let resolvedImage = image;
+if (!resolvedImage || resolvedImage.includes('pembuatan-website-featured-1788341128')) {
+  resolvedImage = DEFAULT_HERO_OG_IMAGE;
+} else if (!resolvedImage.startsWith('http')) {
+  resolvedImage = `${siteUrl}${resolvedImage.startsWith('/') ? '' : '/'}${resolvedImage}`;
+}
+
+// Secure HTTPS URL for og:image:secure_url
+const secureImageUrl = resolvedImage.startsWith('http:')
+  ? resolvedImage.replace(/^http:/, 'https:')
+  : resolvedImage;
+
+// Resolve dimensions
+const isDefaultHero = resolvedImage.includes('hero-developer-og.jpg');
+const resolvedWidth = imageWidth || (isDefaultHero ? 1200 : 1200);
+const resolvedHeight = imageHeight || (isDefaultHero ? 630 : 630);
+
+// Resolve MIME type
+let resolvedImageType = imageType;
+if (!resolvedImageType) {
+  if (resolvedImage.endsWith('.png')) {
+    resolvedImageType = 'image/png';
+  } else if (resolvedImage.endsWith('.webp')) {
+    resolvedImageType = 'image/webp';
+  } else if (resolvedImage.endsWith('.avif')) {
+    resolvedImageType = 'image/avif';
+  } else {
+    resolvedImageType = 'image/jpeg';
+  }
+}
 
 // Google Search Console verification token (if supplied via env)
 const googleSiteVerification =
@@ -86,7 +125,7 @@ const ogLocale = locale === 'id' ? 'id_ID' : 'en_US';
   <meta name="google-site-verification" content={googleSiteVerification} />
 )}
 
-<!-- Open Graph / Facebook -->
+<!-- Open Graph / Facebook / WhatsApp -->
 <meta property="og:site_name" content="RAIN07" />
 <meta property="og:type" content={type} />
 <meta property="og:title" content={title} />
@@ -94,7 +133,14 @@ const ogLocale = locale === 'id' ? 'id_ID' : 'en_US';
 <meta property="og:url" content={canonicalUrl} />
 <meta property="og:locale" content={ogLocale} />
 {resolvedImage && (
-  <meta property="og:image" content={resolvedImage} />
+  <>
+    <meta property="og:image" content={resolvedImage} />
+    <meta property="og:image:secure_url" content={secureImageUrl} />
+    <meta property="og:image:type" content={resolvedImageType} />
+    <meta property="og:image:width" content={String(resolvedWidth)} />
+    <meta property="og:image:height" content={String(resolvedHeight)} />
+    <meta property="og:image:alt" content={imageAlt} />
+  </>
 )}
 {resolvedImage && imageAlt && (
   <meta property="og:image:alt" content={imageAlt} />
